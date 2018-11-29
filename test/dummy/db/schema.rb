@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_002252) do
+ActiveRecord::Schema.define(version: 2018_11_29_024103) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
@@ -21,6 +21,13 @@ ActiveRecord::Schema.define(version: 2018_11_29_002252) do
   create_table "clearances", force: :cascade do |t|
     t.integer "level"
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "opinionated_pundit_controller_actions", force: :cascade do |t|
+    t.string "controller"
+    t.string "action"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

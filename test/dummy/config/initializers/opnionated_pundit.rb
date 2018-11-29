@@ -1,0 +1,1 @@
+OpinionatedPundit.user_class = "User"
