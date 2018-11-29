@@ -1,0 +1,807 @@
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to DeviseCreateUsers (20181128042315)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ db/migrate/20181128042315_devise_create_users.rb:5
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  ↳ db/migrate/20181128042315_devise_create_users.rb:39
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  ↳ db/migrate/20181128042315_devise_create_users.rb:40
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181128042315"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateClearances (20181128052541)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "clearances" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "level" integer, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ db/migrate/20181128052541_create_clearances.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181128052541"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateCities (20181128063016)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "cities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ db/migrate/20181128063016_create_cities.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181128063016"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateReports (20181129002252)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "reports" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "clearance_id" integer, "city_id" integer, "title" varchar, "body" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_c7699d537d"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_497347bc85"
+FOREIGN KEY ("clearance_id")
+  REFERENCES "clearances" ("id")
+, CONSTRAINT "fk_rails_0e85997f50"
+FOREIGN KEY ("city_id")
+  REFERENCES "cities" ("id")
+)[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_reports_on_user_id" ON "reports" ("user_id")[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_reports_on_clearance_id" ON "reports" ("clearance_id")[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_reports_on_city_id" ON "reports" ("city_id")[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181129002252"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[36mActiveRecord::InternalMetadata Create (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2018-11-29 01:18:25.518079"], ["updated_at", "2018-11-29 01:18:25.518079"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.4ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:18:55 +1100
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Completed 401 Unauthorized in 10ms (ActiveRecord: 0.6ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2018-11-29 12:19:00 +1100
+Processing by Devise::SessionsController#new as HTML
+  Rendering /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/sessions/new.html.erb within layouts/application
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/shared/_links.html.erb (0.9ms)
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/sessions/new.html.erb within layouts/application (18.8ms)
+  Rendered layouts/_flash.html.slim (2.5ms)
+Completed 200 OK in 5883ms (Views: 5875.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_up" for 127.0.0.1 at 2018-11-29 12:19:12 +1100
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/registrations/new.html.erb within layouts/application
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/shared/_links.html.erb (0.7ms)
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/registrations/new.html.erb within layouts/application (6.4ms)
+  Rendered layouts/_flash.html.slim (1.8ms)
+Completed 200 OK in 42ms (Views: 41.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2018-11-29 12:19:26 +1100
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"GrjIJHbkI2QZ54dzizG5ceuUS9K3nKkKVnFIOfbtSWGmhqAZ8enWNj6ahlZGFravv1rUX3xImG8ipGZpLFQikw==", "user"=>{"email"=>"agent@cia.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[36mUser Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "agent@cia.com"], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["email", "agent@cia.com"], ["encrypted_password", "$2a$11$d.yFXjzoEFf8nJNp2DIAROvyJX0UkjeIMItVAZv9Clif9SJZ9Am8e"], ["created_at", "2018-11-29 01:19:26.263086"], ["updated_at", "2018-11-29 01:19:26.263086"]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Redirected to http://localhost:3000/clearances
+Completed 302 Found in 125ms (ActiveRecord: 1.6ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:19:26 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (3.7ms)
+  Rendered layouts/_nav.html.slim (2.3ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 40ms (Views: 33.2ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:19:32 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (2.9ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 36ms (Views: 32.7ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:19:33 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (3.2ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 38ms (Views: 31.6ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/reports" for 127.0.0.1 at 2018-11-29 12:19:34 +1100
+Processing by ReportsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/index.html.slim within layouts/application
+  [1m[36mReport Load (0.1ms)[0m  [1m[34mSELECT "reports".* FROM "reports"[0m
+  ↳ app/views/reports/index.html.slim:16
+  Rendered reports/index.html.slim within layouts/application (4.3ms)
+  Rendered layouts/_nav.html.slim (1.7ms)
+  Rendered layouts/_flash.html.slim (1.3ms)
+Completed 200 OK in 42ms (Views: 32.9ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:19:38 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (2.9ms)
+  Rendered layouts/_nav.html.slim (3.5ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 47ms (Views: 43.5ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/reports" for 127.0.0.1 at 2018-11-29 12:19:39 +1100
+Processing by ReportsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/index.html.slim within layouts/application
+  [1m[36mReport Load (0.1ms)[0m  [1m[34mSELECT "reports".* FROM "reports"[0m
+  ↳ app/views/reports/index.html.slim:16
+  Rendered reports/index.html.slim within layouts/application (6.8ms)
+  Rendered layouts/_nav.html.slim (2.2ms)
+  Rendered layouts/_flash.html.slim (1.7ms)
+Completed 200 OK in 45ms (Views: 42.2ms | ActiveRecord: 0.3ms)
+
+
+Started DELETE "/users/sign_out" for 127.0.0.1 at 2018-11-29 12:19:39 +1100
+Processing by Devise::SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"jiuXDOB8CslQ4fCrHClTsBWjyLOvAhEKHVd3hK9QjNkyFf8xZ3H/m3ec8Y7RDlxuQW1XPmTWIG9pglnUdennKw=="}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Redirected to http://localhost:3000/
+Completed 302 Found in 6ms (ActiveRecord: 0.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2018-11-29 12:19:39 +1100
+Processing by VisitorsController#index as HTML
+  Rendering visitors/index.html.slim within layouts/application
+  Rendered visitors/index.html.slim within layouts/application (1.8ms)
+  Rendered layouts/_flash.html.slim (1.7ms)
+Completed 200 OK in 31ms (Views: 29.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2018-11-29 12:19:47 +1100
+Processing by Devise::SessionsController#new as HTML
+  Rendering /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/sessions/new.html.erb within layouts/application
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/shared/_links.html.erb (0.7ms)
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/devise-4.5.0/app/views/devise/sessions/new.html.erb within layouts/application (6.0ms)
+  Rendered layouts/_flash.html.slim (1.6ms)
+Completed 200 OK in 43ms (Views: 41.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2018-11-29 12:19:58 +1100
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"NBJsWqLaAYLGk6mdukghaeD/Q0GREnkCyLcxkpsNQW4bx/qlxm+v8GodL0J0nQqZe8IYmCv1gutl1MXnItkmKQ==", "user"=>{"email"=>"agent@cia.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["email", "agent@cia.com"], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Redirected to http://localhost:3000/user_root
+Completed 302 Found in 112ms (ActiveRecord: 0.2ms)
+
+
+Started GET "/user_root" for 127.0.0.1 at 2018-11-29 12:19:58 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (2.8ms)
+  Rendered layouts/_nav.html.slim (1.8ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 32ms (Views: 29.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/clearances/new" for 127.0.0.1 at 2018-11-29 12:20:08 +1100
+Processing by ClearancesController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/new.html.slim within layouts/application
+  Rendered clearances/_form.html.slim (4.3ms)
+  Rendered clearances/new.html.slim within layouts/application (7.8ms)
+  Rendered layouts/_nav.html.slim (2.8ms)
+  Rendered layouts/_flash.html.slim (2.3ms)
+Completed 200 OK in 53ms (Views: 45.0ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/clearances" for 127.0.0.1 at 2018-11-29 12:20:17 +1100
+Processing by ClearancesController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"ZA8yrQbfBaAEDOCIvUi1UQRr5Lyr5Vv95s96JuA2rKm19yRdtgqj3ptusvr9ak6yeqWO7b783ZVwark0RApB9A==", "clearance"=>{"level"=>"1", "name"=>"Secret"}, "commit"=>"Save"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[36mClearance Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "clearances" WHERE "clearances"."level" = ? LIMIT ?[0m  [["level", 1], ["LIMIT", 1]]
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[36mClearance Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "clearances" WHERE "clearances"."name" = ? LIMIT ?[0m  [["name", "Secret"], ["LIMIT", 1]]
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[36mClearance Create (0.3ms)[0m  [1m[32mINSERT INTO "clearances" ("level", "name", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["level", 1], ["name", "Secret"], ["created_at", "2018-11-29 01:20:17.395269"], ["updated_at", "2018-11-29 01:20:17.395269"]]
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/clearances_controller.rb:23
+Redirected to http://localhost:3000/clearances
+Completed 302 Found in 6ms (ActiveRecord: 1.3ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:20:17 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.2ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (5.0ms)
+  Rendered layouts/_nav.html.slim (2.6ms)
+  Rendered layouts/_flash.html.slim (1.8ms)
+Completed 200 OK in 42ms (Views: 39.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/clearances/new" for 127.0.0.1 at 2018-11-29 12:20:18 +1100
+Processing by ClearancesController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/new.html.slim within layouts/application
+  Rendered clearances/_form.html.slim (3.9ms)
+  Rendered clearances/new.html.slim within layouts/application (7.6ms)
+  Rendered layouts/_nav.html.slim (2.1ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 45ms (Views: 41.5ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/clearances" for 127.0.0.1 at 2018-11-29 12:20:26 +1100
+Processing by ClearancesController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"2k9eZlI++kxO9hSgxDvNmOtV7nWdiQEbtRqcPU2905sLt0iW4utcMtGURtKEGTZ7lZuEJIiQh3Mjv18v6YE+xg==", "clearance"=>{"level"=>"2", "name"=>"Top-secret"}, "commit"=>"Save"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[36mClearance Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "clearances" WHERE "clearances"."level" = ? LIMIT ?[0m  [["level", 2], ["LIMIT", 1]]
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[36mClearance Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "clearances" WHERE "clearances"."name" = ? LIMIT ?[0m  [["name", "Top-secret"], ["LIMIT", 1]]
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[36mClearance Create (0.3ms)[0m  [1m[32mINSERT INTO "clearances" ("level", "name", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["level", 2], ["name", "Top-secret"], ["created_at", "2018-11-29 01:20:26.417088"], ["updated_at", "2018-11-29 01:20:26.417088"]]
+  ↳ app/controllers/clearances_controller.rb:23
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/clearances_controller.rb:23
+Redirected to http://localhost:3000/clearances
+Completed 302 Found in 5ms (ActiveRecord: 1.3ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:20:26 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (4.9ms)
+  Rendered layouts/_nav.html.slim (2.4ms)
+  Rendered layouts/_flash.html.slim (1.6ms)
+Completed 200 OK in 38ms (Views: 35.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:20:32 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (4.3ms)
+  Rendered layouts/_nav.html.slim (2.4ms)
+  Rendered layouts/_flash.html.slim (3.9ms)
+Completed 200 OK in 44ms (Views: 40.2ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/cities/new" for 127.0.0.1 at 2018-11-29 12:20:33 +1100
+Processing by CitiesController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/new.html.slim within layouts/application
+  Rendered cities/_form.html.slim (4.1ms)
+  Rendered cities/new.html.slim within layouts/application (7.5ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 48ms (Views: 40.0ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/cities" for 127.0.0.1 at 2018-11-29 12:20:37 +1100
+Processing by CitiesController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"+yVMcmz+taqsl1LMBnkJAM/NsXcnpf9ZbziLlce566oq3VqC3CsT1DP1AL5GW/LjsQPbJjK8eTH5nUiHY4UG9w==", "city"=>{"name"=>"Melbourne"}, "commit"=>"Create City"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[36mCity Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cities" WHERE "cities"."name" = ? LIMIT ?[0m  [["name", "Melbourne"], ["LIMIT", 1]]
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[36mCity Create (0.3ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Melbourne"], ["created_at", "2018-11-29 01:20:37.478657"], ["updated_at", "2018-11-29 01:20:37.478657"]]
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/cities_controller.rb:22
+Redirected to http://localhost:3000/cities
+Completed 302 Found in 7ms (ActiveRecord: 1.5ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:20:37 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (2.9ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 40ms (Views: 37.0ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/cities/new" for 127.0.0.1 at 2018-11-29 12:20:39 +1100
+Processing by CitiesController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/new.html.slim within layouts/application
+  Rendered cities/_form.html.slim (2.8ms)
+  Rendered cities/new.html.slim within layouts/application (6.1ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 40ms (Views: 36.5ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/cities" for 127.0.0.1 at 2018-11-29 12:20:40 +1100
+Processing by CitiesController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eG3eHlY7RABBy8J6zd+kOzvxPCPY0HOQyzl6q3gVIWCplcju5u7ift6pkAiN/V/YRT9Wcs3J9fhdnLm53CnMPQ==", "city"=>{"name"=>""}, "commit"=>"Create City"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[36mCity Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cities" WHERE "cities"."name" = ? LIMIT ?[0m  [["name", ""], ["LIMIT", 1]]
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  ↳ app/controllers/cities_controller.rb:22
+  Rendering cities/new.html.slim within layouts/application
+  Rendered cities/_form.html.slim (3.5ms)
+  Rendered cities/new.html.slim within layouts/application (7.2ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 41ms (Views: 37.5ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/cities" for 127.0.0.1 at 2018-11-29 12:20:45 +1100
+Processing by CitiesController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"E10JpN7NkpRgmHp67jJWs6YRn74FRTB1DghHtwK3nQHCpR9Ubhg06v/6KAiuEK1Q2N/17xBcth2YrYSlpotwXA==", "city"=>{"name"=>"Sydney"}, "commit"=>"Create City"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[36mCity Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "cities" WHERE "cities"."name" = ? LIMIT ?[0m  [["name", "Sydney"], ["LIMIT", 1]]
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[36mCity Create (0.3ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?)[0m  [["name", "Sydney"], ["created_at", "2018-11-29 01:20:45.861446"], ["updated_at", "2018-11-29 01:20:45.861446"]]
+  ↳ app/controllers/cities_controller.rb:22
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/cities_controller.rb:22
+Redirected to http://localhost:3000/cities
+Completed 302 Found in 4ms (ActiveRecord: 1.1ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:20:45 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (3.1ms)
+  Rendered layouts/_nav.html.slim (1.8ms)
+  Rendered layouts/_flash.html.slim (1.6ms)
+Completed 200 OK in 34ms (Views: 31.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/reports" for 127.0.0.1 at 2018-11-29 12:20:57 +1100
+Processing by ReportsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/index.html.slim within layouts/application
+  [1m[36mReport Load (0.1ms)[0m  [1m[34mSELECT "reports".* FROM "reports"[0m
+  ↳ app/views/reports/index.html.slim:16
+  Rendered reports/index.html.slim within layouts/application (4.5ms)
+  Rendered layouts/_nav.html.slim (1.8ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 39ms (Views: 35.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/reports/new" for 127.0.0.1 at 2018-11-29 12:20:58 +1100
+Processing by ReportsController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/new.html.slim within layouts/application
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities" ORDER BY "cities"."name" ASC[0m
+  ↳ app/views/reports/_form.html.slim:13
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances" ORDER BY "clearances"."name" ASC[0m
+  ↳ app/views/reports/_form.html.slim:17
+  Rendered reports/_form.html.slim (6.9ms)
+  Rendered reports/new.html.slim within layouts/application (10.0ms)
+  Rendered layouts/_nav.html.slim (3.4ms)
+  Rendered layouts/_flash.html.slim (2.3ms)
+Completed 200 OK in 53ms (Views: 44.3ms | ActiveRecord: 0.6ms)
+
+
+Started POST "/reports" for 127.0.0.1 at 2018-11-29 12:21:17 +1100
+Processing by ReportsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"NdZJN3RQxZ4sRSGtVxZ4hcyMD8Lb7MMpTQJXTVi4W2jkLl/HxIVj4LMnc98XNINmskJlk871RUHbp5Rf/IS2NQ==", "report"=>{"city_id"=>"1", "clearance_id"=>"1", "title"=>"The price of gelato is going to surge", "body"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"}, "commit"=>"Create Report"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/reports_controller.rb:27
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT  "clearances".* FROM "clearances" WHERE "clearances"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/reports_controller.rb:27
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT  "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/reports_controller.rb:27
+  [1m[36mReport Create (0.4ms)[0m  [1m[32mINSERT INTO "reports" ("user_id", "clearance_id", "city_id", "title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["user_id", 1], ["clearance_id", 1], ["city_id", 1], ["title", "The price of gelato is going to surge"], ["body", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"], ["created_at", "2018-11-29 01:21:17.312348"], ["updated_at", "2018-11-29 01:21:17.312348"]]
+  ↳ app/controllers/reports_controller.rb:27
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/reports_controller.rb:27
+Redirected to http://localhost:3000/reports/1
+Completed 302 Found in 15ms (ActiveRecord: 1.4ms)
+
+
+Started GET "/reports/1" for 127.0.0.1 at 2018-11-29 12:21:17 +1100
+Processing by ReportsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  [1m[36mReport Load (0.1ms)[0m  [1m[34mSELECT  "reports".* FROM "reports" WHERE "reports"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/reports_controller.rb:52
+  Rendering reports/show.html.slim within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/show.html.slim:8
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT  "clearances".* FROM "clearances" WHERE "clearances"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/show.html.slim:12
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT  "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/show.html.slim:16
+  Rendered reports/show.html.slim within layouts/application (5.3ms)
+  Rendered layouts/_nav.html.slim (2.3ms)
+  Rendered layouts/_flash.html.slim (1.7ms)
+Completed 200 OK in 43ms (Views: 39.4ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/reports" for 127.0.0.1 at 2018-11-29 12:21:22 +1100
+Processing by ReportsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/index.html.slim within layouts/application
+  [1m[36mReport Load (0.2ms)[0m  [1m[34mSELECT "reports".* FROM "reports"[0m
+  ↳ app/views/reports/index.html.slim:16
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:18
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT  "clearances".* FROM "clearances" WHERE "clearances"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:19
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT  "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:20
+  Rendered reports/index.html.slim within layouts/application (5.2ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 36ms (Views: 33.0ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:21:57 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (3.4ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 37ms (Views: 32.7ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:21:59 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (3.5ms)
+  Rendered layouts/_nav.html.slim (1.8ms)
+  Rendered layouts/_flash.html.slim (1.3ms)
+Completed 200 OK in 37ms (Views: 32.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/reports" for 127.0.0.1 at 2018-11-29 12:22:00 +1100
+Processing by ReportsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/index.html.slim within layouts/application
+  [1m[36mReport Load (0.1ms)[0m  [1m[34mSELECT "reports".* FROM "reports"[0m
+  ↳ app/views/reports/index.html.slim:16
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:18
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT  "clearances".* FROM "clearances" WHERE "clearances"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:19
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT  "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:20
+  Rendered reports/index.html.slim within layouts/application (5.5ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.4ms)
+Completed 200 OK in 38ms (Views: 33.5ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:22:06 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (3.7ms)
+  Rendered layouts/_nav.html.slim (2.1ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 38ms (Views: 34.4ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:22:32 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (3.7ms)
+  Rendered layouts/_nav.html.slim (1.8ms)
+  Rendered layouts/_flash.html.slim (1.3ms)
+Completed 200 OK in 37ms (Views: 33.1ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:22:33 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (3.2ms)
+  Rendered layouts/_nav.html.slim (8.9ms)
+  Rendered layouts/_flash.html.slim (1.6ms)
+Completed 200 OK in 43ms (Views: 40.0ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/reports" for 127.0.0.1 at 2018-11-29 12:22:34 +1100
+Processing by ReportsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering reports/index.html.slim within layouts/application
+  [1m[36mReport Load (0.2ms)[0m  [1m[34mSELECT "reports".* FROM "reports"[0m
+  ↳ app/views/reports/index.html.slim:16
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:18
+  [1m[36mClearance Load (0.1ms)[0m  [1m[34mSELECT  "clearances".* FROM "clearances" WHERE "clearances"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:19
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT  "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reports/index.html.slim:20
+  Rendered reports/index.html.slim within layouts/application (6.5ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 41ms (Views: 37.0ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 12:22:36 +1100
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (3.7ms)
+  Rendered layouts/_nav.html.slim (2.9ms)
+  Rendered layouts/_flash.html.slim (1.5ms)
+Completed 200 OK in 37ms (Views: 34.4ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/clearances" for 127.0.0.1 at 2018-11-29 12:22:36 +1100
+Processing by ClearancesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering clearances/index.html.slim within layouts/application
+  [1m[36mClearance Load (0.2ms)[0m  [1m[34mSELECT "clearances".* FROM "clearances"[0m
+  ↳ app/views/clearances/index.html.slim:13
+  Rendered clearances/index.html.slim within layouts/application (4.3ms)
+  Rendered layouts/_nav.html.slim (1.9ms)
+  Rendered layouts/_flash.html.slim (1.3ms)
+Completed 200 OK in 37ms (Views: 34.3ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/rails/info/properties" for 127.0.0.1 at 2018-11-29 14:55:00 +1100
+Processing by Rails::InfoController#properties as HTML
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/railties-5.2.1.1/lib/rails/templates/rails/info/properties.html.erb within layouts/application
+  Rendered /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/railties-5.2.1.1/lib/rails/templates/rails/info/properties.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 20ms (Views: 9.2ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 15:02:36 +1100
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.6ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (18.6ms)
+  Rendered layouts/_nav.html.slim (2.0ms)
+  Rendered layouts/_flash.html.slim (1.6ms)
+Completed 200 OK in 418ms (Views: 397.8ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/cities" for 127.0.0.1 at 2018-11-29 15:03:26 +1100
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+Processing by CitiesController#index as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/gems/ruby-2.5.3@opinionated_pundit/gems/activerecord-5.2.1.1/lib/active_record/log_subscriber.rb:98
+  Rendering cities/index.html.slim within layouts/application
+  [1m[36mCity Load (0.8ms)[0m  [1m[34mSELECT "cities".* FROM "cities"[0m
+  ↳ app/views/cities/index.html.slim:11
+  Rendered cities/index.html.slim within layouts/application (54.4ms)
+  Rendered layouts/_nav.html.slim (21.0ms)
+  Rendered layouts/_flash.html.slim (15.3ms)
+Completed 200 OK in 111929ms (Views: 880.8ms | ActiveRecord: 3.5ms)
+
+
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateOpinionatedPunditControllerActions (20181129024103)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  ↳ /Users/sergio_rodriguez/workspace/opinionated_pundit/db/migrate/20181129024103_create_opinionated_pundit_controller_actions.rb:3
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "opinionated_pundit_controller_actions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "controller" varchar, "action" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ /Users/sergio_rodriguez/workspace/opinionated_pundit/db/migrate/20181129024103_create_opinionated_pundit_controller_actions.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181129024103"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to DeviseCreateUsers (20181128042315)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ db/migrate/20181128042315_devise_create_users.rb:5
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  ↳ db/migrate/20181128042315_devise_create_users.rb:39
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  ↳ db/migrate/20181128042315_devise_create_users.rb:40
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181128042315"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateClearances (20181128052541)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "clearances" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "level" integer, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ db/migrate/20181128052541_create_clearances.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181128052541"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateCities (20181128063016)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "cities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ db/migrate/20181128063016_create_cities.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181128063016"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateReports (20181129002252)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "reports" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "clearance_id" integer, "city_id" integer, "title" varchar, "body" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_c7699d537d"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_497347bc85"
+FOREIGN KEY ("clearance_id")
+  REFERENCES "clearances" ("id")
+, CONSTRAINT "fk_rails_0e85997f50"
+FOREIGN KEY ("city_id")
+  REFERENCES "cities" ("id")
+)[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_reports_on_user_id" ON "reports" ("user_id")[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_reports_on_clearance_id" ON "reports" ("clearance_id")[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_reports_on_city_id" ON "reports" ("city_id")[0m
+  ↳ db/migrate/20181129002252_create_reports.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181129002252"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+Migrating to CreateOpinionatedPunditControllerActions (20181129024103)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "opinionated_pundit_controller_actions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "controller" varchar, "action" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  ↳ /Users/sergio_rodriguez/workspace/opinionated_pundit/db/migrate/20181129024103_create_opinionated_pundit_controller_actions.rb:3
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20181129024103"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[36mActiveRecord::InternalMetadata Create (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2018-11-29 04:37:46.295638"], ["updated_at", "2018-11-29 04:37:46.295638"]]
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/sergio_rodriguez/.rvm/rubies/ruby-2.5.3/lib/ruby/gems/2.5.0/gems/rake-12.3.1/lib/rake/task.rb:271

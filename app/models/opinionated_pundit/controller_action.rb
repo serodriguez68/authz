@@ -34,7 +34,7 @@ module OpinionatedPundit
 
     private
     def controller_action_pair_exist
-      unless self.class.reachable_controller_actions[controller].include?(action)
+      unless self.class.reachable_controller_actions[controller].try(:include?, action)
         errors.add(:base, 'the controller action you are trying to save is not included in the routes')
       end
     end
