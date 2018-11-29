@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_131405) do
+ActiveRecord::Schema.define(version: 2018_11_29_220317) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
@@ -47,6 +47,15 @@ ActiveRecord::Schema.define(version: 2018_11_29_131405) do
     t.string "action"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "opinionated_pundit_role_has_business_processes", force: :cascade do |t|
+    t.integer "opinionated_pundit_business_process_id"
+    t.integer "opinionated_pundit_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["opinionated_pundit_business_process_id"], name: "opinionated_pundit_rhbp_business_process_index"
+    t.index ["opinionated_pundit_role_id"], name: "opinionated_pundit_rhbp_role_index"
   end
 
   create_table "opinionated_pundit_roles", force: :cascade do |t|
