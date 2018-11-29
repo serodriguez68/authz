@@ -1,0 +1,15 @@
+= form_for @clearance do |f|
+  - if @clearance.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@clearance.errors.count, "error")} prohibited this clearance from being saved:"
+      ul
+        - @clearance.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :level
+    = f.select :level, [1,2]
+  .field
+    = f.label :name
+    = f.text_field :name
+  .actions = f.submit "Save", class: "button success"

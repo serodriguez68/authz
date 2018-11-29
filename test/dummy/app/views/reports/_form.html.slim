@@ -1,0 +1,24 @@
+= form_for @report do |f|
+  - if @report.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@report.errors.count, "error")} prohibited this report from being saved:"
+      ul
+        - @report.errors.full_messages.each do |message|
+          li = message
+
+  .grid-x.grid-margin-x
+    .cell.medium-6
+      .field
+        = f.label :city
+        = f.collection_select :city_id, City.all.order(name: :asc), :id, :name
+    .cell.medium-6
+      .field
+        = f.label :clearance
+        = f.collection_select :clearance_id, Clearance.all.order(name: :asc), :id, :name
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :body
+    = f.text_area :body
+  .actions = f.submit

@@ -1,0 +1,26 @@
+h1 Listing reports
+= link_to 'Create New Report', new_report_path, class: 'button'
+table
+  thead
+    tr
+      th User
+      th Clearance
+      th City
+      th Title
+      th Body
+      th
+      th
+      th
+
+  tbody
+    - @reports.each do |report|
+      tr
+        td = report.user.email
+        td = report.clearance.name
+        td = report.city.name
+        td = report.title
+        td = report.body.truncate(100)
+        td = link_to 'Show', report
+        td = link_to 'Edit', edit_report_path(report)
+        td = link_to 'Destroy', report, data: { confirm: 'Are you sure?' }, method: :delete
+
