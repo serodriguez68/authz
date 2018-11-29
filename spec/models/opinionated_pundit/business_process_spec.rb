@@ -21,5 +21,13 @@ module OpinionatedPundit
     end
 
 
+    describe 'Associations' do
+      it 'should have_many business_process_has_controller_actions' do
+        should have_many(:business_process_has_controller_actions)
+      end
+      it { should have_many(:controller_actions).through(:business_process_has_controller_actions) }
+    end
+
+
   end
 end

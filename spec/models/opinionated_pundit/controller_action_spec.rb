@@ -32,8 +32,9 @@ module OpinionatedPundit
 
     end
 
-    describe "Instance Methods" do
-
+    describe 'Associations' do
+      it { should have_many(:business_process_has_controller_actions) }
+      it { should have_many(:business_processes).through(:business_process_has_controller_actions) }
     end
 
   end

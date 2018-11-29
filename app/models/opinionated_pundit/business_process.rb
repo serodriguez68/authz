@@ -12,6 +12,12 @@ module OpinionatedPundit
     # ==========================================================================
     before_validation :extract_code_from_name, on: [:create]
 
+    # Associations
+    # ==========================================================================
+    has_many :business_process_has_controller_actions,
+             class_name: 'OpinionatedPundit::BusinessProcessHasControllerAction',
+             foreign_key: 'opinionated_pundit_business_process_id'
+    has_many :controller_actions, through: :business_process_has_controller_actions
 
     private
 
