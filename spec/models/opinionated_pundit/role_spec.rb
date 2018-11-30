@@ -12,8 +12,7 @@ module OpinionatedPundit
       it { should_not allow_value('9_a').for(:code) }
 
       it 'should automatically extract the code from the name' do
-        bp = create(:opinionated_pundit_role, code: nil,
-                    name: 'City Director')
+        bp = create(:opinionated_pundit_role, code: nil, name: 'City Director')
         expect(bp.code).to eq 'city_director'
       end
     end
