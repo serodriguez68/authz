@@ -17,5 +17,10 @@ module OpinionatedPundit
       end
     end
 
+    describe 'associations' do
+      it { should have_many(:role_has_business_processes) }
+      it { should have_many(:business_processes).through(:role_has_business_processes) }
+    end
+
   end
 end

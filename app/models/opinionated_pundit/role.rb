@@ -12,6 +12,13 @@ module OpinionatedPundit
     # ==========================================================================
     before_validation :extract_code_from_name, on: [:create]
 
+    # Associations
+    # ==========================================================================
+    has_many :role_has_business_processes,
+             class_name: 'OpinionatedPundit::RoleHasBusinessProcess',
+             foreign_key: 'opinionated_pundit_role_id'
+    has_many :business_processes, through: :role_has_business_processes
+
 
     private
 
