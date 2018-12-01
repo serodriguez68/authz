@@ -30,4 +30,11 @@ RSpec.shared_examples "authorizable" do
 
   end
 
+  describe '.register_in_authorization_admin' do
+    it 'should call OpinionatedPundit.register_authorizable_in_admin' do
+      expect(OpinionatedPundit).to receive(:register_authorizable_in_admin).with(described_class, :foo)
+      described_class.register_in_authorization_admin(identifier: :foo)
+    end
+  end
+
 end

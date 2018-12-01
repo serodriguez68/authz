@@ -6,7 +6,7 @@ module OpinionatedPundit
       OpinionatedPundit.register_rolable(includer)
 
       # Associations for the includer
-      # ==========================================================================
+      # ========================================================================
       has_many :role_grants, class_name: "OpinionatedPundit::RoleGrant", as: 'rolable'
       has_many :roles, through: :role_grants
       has_many :business_processes, through: :roles
@@ -14,7 +14,7 @@ module OpinionatedPundit
 
 
       # Associations for all other classes referencing the includer
-      # ==========================================================================
+      # ========================================================================
       includer_class_name = includer.model_name.to_s
       includer_pluralized_symbol = includer_class_name.underscore.pluralize.to_sym
 
@@ -33,6 +33,7 @@ module OpinionatedPundit
                    source: 'rolable'
         end
       end
+
     end
 
     # Mixed instance methods
@@ -41,6 +42,20 @@ module OpinionatedPundit
     # the caller has access to that endpoint
     def clear_for? controller:, action:
       controller_actions.exists?(controller: controller, action: action)
+    end
+
+    # Configure Includer for Authorization Admin
+    # ==========================================================================
+    class_methods do
+      # Developers must use this method to register the includer on the
+      # authorization admin specifying which field of attribute
+      # (real or virtual)should be used in the admin to identify each
+      # instance.
+      # (e.g.  Users will be identified by :email)
+      # TODO: Modify or remove this if getting rid of Rails Admin
+      def register_in_authorization_admin(identifier:)
+        OpinionatedPundit.register_authorizable_in_admin(self, identifier)
+      end
     end
 
   end

@@ -5,8 +5,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :reports
+
   include OpinionatedPundit::Authorizable
+  register_in_authorization_admin identifier: :name
 
-
+  def name
+    "#{id} - #{email}"
+  end
 
 end

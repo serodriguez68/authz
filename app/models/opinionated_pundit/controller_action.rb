@@ -37,6 +37,12 @@ module OpinionatedPundit
       result
     end
 
+    # Instance Methods
+    # ==========================================================================
+    def to_s
+      "#{controller}##{action}-#{id}"
+    end
+
     private
 
     def controller_action_pair_exist
