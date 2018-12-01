@@ -1,9 +1,5 @@
 module OpinionatedPundit
   class ControllerAction < ApplicationRecord
-    # Errors
-    # ==========================================================================
-    # Raised if the controller action being queried does not exist
-    class ControllerActionNotFound < StandardError; end
 
     # Validations
     # ==========================================================================
@@ -18,6 +14,8 @@ module OpinionatedPundit
              class_name: 'OpinionatedPundit::BusinessProcessHasControllerAction',
              foreign_key: 'opinionated_pundit_controller_action_id'
     has_many :business_processes, through: :business_process_has_controller_actions
+    has_many :roles, through: :business_processes
+    has_many :role_grants, through: :roles
 
     # Class Methods
     # ==========================================================================

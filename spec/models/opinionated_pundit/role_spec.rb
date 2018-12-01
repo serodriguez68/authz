@@ -20,6 +20,9 @@ module OpinionatedPundit
     describe 'associations' do
       it { should have_many(:role_has_business_processes) }
       it { should have_many(:business_processes).through(:role_has_business_processes) }
+      it { should have_many(:controller_actions).through(:business_processes) }
+      it { should have_many(:role_grants) }
+      it { should have_many(:users) }
     end
 
   end

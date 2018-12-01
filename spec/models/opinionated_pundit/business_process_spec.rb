@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 module OpinionatedPundit
   RSpec.describe BusinessProcess, type: :model do
     describe 'validations' do
@@ -20,12 +18,13 @@ module OpinionatedPundit
       end
     end
 
-
     describe 'Associations' do
-      it 'should have_many business_process_has_controller_actions' do
-        should have_many(:business_process_has_controller_actions)
-      end
+      it { should have_many(:business_process_has_controller_actions) }
       it { should have_many(:controller_actions).through(:business_process_has_controller_actions) }
+      it { should have_many(:role_has_business_processes) }
+      it { should have_many(:roles).through(:role_has_business_processes) }
+      it { should have_many(:role_grants).through(:roles) }
+      it { should have_many(:users) }
     end
 
 

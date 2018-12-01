@@ -18,6 +18,10 @@ module OpinionatedPundit
              class_name: 'OpinionatedPundit::RoleHasBusinessProcess',
              foreign_key: 'opinionated_pundit_role_id'
     has_many :business_processes, through: :role_has_business_processes
+    has_many :controller_actions, through: :business_processes
+    has_many :role_grants,
+             class_name: 'OpinionatedPundit::RoleGrant',
+             foreign_key: 'opinionated_pundit_role_id'
 
 
     private

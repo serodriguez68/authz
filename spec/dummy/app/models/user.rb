@@ -5,4 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :reports
+  include OpinionatedPundit::Authorizable
+
+
+
 end
