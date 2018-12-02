@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   has_many :reports
 
-  include OpinionatedPundit::Authorizable
+  include OpinionatedPundit::Models::Authorizable
   register_in_authorization_admin identifier: :name
 
   def name
