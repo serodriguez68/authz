@@ -3,21 +3,25 @@ class ClearancesController < ApplicationController
 
   # GET /clearances
   def index
+    authorize
     @clearances = Clearance.all
   end
 
 
   # GET /clearances/new
   def new
+    authorize
     @clearance = Clearance.new
   end
 
   # GET /clearances/1/edit
   def edit
+    authorize
   end
 
   # POST /clearances
   def create
+    authorize
     @clearance = Clearance.new(clearance_params)
 
     if @clearance.save
@@ -29,6 +33,7 @@ class ClearancesController < ApplicationController
 
   # PATCH/PUT /clearances/1
   def update
+    authorize
     if @clearance.update(clearance_params)
       redirect_to clearances_url, notice: 'Clearance was successfully updated.'
     else
@@ -38,6 +43,7 @@ class ClearancesController < ApplicationController
 
   # DELETE /clearances/1
   def destroy
+    authorize
     @clearance.destroy
     redirect_to clearances_url, notice: 'Clearance was successfully destroyed.'
   end

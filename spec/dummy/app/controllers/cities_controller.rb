@@ -3,20 +3,24 @@ class CitiesController < ApplicationController
 
   # GET /cities
   def index
+    authorize
     @cities = City.all
   end
 
   # GET /cities/new
   def new
     @city = City.new
+    authorize
   end
 
   # GET /cities/1/edit
   def edit
+    authorize
   end
 
   # POST /cities
   def create
+    authorize
     @city = City.new(city_params)
 
     if @city.save
@@ -28,6 +32,7 @@ class CitiesController < ApplicationController
 
   # PATCH/PUT /cities/1
   def update
+    authorize
     if @city.update(city_params)
       redirect_to cities_url, notice: 'City was successfully updated.'
     else
@@ -37,6 +42,7 @@ class CitiesController < ApplicationController
 
   # DELETE /cities/1
   def destroy
+    authorize
     @city.destroy
     redirect_to cities_url, notice: 'City was successfully destroyed.'
   end

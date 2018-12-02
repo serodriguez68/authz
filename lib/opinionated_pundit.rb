@@ -1,5 +1,7 @@
-require "opinionated_pundit/engine"
+require 'opinionated_pundit/engine'
 require 'opinionated_pundit/models/authorizable'
+require 'opinionated_pundit/controllers/permission_manager'
+require 'opinionated_pundit/controllers/authorization_manager'
 require 'rails_admin'
 
 module OpinionatedPundit

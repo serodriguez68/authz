@@ -2,7 +2,5 @@ h1 Editing city
 
 == render 'form'
 
-=> link_to 'Show', @city
-'|
-=< link_to 'Back', cities_path
+=< link_to 'Back', cities_path if authorized_path? cities_path
 

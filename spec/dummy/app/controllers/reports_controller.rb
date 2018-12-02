@@ -3,25 +3,30 @@ class ReportsController < ApplicationController
 
   # GET /reports
   def index
-    @reports = Report.all
+    @reports = Report.all.includes(:user, :city, :clearance)
+    authorize
   end
 
   # GET /reports/1
   def show
+    authorize
   end
 
   # GET /reports/new
   def new
     @report = Report.new
+    authorize
   end
 
   # GET /reports/1/edit
   def edit
+    authorize
   end
 
   # POST /reports
   def create
     @report = Report.new(report_params)
+    authorize
     @report.user = current_user
 
     if @report.save
@@ -33,6 +38,7 @@ class ReportsController < ApplicationController
 
   # PATCH/PUT /reports/1
   def update
+    authorize
     if @report.update(report_params)
       redirect_to @report, notice: 'Report was successfully updated.'
     else
@@ -42,6 +48,7 @@ class ReportsController < ApplicationController
 
   # DELETE /reports/1
   def destroy
+    authorize
     @report.destroy
     redirect_to reports_url, notice: 'Report was successfully destroyed.'
   end
