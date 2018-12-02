@@ -10,7 +10,7 @@ module OpinionatedPundit
   @@rolables = [] # Contains the classes of all Rolables
   def self.register_rolable(rolable)
 
-    if !@@rolables.include?(rolable)
+    unless @@rolables.map{|r| r.model_name.name}.include?(rolable.model_name.name)
       @@rolables << rolable
     end
 

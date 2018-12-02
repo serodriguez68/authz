@@ -36,6 +36,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'selenium-webdriver'
   s.add_development_dependency 'shoulda-matchers'
   s.add_development_dependency 'faker'
+  s.add_development_dependency 'better_errors'
+  s.add_development_dependency 'binding_of_caller'
 
 
 end
