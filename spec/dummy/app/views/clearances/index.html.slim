@@ -1,0 +1,19 @@
+h1 List of all Clearances
+
+= link_to 'Create New Clearance Level', new_clearance_path, class: 'button' if authorized_path? new_clearance_path
+table
+  thead
+    tr
+      th Level
+      th Name
+      th
+      th
+
+  tbody
+    - @clearances.each do |clearance|
+      tr
+        td = clearance.level
+        td = clearance.name
+        td = link_to 'Edit', edit_clearance_path(clearance) if authorized_path? edit_clearance_path(clearance)
+        td = link_to('Destroy', clearance, data: { confirm: 'Are you sure?' }, method: :delete) if authorized_path?(clearance_path(clearance), method: :delete)
+

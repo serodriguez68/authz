@@ -1,0 +1,16 @@
+h1 Listing cities
+= link_to 'Create New City', new_city_path, class: 'button' if authorized_path? new_city_path
+table
+  thead
+    tr
+      th Name
+      th
+      th
+
+  tbody
+    - @cities.each do |city|
+      tr
+        td = city.name
+        td = link_to 'Edit', edit_city_path(city) if authorized_path?  edit_city_path(city)
+        td = link_to 'Destroy', city, data: { confirm: 'Are you sure?' }, method: :delete if authorized_path?(city_path(city), method: :delete)
+
