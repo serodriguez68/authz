@@ -58,6 +58,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
+    backports (3.11.4)
     bcrypt (3.1.12)
     better_errors (2.5.0)
       coderay (>= 1.0.0)
@@ -85,6 +86,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.3)
+    connection_pool (2.2.2)
     crass (1.0.4)
     database_cleaner (1.7.0)
     debug_inspector (0.0.3)
@@ -96,6 +98,8 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.3)
     erubi (1.7.1)
+    ethon (0.11.0)
+      ffi (>= 1.3.0)
     execjs (2.7.0)
     factory_bot (4.11.1)
       activesupport (>= 3.0.0)
@@ -104,15 +108,27 @@ GEM
       railties (>= 3.0.0)
     faker (1.9.1)
       i18n (>= 0.7)
+    faraday (0.15.4)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.12.2)
+      faraday (>= 0.7.4, < 1.0)
     ffi (1.9.25)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     foundation-rails (6.5.1.0)
+    gh (0.14.0)
+      addressable
+      backports
+      faraday (~> 0.8)
+      multi_json (~> 1.0)
+      net-http-persistent (>= 2.7)
+      net-http-pipeline
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
+    highline (1.7.10)
     i18n (1.1.1)
       concurrent-ruby (~> 1.0)
     jquery-rails (4.3.3)
@@ -121,6 +137,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+    json (2.1.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -147,12 +164,20 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    multi_json (1.13.1)
+    multipart-post (2.0.0)
     nested_form (0.3.2)
+    net-http-persistent (3.0.0)
+      connection_pool (~> 2.2)
+    net-http-pipeline (1.0.1)
     nio4r (2.3.1)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     public_suffix (3.0.3)
+    pusher-client (0.6.2)
+      json
+      websocket (~> 1.0)
     rack (2.0.6)
     rack-pjax (1.0.0)
       nokogiri (~> 1.5)
@@ -262,10 +287,24 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.9)
+    travis (1.8.9)
+      backports
+      faraday (~> 0.9)
+      faraday_middleware (~> 0.9, >= 0.9.1)
+      gh (~> 0.13)
+      highline (~> 1.6)
+      launchy (~> 2.1)
+      pusher-client (~> 0.4)
+      typhoeus (~> 0.6, >= 0.6.8)
+    travis-lint (2.0.0)
+      json
+    typhoeus (0.8.0)
+      ethon (>= 0.8.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     warden (1.2.8)
       rack (>= 2.0.6)
+    websocket (1.2.8)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -294,6 +333,8 @@ DEPENDENCIES
   slim-rails
   sprockets-es6
   sqlite3
+  travis
+  travis-lint
 
 BUNDLED WITH
    1.17.1
