@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
-  include OpinionatedPundit::Controllers::AuthorizationManager
-  rescue_from OpinionatedPundit::Controllers::PermissionManager::PermissionNotGranted, with: :unauthorized_handler
+  include Authz::Controllers::AuthorizationManager
+  rescue_from Authz::Controllers::PermissionManager::PermissionNotGranted, with: :unauthorized_handler
 
   private
 

@@ -1,5 +1,5 @@
 h1 Listing cities
-= link_to 'Create New City', new_city_path, class: 'button'
+= link_to 'Create New City', new_city_path, class: 'button' if authorized_path? new_city_path
 table
   thead
     tr

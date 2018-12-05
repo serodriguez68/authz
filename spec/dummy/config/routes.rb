@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount OpinionatedPundit::Engine => '/opinionated_pundit'
+  mount Authz::Engine => '/authz'
 
   root to: 'visitors#index'
 

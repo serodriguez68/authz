@@ -39,22 +39,22 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  ## == Opinionated-Pundit Configuration ==
+  ## == Authz Configuration ==
   config.main_app_name = ["Authorization", "Admin"]
-  config.included_models = ['OpinionatedPundit::ControllerAction',
-                            'OpinionatedPundit::BusinessProcess',
-                            'OpinionatedPundit::Role']
+  config.included_models = ['Authz::ControllerAction',
+                            'Authz::BusinessProcess',
+                            'Authz::Role']
 
-  config.model 'OpinionatedPundit::ControllerAction' do
+  config.model 'Authz::ControllerAction' do
     object_label_method { :to_s }
     list { exclude_fields :created_at, :updated_at }
   end
 
-  config.model 'OpinionatedPundit::BusinessProcess' do
+  config.model 'Authz::BusinessProcess' do
     list { exclude_fields :created_at, :updated_at }
   end
 
-  config.model 'OpinionatedPundit::Role' do
+  config.model 'Authz::Role' do
     list { exclude_fields :created_at, :updated_at }
   end
 

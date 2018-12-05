@@ -25,16 +25,16 @@ ActiveRecord::Schema.define(version: 2018_11_30_053841) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "opinionated_pundit_business_process_has_controller_actions", force: :cascade do |t|
-    t.integer "opinionated_pundit_controller_action_id"
-    t.integer "opinionated_pundit_business_process_id"
+  create_table "authz_business_process_has_controller_actions", force: :cascade do |t|
+    t.integer "authz_controller_action_id"
+    t.integer "authz_business_process_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["opinionated_pundit_business_process_id"], name: "opinionated_pundit_bphca_controller_business_process_index"
-    t.index ["opinionated_pundit_controller_action_id"], name: "opinionated_pundit_bphca_controller_action_index"
+    t.index ["authz_business_process_id"], name: "authz_bphca_business_process_index"
+    t.index ["authz_controller_action_id"], name: "authz_bphca_controller_action_index"
   end
 
-  create_table "opinionated_pundit_business_processes", force: :cascade do |t|
+  create_table "authz_business_processes", force: :cascade do |t|
     t.string "code"
     t.string "name"
     t.string "description"
@@ -42,33 +42,33 @@ ActiveRecord::Schema.define(version: 2018_11_30_053841) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "opinionated_pundit_controller_actions", force: :cascade do |t|
+  create_table "authz_controller_actions", force: :cascade do |t|
     t.string "controller"
     t.string "action"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "opinionated_pundit_role_grants", force: :cascade do |t|
-    t.integer "opinionated_pundit_role_id", null: false
+  create_table "authz_role_grants", force: :cascade do |t|
+    t.integer "authz_role_id", null: false
     t.string "rolable_type", null: false
     t.integer "rolable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["opinionated_pundit_role_id"], name: "opinionated_pundit_role_grants_role_index"
-    t.index ["rolable_type", "rolable_id"], name: "opinionated_pundit_role_grants_rolable_index"
+    t.index ["authz_role_id"], name: "authz_role_grants_role_index"
+    t.index ["rolable_type", "rolable_id"], name: "authz_role_grants_rolable_index"
   end
 
-  create_table "opinionated_pundit_role_has_business_processes", force: :cascade do |t|
-    t.integer "opinionated_pundit_business_process_id"
-    t.integer "opinionated_pundit_role_id"
+  create_table "authz_role_has_business_processes", force: :cascade do |t|
+    t.integer "authz_business_process_id"
+    t.integer "authz_role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["opinionated_pundit_business_process_id"], name: "opinionated_pundit_rhbp_business_process_index"
-    t.index ["opinionated_pundit_role_id"], name: "opinionated_pundit_rhbp_role_index"
+    t.index ["authz_business_process_id"], name: "authz_rhbp_business_process_index"
+    t.index ["authz_role_id"], name: "authz_rhbp_role_index"
   end
 
-  create_table "opinionated_pundit_roles", force: :cascade do |t|
+  create_table "authz_roles", force: :cascade do |t|
     t.string "code"
     t.string "name"
     t.string "description"

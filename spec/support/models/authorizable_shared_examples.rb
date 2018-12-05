@@ -9,14 +9,14 @@ RSpec.shared_examples "authorizable" do
 
   describe 'controller action clearance checking' do
     let!(:authorizable) { create(:user) }
-    let!(:r) {create :opinionated_pundit_role}
-    let!(:bp) {create :opinionated_pundit_business_process}
-    let!(:ca) {create :opinionated_pundit_controller_action}
-    let!(:bphca) {create :opinionated_pundit_business_process_has_controller_action,
+    let!(:r) {create :authz_role}
+    let!(:bp) {create :authz_business_process}
+    let!(:ca) {create :authz_controller_action}
+    let!(:bphca) {create :authz_business_process_has_controller_action,
                    controller_action: ca, business_process: bp}
-    let!(:rhpb) {create :opinionated_pundit_role_has_business_process,
+    let!(:rhpb) {create :authz_role_has_business_process,
                   business_process: bp, role: r}
-    let!(:rg) {create :opinionated_pundit_role_grant, role: r, rolable: authorizable}
+    let!(:rg) {create :authz_role_grant, role: r, rolable: authorizable}
 
     it 'should have clearance for an assigned controller action' do
       clearance = authorizable.clear_for?(controller: ca.controller, action: ca.action)
@@ -31,8 +31,8 @@ RSpec.shared_examples "authorizable" do
   end
 
   describe '.register_in_authorization_admin' do
-    it 'should call OpinionatedPundit.register_authorizable_in_admin' do
-      expect(OpinionatedPundit).to receive(:register_authorizable_in_admin).with(described_class, :foo)
+    it 'should call Authz.register_authorizable_in_admin' do
+      expect(Authz).to receive(:register_authorizable_in_admin).with(described_class, :foo)
       described_class.register_in_authorization_admin(identifier: :foo)
     end
   end

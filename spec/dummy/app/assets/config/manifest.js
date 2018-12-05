@@ -1,4 +1,4 @@
 //= link_tree ../images
 //= link_directory ../javascripts .js
 //= link_directory ../stylesheets .css
-//= link opinionated_pundit_manifest.js
+//= link authz_manifest.js

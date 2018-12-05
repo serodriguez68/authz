@@ -40,9 +40,9 @@ end
 
 # Controller Actions
 # ==========================================================================
-OpinionatedPundit::ControllerAction.reachable_controller_actions.each do |controller, actions|
+Authz::ControllerAction.reachable_controller_actions.each do |controller, actions|
   actions.each do |action|
-    OpinionatedPundit::ControllerAction.create!(
+    Authz::ControllerAction.create!(
         controller: controller,
         action: action)
   end
@@ -55,13 +55,13 @@ processes_to_create = ["View", "Manage"]
 controllers_to_include.each do |controller|
   processes_to_create.each do |process|
     name = "#{process} #{controller}"
-    bp = OpinionatedPundit::BusinessProcess.create!(name: name, description: name)
+    bp = Authz::BusinessProcess.create!(name: name, description: name)
 
     if process == "View"
-      cas = OpinionatedPundit::ControllerAction.where(controller: controller,
+      cas = Authz::ControllerAction.where(controller: controller,
                                                       action: %w(index show))
     elsif process == "Manage"
-      cas = OpinionatedPundit::ControllerAction.where(controller: controller)
+      cas = Authz::ControllerAction.where(controller: controller)
     end
     bp.controller_actions << cas
   end
@@ -71,13 +71,13 @@ end
 # ==========================================================================
 roles_to_create = %w(general_director director special_agent agent auditor)
 roles_to_create.each do |role_name|
-  role = OpinionatedPundit::Role.create!(name: role_name, description: role_name)
+  role = Authz::Role.create!(name: role_name, description: role_name)
 
   # Mapping to business processes
   if role.name == 'auditor'
-    bps = OpinionatedPundit::BusinessProcess.where("name LIKE ?", "%view%")
+    bps = Authz::BusinessProcess.where("name LIKE ?", "%view%")
   else
-    bps = OpinionatedPundit::BusinessProcess.all
+    bps = Authz::BusinessProcess.all
   end
   role.business_processes << bps
 
