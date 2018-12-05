@@ -29,7 +29,7 @@ module Authz
         expected_result = { 'cities' => ['create', 'new'] } # Actions have order dependency
         result = described_class.reachable_controller_actions
         expect(result).to eq(expected_result)
-        # TODO: this is a horrible hack to force rails to reload the routes that were
+        # This is a horrible hack to force rails to reload the routes that were
         # overwritten at the beginning of this test
         Rails.application.reload_routes!
       end

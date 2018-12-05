@@ -7,7 +7,6 @@ module Authz
         allow(PermissionManager).to receive(:check_permission!).and_return(nil)
       end
 
-
       describe '#authorize' do
         it 'should call PermissionManager.check_permission!' do
           expect(PermissionManager).to receive(:check_permission!).with(current_user,

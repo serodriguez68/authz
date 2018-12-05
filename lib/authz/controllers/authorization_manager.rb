@@ -15,7 +15,6 @@ module Authz
       # TODO Error that will be raised if the authorized method is not provided a
       # scoping instance and the skip_scoping option is not used
       # class MissingScopingInstance < StandardError; end
-      # Errors ====================================================================
 
       # @public api
       # ===========================================================================
@@ -72,6 +71,7 @@ module Authz
       end
       # @public api ===============================================================
 
+      private
       # @return [Boolean] whether authorization has been performed, i.e. whether
       #                   one {#authorize} or {#skip_authorization} has been called
       def authorization_performed?

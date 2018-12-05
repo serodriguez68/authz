@@ -1,4 +1,3 @@
-# TODO: Test This
 module Authz
   module Controllers
     module PermissionManager
@@ -24,7 +23,6 @@ module Authz
           raise PermissionNotGranted, "#{user.model_name.singular} #{user.id} does not have permission for: #{controller_name}##{action_name}"
         end
       end
-
 
       private
 
