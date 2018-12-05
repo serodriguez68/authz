@@ -16,7 +16,6 @@ module Authz
           expect { described_class.check_permission!(current_user, 'foo', 'bar') }
             .to raise_error described_class::PermissionNotGranted
         end
-
       end
 
       describe '#authorized_path?' do
