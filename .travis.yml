@@ -6,7 +6,7 @@ rvm:
 bundler_args: --jobs=2
 
 script:
-  - bundle exec rake db:setup
+  - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rake spec
 
 cache: bundler

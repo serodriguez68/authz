@@ -12,19 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2018_11_30_053841) do
 
-  create_table "cities", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "clearances", force: :cascade do |t|
-    t.integer "level"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "authz_business_process_has_controller_actions", force: :cascade do |t|
     t.integer "authz_controller_action_id"
     t.integer "authz_business_process_id"
@@ -72,6 +59,19 @@ ActiveRecord::Schema.define(version: 2018_11_30_053841) do
     t.string "code"
     t.string "name"
     t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "clearances", force: :cascade do |t|
+    t.integer "level"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
