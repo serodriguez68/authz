@@ -1,4 +1,3 @@
-# TODO: Test This
 module Authz
   module Controllers
     module AuthorizationManager
@@ -15,7 +14,7 @@ module Authz
 
       # TODO Error that will be raised if the authorized method is not provided a
       # scoping instance and the skip_scoping option is not used
-      class MissingScopingInstance < StandardError; end
+      # class MissingScopingInstance < StandardError; end
       # Errors ====================================================================
 
       # @public api
@@ -56,7 +55,6 @@ module Authz
       def authz_user
         current_user
       end
-
 
       # Raises an error if authorization has not been performed.
       # `around_action` filter and transaction rollbacks changes in db

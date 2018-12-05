@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 module Authz
   RSpec.describe BusinessProcessHasControllerAction, type: :model do
 

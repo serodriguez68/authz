@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Authz::VERSION
   s.authors     = ["Sergio Rodriguez"]
   s.email       = ["se.rodriguez68@gmail.com"]
-  s.homepage    = "https://github.com/serodriguez68/opinionated-pundit"
-  s.summary     = "An opinionated and user configurable way of managing your authorization logic using pundit."
-  s.description = "An opinionated and user configurable way of managing your authorization logic using pundit."
+  s.homepage    = "https://github.com/serodriguez68/authz"
+  s.summary     = "An opinionated almost-turnkey solution for managing authorization"
+  s.description = "An opinionated almost-turnkey solution for managing authorization"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
