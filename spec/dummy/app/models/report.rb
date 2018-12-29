@@ -5,4 +5,7 @@ class Report < ApplicationRecord
 
   validates :title, presence: true
   validates :body, presence: true
+
+  include ScopableByCity
+  include ScopableByClearance
 end
