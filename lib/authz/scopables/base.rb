@@ -5,7 +5,7 @@ module Authz
       # Scopable::Base tracks all available Scopables
       # ===================================================================
       # Returns an array with the names of the modules in camelcase (string)
-      def self.get_scoping_modules_names
+      def self.get_scopables_names
         file_names_with_dir = Dir["#{Authz.scopables_directory}/*"]
         module_names = file_names_with_dir.map do |fnd|
           fnd.gsub("#{Authz.scopables_directory}/",'').split('.').first.camelcase
@@ -14,9 +14,24 @@ module Authz
       end
 
       # Returns an array of the scoping module instances
-      def self.get_scoping_modules
-        self.get_scoping_modules_names.map(&:constantize)
+      def self.get_scopables_modules
+        self.get_scopables_names.map(&:constantize)
       end
+
+      # Returns true if the given collection_or_class
+      # is scopable by the given scopable module
+      def self.scopable_by? collection_or_class, scopable
+        collection_or_class.respond_to?(scopable.association_method_name)
+      end
+
+      # Returns all the applicable scopable modules for
+      # the given collection_or_class
+      def self.get_applicable_scopables collection_or_class
+        get_scopables_modules.select do |scopable|
+          scopable_by?(collection_or_class, scopable)
+        end
+      end
+
 
       # Errors
       # ===========================================================================

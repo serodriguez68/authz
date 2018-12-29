@@ -2,18 +2,18 @@ module Authz
   module Scopables
     describe Base do
 
-      describe '.get_scoping_modules_names' do
+      describe '.get_scopables_names' do
         it 'should return the stringified name of all scoping modules' do
           file_name = 'scopable_by_test_city'
           src = "spec/support/scopables/#{file_name}.rb"
           dst = "#{Authz.scopables_directory}/#{file_name}.rb"
           FileUtils.copy_file(src, dst)
-          expect(described_class.get_scoping_modules_names).to include(file_name.camelize)
+          expect(described_class.get_scopables_names).to include(file_name.camelize)
           File.delete(dst)
         end
       end
 
-      describe '.get_scoping_modules' do
+      describe '.get_scopables_modules' do
         it 'should return the handle to all scoping modules' do
           file_name = 'scopable_by_test_city'
           src = "spec/support/scopables/#{file_name}.rb"
@@ -21,13 +21,29 @@ module Authz
           FileUtils.copy_file(src, dst)
 
           scoping_class = file_name.camelize
-          expect(described_class.get_scoping_modules).to include(scoping_class.constantize)
+          expect(described_class.get_scopables_modules).to include(scoping_class.constantize)
 
           File.delete(dst)
         end
       end
 
       context 'using ScopableByTestCity support file' do
+
+        describe '.scopable_by?' do
+          it 'should return true when class includes scopable' do
+            klass = self.class
+            class klass::ScopedClass < ApplicationRecord
+              include ScopableByTestCity
+            end
+            expect(described_class.scopable_by? klass::ScopedClass, ScopableByTestCity).to be true
+          end
+
+          it 'should return false when class does not include scopable' do
+            klass = self.class
+            class klass::UnscopedClass < ApplicationRecord; end
+            expect(described_class.scopable_by? klass::UnscopedClass, ScopableByTestCity).to be false
+          end
+        end
 
         describe 'inferred naming' do
           it 'should infer the scoping class name from the module name' do
@@ -67,6 +83,12 @@ module Authz
       end
 
       context 'using the dummys models and scopables' do
+
+        describe '.get_applicable_scopables' do
+          it 'should return the scopable modules included in the class' do
+            expect(described_class.get_applicable_scopables(Report)).to match_array([ScopableByCity, ScopableByClearance])
+          end
+        end
 
         describe '.apply_scopable_by_city' do
           context 'when the scoped class is equal to the scoping class' do
