@@ -27,6 +27,20 @@ module Authz
         end
       end
 
+      describe '.scopable_exists?' do
+        before(:each) do
+          allow(described_class).to receive(:get_scopables_names).and_return(['ScopableByTest'])
+        end
+
+        it 'should return true when given an existing scopable' do
+          expect(described_class.scopable_exists?('ScopableByTest')).to be(true)
+        end
+
+        it 'should return false when given an unexisting scopable' do
+          expect(described_class.scopable_exists?('Foo')).to be(false)
+        end
+      end
+
       context 'using ScopableByTestCity support file' do
 
         describe '.scopable_by?' do
@@ -59,6 +73,17 @@ module Authz
             expect(ScopableByTestCity.plural_association_name).to eq :test_cities
           end
         end
+
+        describe '.valid_keyword?' do
+          it 'should return true when given a valid keyword' do
+            expect(ScopableByTestCity.valid_keyword?('valid_keyword')).to be(true)
+          end
+
+          it 'should return false when given an invalid keyword' do
+            expect(ScopableByTestCity.valid_keyword?('foo')).to be(false)
+          end
+        end
+
         
         describe '.scopable_by_test_city_association_name' do
           it 'should automatically infer the association name to use' do

@@ -22,6 +22,9 @@ module Authz
     has_many :role_grants,
              class_name: 'Authz::RoleGrant',
              foreign_key: 'authz_role_id'
+    has_many :scoping_rules,
+             class_name: 'Authz::ScopingRule',
+             foreign_key: 'authz_role_id'
 
 
     private

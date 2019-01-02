@@ -2,7 +2,7 @@ module ScopableByCity
   extend Authz::Scopables::Base
 
   def self.available_keywords
-    City.all.pluck (:name) + 'All'
+    City.all.pluck(:name) + ['All']
   end
 
   def self.resolve_keyword(keyword, requester)

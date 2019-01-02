@@ -18,6 +18,15 @@ module Authz
         self.get_scopables_names.map(&:constantize)
       end
 
+      # Returns true if the given scopable name exists
+      # as a valid scopable
+      # @scopable_name: the string name of the scopable to
+      #                 test
+      # @return: true or false
+      def self.scopable_exists?(scopable_name)
+        get_scopables_names.include?(scopable_name)
+      end
+
       # Returns true if the given collection_or_class
       # is scopable by the given scopable module
       def self.scopable_by? collection_or_class, scopable
@@ -70,9 +79,10 @@ module Authz
         end
       end
 
-      # Infer Naming
+
       # Scopables that extend Scopable::Base get this behaviour
       # ===================================================================
+      # == Infer Naming
 
       # Returns the string name of the class used to scope
       def scoping_class_name
@@ -99,6 +109,14 @@ module Authz
       # Format: "scopable_by_#{scoping_class_name.underscore}_association_name"
       def association_method_name
         "scopable_by_#{scoping_class_name.underscore}_association_name"
+      end
+
+      # == Keywords
+
+      # Returns true if the given keyword is valid
+      # @param keyword: keyword being tested
+      def valid_keyword?(keyword)
+        available_keywords.include?(keyword)
       end
 
       # When Scopables::Base is exetended, run within the context of the

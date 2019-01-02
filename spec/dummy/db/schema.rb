@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_053841) do
+ActiveRecord::Schema.define(version: 2019_01_02_030242) do
 
   create_table "authz_business_process_has_controller_actions", force: :cascade do |t|
     t.integer "authz_controller_action_id"
@@ -61,6 +61,17 @@ ActiveRecord::Schema.define(version: 2018_11_30_053841) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "authz_scoping_rules", force: :cascade do |t|
+    t.string "scopable"
+    t.integer "authz_role_id", null: false
+    t.string "keyword"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authz_role_id"], name: "index_authz_scoping_rules_on_authz_role_id"
+    t.index ["keyword"], name: "index_authz_scoping_rules_on_keyword"
+    t.index ["scopable"], name: "index_authz_scoping_rules_on_scopable"
   end
 
   create_table "cities", force: :cascade do |t|
