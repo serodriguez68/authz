@@ -4,18 +4,19 @@ module Authz
 
       # Scopable::Base tracks all available Scopables
       # ===================================================================
+      @@scopables = [] # Contains a handle to each scopable
+      def self.register_scopable(scopable)
+        @@scopables << scopable unless @@scopables.include?(scopable)
+      end
+
       # Returns an array with the names of the modules in camelcase (string)
       def self.get_scopables_names
-        file_names_with_dir = Dir["#{Authz.scopables_directory}/*"]
-        module_names = file_names_with_dir.map do |fnd|
-          fnd.gsub("#{Authz.scopables_directory}/",'').split('.').first.camelcase
-        end
-        return module_names
+        @@scopables.map{ |s| s.name }
       end
 
       # Returns an array of the scoping module instances
       def self.get_scopables_modules
-        self.get_scopables_names.map(&:constantize)
+        @@scopables
       end
 
       # Returns true if the given scopable name exists
@@ -127,6 +128,7 @@ module Authz
         # scopable = scopable module that extended
 
         scopable.extend ActiveSupport::Concern
+        self.register_scopable(scopable)
 
         # Any class that extends a Scopable gets these class methods
         # ===================================================================

@@ -1,1 +1,0 @@
-Authz.scopables_directory =  "#{Rails.root.to_s}/app/scopables"

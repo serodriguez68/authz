@@ -2,28 +2,34 @@ module Authz
   module Scopables
     describe Base do
 
+      describe '.register_scopable' do
+        context "when a module extends #{described_class}" do
+          it 'should get registered as a scopable' do
+            expect(described_class).to receive(:register_scopable)
+            module (self.class)::ScopableByTest
+              extend Authz::Scopables::Base
+            end
+          end
+        end
+      end
+
       describe '.get_scopables_names' do
         it 'should return the stringified name of all scoping modules' do
-          file_name = 'scopable_by_test_city'
-          src = "spec/support/scopables/#{file_name}.rb"
-          dst = "#{Authz.scopables_directory}/#{file_name}.rb"
-          FileUtils.copy_file(src, dst)
-          expect(described_class.get_scopables_names).to include(file_name.camelize)
-          File.delete(dst)
+          module (self.class)::ScopableByTest
+            extend Authz::Scopables::Base
+          end
+          testing_module = (self.class)::ScopableByTest
+          expect(described_class.get_scopables_names).to include(testing_module.name)
         end
       end
 
       describe '.get_scopables_modules' do
         it 'should return the handle to all scoping modules' do
-          file_name = 'scopable_by_test_city'
-          src = "spec/support/scopables/#{file_name}.rb"
-          dst = "#{Authz.scopables_directory}/#{file_name}.rb"
-          FileUtils.copy_file(src, dst)
-
-          scoping_class = file_name.camelize
-          expect(described_class.get_scopables_modules).to include(scoping_class.constantize)
-
-          File.delete(dst)
+          module (self.class)::ScopableByTest
+            extend Authz::Scopables::Base
+          end
+          testing_module = (self.class)::ScopableByTest
+          expect(described_class.get_scopables_modules).to include(testing_module)
         end
       end
 
@@ -83,7 +89,6 @@ module Authz
             expect(ScopableByTestCity.valid_keyword?('foo')).to be(false)
           end
         end
-
         
         describe '.scopable_by_test_city_association_name' do
           it 'should automatically infer the association name to use' do

@@ -25,10 +25,6 @@ module Authz
     end
   end
 
-  mattr_accessor :scopables_directory
-  # TODO: find a way to declare a default value pointing to app/scopables on host app
-  # @@scopables_directory = "#{Rails.root.to_s}/app/scopables"
-
   # Configures the authorizable class given as param in the authorization admin
   # using the identifier as the attribute to identify instances inside the admin
   # (e.g.  Users will be identified by :email)
