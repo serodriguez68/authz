@@ -12,26 +12,40 @@ module Authz
       # `authorize` or `skip_authorization` methods.
       class AuthorizationNotPerformedError < StandardError; end
 
-      # TODO Error that will be raised if the authorized method is not provided a
+      # Error that will be raised if the authorized method is not provided a
       # scoping instance and the skip_scoping option is not used
-      # class MissingScopingInstance < StandardError; end
+      class MissingScopingInstance < StandardError
+        attr_reader :controller, :action
+        def initialize(options = {})
+          @controller = options.fetch :controller
+          @action = options.fetch :action
+          message = "#{controller}##{action}. Provide an instance to " \
+                    'perform authorization or use the skip_scoping option'
+          super(message)
+        end
+      end
 
       # @public api
       # ===========================================================================
       protected
 
-      # 1. TODO Check if the user is correctly skipping scoping
+      # 1. Check if the user is correctly skipping scoping
       # 2. Asks PermissionManager to check for user permission
-      # 3. TODO: Asks ScopingManager to check for user scoping access
+      # 3. Asks ScopingManager to verify the user's access to the instance
       # Managers should handle their own exceptions if a problem is found
       #
-      # @param [scoping_instance: Object] the instance that will determine access in the ScopingManager
+      # @param [using: Object] the instance that will determine
+      #        access in the ScopingManager
       # @param [skip_scoping: true] to explicitly skip scoping
       # @return [void]
-      def authorize(scoping_instance: nil, skip_scoping: false)
+      def authorize(using: nil, skip_scoping: false)
         # 1. Check if the user is correctly skipping scoping
-        # skip_scoping = skip_scoping == true
-        # raise MissingScopingInstance if scoping_instance.blank? && !skip_scoping
+        skip_scoping = skip_scoping == true
+        if using.blank? && !skip_scoping
+          raise MissingScopingInstance,
+                controller: params[:controller],
+                action: params[:action]
+        end
 
         @_authorization_performed = true
         # 2. Check if user has permission to this controller action
@@ -40,7 +54,7 @@ module Authz
                                             params[:action])
 
         # 3. Check if user has access to instance
-        # ScopingManager.check_user_access_to_instance(current_user, scoping_instance) unless skip_scoping
+        # ScopingManager.check_access_to_instance!(authz_user, using) unless skip_scoping
       end
 
       # Allow this action not to perform authorization.

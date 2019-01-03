@@ -8,15 +8,23 @@ module Authz
       end
 
       describe '#authorize' do
+        it 'should raise an error when no scoping instance is provided' do
+          expect { controller.authorize }.to raise_error described_class::MissingScopingInstance
+        end
+
+        it 'should not raise the MissingScopingInstance error when the skip_scoping option is used' do
+          expect { controller.authorize(skip_scoping: true) }.not_to raise_error
+        end
+        
         it 'should call PermissionManager.check_permission!' do
           expect(PermissionManager).to receive(:check_permission!).with(current_user,
                                                                         controller.params[:controller],
                                                                         controller.params[:action])
-          controller.authorize
+          controller.authorize skip_scoping: true
         end
 
         it 'should disable raising the authorization not performed error' do
-          controller.authorize
+          controller.authorize skip_scoping: true
           expect { controller.verify_authorized { nil } }.not_to raise_error
         end
       end
