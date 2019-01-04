@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :city, class: 'City' do
-    name { Faker::Address.city }
+    sequence(:name) { |n| "#{Faker::Address.city} #{n}" }
   end
 end

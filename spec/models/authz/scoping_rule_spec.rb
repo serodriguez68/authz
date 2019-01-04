@@ -46,6 +46,7 @@ module Authz
 
     describe 'associations' do
       it { should belong_to(:role) }
+      it { should have_many(:users) }
     end
 
   end

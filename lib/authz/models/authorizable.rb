@@ -12,6 +12,7 @@ module Authz
         has_many :roles, through: :role_grants
         has_many :business_processes, through: :roles
         has_many :controller_actions, through: :business_processes
+        has_many :scoping_rules, through: :roles
 
 
         # Associations for all other classes referencing the includer
@@ -21,7 +22,8 @@ module Authz
 
         classes_to_extend = [Authz::Role,
                              Authz::BusinessProcess,
-                             Authz::ControllerAction]
+                             Authz::ControllerAction,
+                             Authz::ScopingRule]
 
         # E.g. business_process has_many :users, through: role_grants, source_type: user
         # business_procces.pirates will find all pirates that have been granted that
@@ -35,14 +37,6 @@ module Authz
           end
         end
 
-      end
-
-      # Mixed instance methods
-      # ==========================================================================
-      # Receives a stringified controller name and action name and verifies if
-      # the caller has access to that endpoint
-      def clear_for? controller:, action:
-        controller_actions.exists?(controller: controller, action: action)
       end
 
       # Configure Includer for Authorization Admin

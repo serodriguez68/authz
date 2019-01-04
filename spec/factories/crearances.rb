@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :clearance, class: 'Clearance' do
     level { 1 }
-    name { Faker::Color.color_name }
+    sequence(:name) { |n| "#{Faker::Color.color_name} #{n}" }
   end
 end

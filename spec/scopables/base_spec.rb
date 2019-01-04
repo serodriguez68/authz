@@ -47,6 +47,25 @@ module Authz
         end
       end
 
+      describe '.normalize_if_special_keyword' do
+        before(:each) do
+          module (self.class)::ScopableByTest
+            extend Authz::Scopables::Base
+          end
+          @scopable = (self.class)::ScopableByTest
+        end
+        it 'should normalize the special keyword "all"' do
+          expect(@scopable.normalize_if_special_keyword('all')).to eq :all
+          expect(@scopable.normalize_if_special_keyword('AlL')).to eq :all
+          expect(@scopable.normalize_if_special_keyword(:All)).to eq :all
+          expect(@scopable.normalize_if_special_keyword(:all)).to eq :all
+        end
+        it 'should leave any non special keywords untouched' do
+          expect(@scopable.normalize_if_special_keyword('other')).to eq 'other'
+          expect(@scopable.normalize_if_special_keyword(:other)).to eq :other
+        end
+      end
+
       context 'using ScopableByTestCity support file' do
 
         describe '.scopable_by?' do
@@ -116,7 +135,25 @@ module Authz
 
         describe '.get_applicable_scopables' do
           it 'should return the scopable modules included in the class' do
-            expect(described_class.get_applicable_scopables(Report)).to match_array([ScopableByCity, ScopableByClearance])
+            expect(
+              described_class.get_applicable_scopables(Report)
+            ).to match_array([ScopableByCity, ScopableByClearance])
+          end
+        end
+
+        describe 'get_applicable_scopables!' do
+          it 'should raise an error when no applicable scopables are found' do
+            class (self.class)::Test; end
+            klass = (self.class)::Test
+            expect{
+              described_class.get_applicable_scopables!(klass)
+            }.to raise_error(described_class::NoApplicableScopables)
+          end
+
+          it 'should return the applicable scopables for a scoped class' do
+            expect(
+              described_class.get_applicable_scopables!(Report)
+            ).to match_array([ScopableByCity, ScopableByClearance])
           end
         end
 
@@ -187,9 +224,130 @@ module Authz
             ).to match_array(expected)
 
           end
-
         end
 
+        context 'for doing resolution' do
+
+          describe '.associated_scoping_instances_ids' do
+            context 'when the instance is associated with one instance of the scoping class' do
+              it 'should correctly return the id of the associated scoping class instance' do
+                in_city = create(:city, name: 'in_city')
+                out_city = create(:city, name: 'out_city')
+                in_clearance = create(:clearance, name: 'in_clearance', level: 1)
+                out_clearance = create(:clearance, name: 'out_clearance', level: 2)
+
+                report = create(:report, city: in_city, clearance: in_clearance)
+
+                expect(ScopableByCity.associated_scoping_instances_ids(report)).to match_array([in_city.id])
+                expect(ScopableByClearance.associated_scoping_instances_ids(report)).to match_array([in_clearance.id])
+              end
+            end
+
+            context 'when the instance is associated with many instances of the scoping class' do
+              it 'should correctly return the ids of the associated scoping class instances' do
+                in_city1 = create :city
+                in_city2 = create :city
+                out_city = create :city
+                ann = create :announcement
+                ann.cities << [in_city1, in_city2]
+
+                exp_arr = [in_city1, in_city2].map(&:id)
+                expect(ScopableByCity.associated_scoping_instances_ids(ann)).to match_array(exp_arr)
+              end
+            end
+
+            context 'when the class of the instance has a misconfigured association for the scopable' do
+              it 'should raise an error warning the user about the misconfiguration' do
+                report = create(:report)
+                scoped_class = report.class
+                assoc_method = scoped_class.send(ScopableByCity.association_method_name)
+                allow(report).to receive(assoc_method).and_return(nil)
+                expect {
+                  ScopableByCity.associated_scoping_instances_ids(report)
+                }.to raise_error(described_class::MisconfiguredAssociation)
+              end
+            end
+          end
+
+          describe '.within_scope_of_keyword?' do
+            context 'when the instance is associated with one instance of the scoping class' do
+
+              before(:each) do
+                @in_city  = create(:city, name: 'in_city')
+                @out_city = create(:city, name: 'out_city')
+                @report   = create(:report, city: @in_city)
+              end
+
+              it 'should return true for instances within scope of the keyword' do
+                allow(ScopableByCity).to(
+                  receive(:resolve_keyword).and_return([@in_city.id])
+                )
+
+                expect(
+                  ScopableByCity.within_scope_of_keyword?(@report,
+                                                          'foo',
+                                                          nil)
+                ).to eq true
+              end
+
+              it 'should return false for instances outside of the scope of the keyword' do
+                allow(ScopableByCity).to(
+                  receive(:resolve_keyword).and_return([@out_city.id])
+                )
+
+                expect(
+                  ScopableByCity.within_scope_of_keyword?(@report,
+                                                          'foo',
+                                                          nil)
+                ).to eq false
+              end
+            end
+
+            context 'when the instance is associated with many instances of the scoping class' do
+              it 'should return true when there is at least one scoping ' \
+                  'instance in common between the keyword and the tested ' \
+                  'instance' do
+                city1 = create :city
+                city2 = create :city
+                city3 = create :city
+                ann = create :announcement
+                ann.cities << [city1, city2]
+
+                allow(ScopableByCity).to(
+                  receive(:resolve_keyword).and_return([city2.id, city3.id])
+                )
+
+                expect(
+                  ScopableByCity.within_scope_of_keyword?(ann,
+                                                          'foo',
+                                                          nil)
+                ).to eq true
+              end
+
+              it 'should return false when there is no ' \
+                  'instance in common between the keyword and the tested ' \
+                  'instance' do
+                city1 = create :city
+                city2 = create :city
+                city3 = create :city
+                city4 = create :city
+                ann = create :announcement
+                ann.cities << [city1, city2]
+
+                allow(ScopableByCity).to(
+                  receive(:resolve_keyword).and_return([city3.id, city4.id])
+                )
+
+                expect(
+                  ScopableByCity.within_scope_of_keyword?(ann,
+                                                          'foo',
+                                                          nil)
+                ).to eq false
+              end
+            end
+          end
+
+        end
       end
     end
   end

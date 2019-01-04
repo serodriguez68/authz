@@ -26,7 +26,6 @@ module Authz
              class_name: 'Authz::ScopingRule',
              foreign_key: 'authz_role_id'
 
-
     private
 
     def extract_code_from_name

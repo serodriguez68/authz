@@ -25,7 +25,7 @@ module Authz
       #                 test
       # @return: true or false
       def self.scopable_exists?(scopable_name)
-        get_scopables_names.include?(scopable_name)
+        get_scopables_names.include?(scopable_name.to_s)
       end
 
       # Returns true if the given collection_or_class
@@ -40,6 +40,20 @@ module Authz
         get_scopables_modules.select do |scopable|
           scopable_by?(collection_or_class, scopable)
         end
+      end
+
+      # Returns all the applicable scopable modules for
+      # the given collection_or_class and raises an
+      # error if none are found
+      def self.get_applicable_scopables! collection_or_class
+        app_scopables = get_applicable_scopables(collection_or_class)
+        return app_scopables if app_scopables.any?
+        raise NoApplicableScopables, scoped_class: collection_or_class
+      end
+
+      # Returns an array with the special keywords
+      def self.special_keywords
+        [:all]
       end
 
 
@@ -79,6 +93,42 @@ module Authz
           super(message)
         end
       end
+
+      # Error that will be raised if the association of a model being scoped
+      # does not return the expected type of objects
+      class MisconfiguredAssociation < StandardError
+        attr_reader :scoped_class, :scopable, :association_method
+
+        def initialize(options = {})
+          @scoped_class  = options.fetch(:scoped_class)
+          @scopable = options.fetch :scopable
+          @association_method = options.fetch :association_method
+          message = "#{scoped_class} has a misconfigured association " \
+                     "for #{scopable}. " \
+                     "Make sure that #{association_method} " \
+                     'returns either an instance of class' \
+                     "#{scopable.scoping_class_name} " \
+                     'or a collection that responds to #pluck(:id).'
+          super(message)
+        end
+      end
+
+      class NoApplicableScopables < StandardError
+        attr_reader :scoped_class
+
+        def initialize(options = {})
+          @scoped_class  = options.fetch(:scoped_class)
+          message = "#{scoped_class} has no applicable scopables. " \
+                     'Make sure you include the scopables modules ' \
+                     'inside the class definition.'
+          super(message)
+        end
+      end
+
+      # TODO: Add an error UnresolvableKeyword when a random given keyword
+      # is given and cannot be resolved (this may require adding a method)
+      # safe_resolve_keyword that internally calls resolve_keyword and
+      # inspects it's return value to check that it is a valid return value
 
 
       # Scopables that extend Scopable::Base get this behaviour
@@ -120,7 +170,56 @@ module Authz
         available_keywords.include?(keyword)
       end
 
-      # When Scopables::Base is exetended, run within the context of the
+      # Normalizes the keyword if it is a
+      # special keyword
+      def normalize_if_special_keyword(keyword)
+        norm = keyword.downcase.to_sym
+        Authz::Scopables::Base.special_keywords.include?(norm) ? norm : keyword
+      end
+
+      # == Resolution
+      # Returns true if the given instance_to_check is within the
+      # scoping privileges of the given keyword, optionally passing
+      # the requester to aide the resolution of the keyword.
+      def within_scope_of_keyword?(instance_to_check, keyword, requester)
+        keyword = normalize_if_special_keyword(keyword)
+        # Shortcut treatment for special keywords
+        return true if keyword == :all
+
+        instance_scope_ids = associated_scoping_instances_ids(instance_to_check)
+        role_scope_ids = resolve_keyword(keyword, requester)
+        # Resolution by intersection
+        (instance_scope_ids & role_scope_ids).any?
+      end
+
+      # Receives an instance of any class that is scopable
+      # by this scopable and returns an array of ids of
+      # the associated scoping instances.
+      #
+      # For example:
+      # 1. Receives a report and returns an array with the
+      # the id of the city associated with the report [32]
+      # 2. Receives a product and returns an array with the
+      # ids of the cites in which it is available [1,2,3]
+      def associated_scoping_instances_ids(instance_to_check)
+        scoped_class = instance_to_check.class
+        assoc_method = scoped_class.send(association_method_name)
+        instance_scope = instance_to_check.send(assoc_method)
+
+        if instance_scope.class == scoping_class
+          instance_scope_ids = [instance_scope.id]
+        elsif instance_scope.respond_to? 'pluck'
+          instance_scope_ids = instance_scope.pluck(:id)
+        else
+          raise MisconfiguredAssociation,
+                scoped_class: scoped_class,
+                scopable: self,
+                association_method: assoc_method
+        end
+        instance_scope_ids
+      end
+
+      # When Scopables::Base is extended, run within the context of the
       # extending scopable
       # ===================================================================
       def self.extended(scopable)
@@ -177,8 +276,9 @@ module Authz
           # Applies the scopable keyword on the class
           # @return a collection of the scoped class record after applying the scope
           define_method "apply_#{scopable.to_s.underscore}" do |keyword, requester|
-            # Special treatment to keyword 'all'
-            return self.all if keyword.downcase.to_sym == :all
+            keyword = scopable.normalize_if_special_keyword(keyword)
+            # Treatment for special keywords
+            return self.all if keyword == :all
 
             scoped_ids = scopable.resolve_keyword(keyword, requester)
 
