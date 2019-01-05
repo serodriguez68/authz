@@ -43,7 +43,8 @@ RailsAdmin.config do |config|
   config.main_app_name = ["Authorization", "Admin"]
   config.included_models = ['Authz::ControllerAction',
                             'Authz::BusinessProcess',
-                            'Authz::Role']
+                            'Authz::Role',
+                            'Authz::ScopingRule']
 
   config.model 'Authz::ControllerAction' do
     object_label_method { :to_s }
@@ -55,6 +56,11 @@ RailsAdmin.config do |config|
   end
 
   config.model 'Authz::Role' do
+    list { exclude_fields :created_at, :updated_at }
+  end
+
+  config.model 'Authz::ScopingRule' do
+    object_label_method { :to_s }
     list { exclude_fields :created_at, :updated_at }
   end
 

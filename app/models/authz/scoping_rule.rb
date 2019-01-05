@@ -17,6 +17,10 @@ module Authz
 
     scope :for_scopables, ->(scopables) { where(scopable: scopables.map(&:to_s)) }
 
+    def to_s
+      "#{scopable}: #{keyword}##{id}"
+    end
+
     private
 
     def scopable_exists
