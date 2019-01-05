@@ -24,21 +24,6 @@ module Authz
         end
       end
 
-      describe '#authorized_path?' do
-        let(:controller) { TestsController.new(current_user, 'new') }
-
-        it 'should call user.clear_for? with the appropriate params given the path' do
-          # Setup a route that is resolved by the TestsController
-          Rails.application.routes.draw do
-            get 'test/new', controller: 'tests', action: 'new'
-          end
-          expect(current_user).to receive(:clear_for?)
-            .with(controller: 'tests', action: 'new')
-          controller.authorized_path?('test/new', method: :get)
-          Rails.application.reload_routes!
-        end
-
-      end
     end
   end
 end

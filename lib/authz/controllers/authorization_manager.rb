@@ -151,6 +151,32 @@ module Authz
         !!@_authorization_performed
       end
 
+      # Returns true if the user has permission for the path
+      # and :using instance given as arguments
+      #
+      # @param path: path or url that will be checked
+      # @param method: of the path or url
+      # @param using: instance that will be used to determine authorization
+      # @param skip_scoping: option to skip scoping validation
+      # @return [Boolean]
+      def authorized_path?(path, method: :get, using: nil, skip_scoping: false)
+        recognized_ca = Rails.application.routes.recognize_path path,
+                                                                method: method
+        controller_name = recognized_ca[:controller]
+        action_name = recognized_ca[:action]
+        authorized?(controller: controller_name,
+                    action: action_name,
+                    using: using,
+                    skip_scoping: skip_scoping)
+      end
+
+      # TODO: consider if it is worth creating an authorized_link_to helper that checks for authorization and renders
+      # a link if needed. Check link_to_if  (maybe create it in another file by extending the Application Helper)
+
+      included do |includer|
+        includer.helper_method :authorized_path?
+      end
+
     end
   end
 end

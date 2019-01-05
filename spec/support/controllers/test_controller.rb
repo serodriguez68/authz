@@ -1,7 +1,7 @@
 class TestsController < ApplicationController
   include Authz::Controllers::AuthorizationManager
   public(*Authz::Controllers::AuthorizationManager.protected_instance_methods)
-  public(*Authz::Controllers::PermissionManager.private_instance_methods)
+  public(*Authz::Controllers::AuthorizationManager.private_instance_methods)
 
   attr_reader :current_user, :params
 
