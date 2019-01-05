@@ -3,6 +3,7 @@ require 'authz/models/authorizable'
 require 'authz/controllers/permission_manager'
 require 'authz/controllers/authorization_manager'
 require 'rails_admin'
+require 'slim-rails'
 
 module Authz
 
@@ -52,4 +53,3 @@ module Authz
   end
 
 end
-

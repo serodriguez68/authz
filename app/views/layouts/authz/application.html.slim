@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    title = meta_title
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    "authz/application", media: "all"
+    = javascript_include_tag "authz/application"
+  body
+    = yield
