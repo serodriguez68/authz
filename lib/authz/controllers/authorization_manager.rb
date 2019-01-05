@@ -100,6 +100,7 @@ module Authz
         usr.roles.each do |role|
           # a. Check authorization on controller action
           auth_on_action = PermissionManager.has_permission?(role, controller, action)
+          next unless auth_on_action
 
           # b. Check authorization on scoping privileges
           auth_on_scope = skip_scoping || ScopingManager.has_access_to_instance?(role, using, usr)

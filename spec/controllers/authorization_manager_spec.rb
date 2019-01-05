@@ -43,12 +43,12 @@ module Authz
             expect(PermissionManager).to(
               receive(:has_permission?).with(@role1, con, act)
                 .once
-                .and_return(false)
+                .and_return(true)
             )
             
             expect(PermissionManager).to(
               receive(:has_permission?).with(@role2, con, act)
-                .once.and_return(false)
+                .once.and_return(true)
             )
             
             expect(ScopingManager).to(
@@ -67,6 +67,30 @@ module Authz
                 .and_return(false)
             )
             
+            expect(
+              controller.authorized?(controller: con, action: act, using: @report)
+            ).to be false
+          end
+
+          it 'should skip checking for scoping privileges when the role has no permission' do
+            con = 'controller'
+            act = 'action'
+
+            expect(PermissionManager).to(
+              receive(:has_permission?).with(@role1, con, act)
+                .once
+                .and_return(false)
+            )
+
+            expect(PermissionManager).to(
+              receive(:has_permission?).with(@role2, con, act)
+                .once.and_return(false)
+            )
+
+            expect(ScopingManager).not_to(receive(:has_access_to_instance?))
+
+            expect(ScopingManager).not_to(receive(:has_access_to_instance?))
+
             expect(
               controller.authorized?(controller: con, action: act, using: @report)
             ).to be false
