@@ -85,3 +85,17 @@ roles_to_create.each do |role_name|
   eval(role.name).roles << role
 end
 
+
+# Scoping Rules
+# ==========================================================================
+r = Authz::Role.find_by(name: 'general_director')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByCity', keyword: 'All')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: 'All')
+
+r = Authz::Role.find_by(name: 'auditor')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByCity', keyword: 'All')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: 'All')
+
+r = Authz::Role.find_by(name: 'agent')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByCity', keyword: sf.name)
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: secret.name)
