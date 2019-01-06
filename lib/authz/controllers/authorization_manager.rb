@@ -3,8 +3,6 @@ module Authz
     module AuthorizationManager
 
       extend ActiveSupport::Concern
-      include Authz::Controllers::PermissionManager
-      include Authz::Controllers::ScopingManager
 
       # Errors
       # ===========================================================================
@@ -141,6 +139,16 @@ module Authz
                                                   action: self.action_name
           end
         end
+      end
+
+      # Find authz_user and forward to apply scoping rules
+      #
+      # @param on: collection or class on top of which
+      #            the user's scoping rules will be applied
+      # @return [Collection] resulting collection from applying all
+      #                      user's roles scoping rules
+      def apply_authz_scopes(on:)
+        ScopingManager.apply_scopes_for_user(on, authz_user)
       end
       # @public api ===============================================================
 

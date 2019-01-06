@@ -1,9 +1,6 @@
 module Authz
   module Controllers
     module ScopingManager
-      extend ActiveSupport::Concern
-
-      # Errors =================================================================
 
       # Determines if the given role has access to the given instance
       # considering all the applicable scopables and the role's
@@ -28,49 +25,52 @@ module Authz
         return true
       end
 
-      # Applies the applicable user scoping rules to a given collection or class
-      # Fails safely if a user does not have all scoping rules needed
+      # Applies the scopables of the given user's roles to the
+      # given collection or class.
+      # If the user does not contain roles, it returns an empty
+      # collection.
       #
-      # @param user [User] user used to retrieve the scoping rules
-      # @param collection_or_class [Collection, Class] collection or class on
-      #        top of which the scoping rules will be applied
-      # @raise [UserScopingRuleMissing] if user is missing the definition of
-      #        scoping rule that applies
-      # @return [Collection] resulting collection after applying
-      #         all scoping rules
-      def self.apply_user_scopes_for_user(user, collection_or_class)
-        # 1. Find all scopables that are applicable to collection_or_class
-        applicable_scoping_modules = Authz::Scopables::Base.get_applicable_scopables! collection_or_class
-        stringified_applicable_scoping_modules = applicable_scoping_modules.map(&:to_s)
+      # @param collection_or_class: the starting collection on top
+      #                             of which the scoping is going to
+      #                             be applied
+      # @param authz_user: the user from which the roles are going to
+      #                    be used
+      def self.apply_scopes_for_user(collection_or_class, authz_user)
+        usr = authz_user
 
-        # TODO: YOU ARE HERE: you where about to start plugging in how a user has some defined
-        # scoping rules.
-        # 2. Get user scoping rules based on scoping modules of 1.
-        # load is used to skip lazy loading as it creates one additional quiery (counting query + user_scoping_rules query)
-        # user_scoping_rules = user.user_scoping_rules.scoping_module_name_is(stringified_applicable_scoping_modules).includes(:profile_scoping_rule).load
-
-        # Uncomment this to test what happens when a user does not have all
-        # required user scoping rules
-        # applicable_scoping_modules.push('SomeOtherScopingModule')
-        # stringified_applicable_scoping_modules.push('SomeOtherScopingModule')
-
-        # 3. Check that current user has definition for all scopables in (1)
-        if user_scoping_rules.size != applicable_scoping_modules.size
-          # 3.1 The user does not have all required user_scoping_rules
-          missing_user_scoping_rules = stringified_applicable_scoping_modules - user_scoping_rules.pluck(:scoping_module_name)
-          raise UserScopingRuleMissing, "#{missing_user_scoping_rules.join(', ')} not defined for user"
-
-        else
-          # 3.2 Apply user_scoping_rules to collection
-          collection_to_return = collection_or_class.all
-          table_name = collection_to_return.table_name
-
-          user_scoping_rules.each do |usr|
-            table_applicable_scoping_value = usr.applicable_scoping_value_for table_name: table_name
-            collection_to_return = collection_to_return.send(usr.scoping_method_name, table_applicable_scoping_value, user)
-          end
-          return collection_to_return
+        base = collection_or_class.all
+        scoped = base.none
+        usr.roles.each do |role|
+          scoped = scoped.or(apply_role_scopes(role, base, usr))
         end
+        scoped
+      end
+
+      # Applies all the applicable scopables to the given collection or class
+      # using the scoping rules from the given role.
+      #
+      # @param role: the role used to find the scoping rules to apply
+      # @param collection_or_class: the starting collection on top
+      #                             of which the scoping is going to
+      #                             be applied
+      # @param authz_user: the requesting user (injected dependency)
+      def self.apply_role_scopes(role, collection_or_class, authz_user)
+        applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! collection_or_class
+        scoping_rules = role.scoping_rules
+                            .for_scopables(applicable_scopables).load
+
+        scoped = collection_or_class.all
+        applicable_scopables.each do |as|
+          # as = ScopableByCity
+
+          kw = scoping_rules.find_by!(scopable: as.to_s).keyword
+          # kw = 'New York'
+
+          scoped = scoped.send(as.apply_scopable_method_name, kw, authz_user)
+          # scoped.apply_scopable_by_city('New York', User#123)
+        end
+
+        scoped
       end
 
     end

@@ -180,6 +180,16 @@ module Authz
         end
       end
 
+      describe '#apply_authz_scopes' do
+        it 'should call ScopingManager.apply_scopes_for_user with the correct arguments' do
+          on = Report.last(5)
+          expect(ScopingManager).to(
+            receive(:apply_scopes_for_user).with(on, current_user)
+          )
+          controller.apply_authz_scopes(on: on)
+        end
+      end
+
     end
   end
 end

@@ -97,6 +97,18 @@ module Authz
             expect(ScopableByTestCity.singular_association_name).to eq :test_city
             expect(ScopableByTestCity.plural_association_name).to eq :test_cities
           end
+
+          it 'should return the association method name in the correct format' do
+            expect(ScopableByTestCity.association_method_name).to(
+              eq 'scopable_by_test_city_association_name'
+            )
+          end
+
+          it 'should return the "apply_scopable_method_name" in the correct format' do
+            expect(ScopableByTestCity.apply_scopable_method_name).to(
+              eq 'apply_scopable_by_test_city'
+            )
+          end
         end
 
         describe '.valid_keyword?' do
