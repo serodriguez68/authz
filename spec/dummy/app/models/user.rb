@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   include Authz::Models::Authorizable
   register_in_authorization_admin identifier: :name
+  authz_label_method :name
 
   def name
     "#{id} - #{email}"
