@@ -137,7 +137,7 @@ module Authz
 
       # Returns the string name of the class used to scope
       def scoping_class_name
-        self.to_s.remove("ScopableBy")
+        self.to_s.remove('ScopableBy')
       end
 
       # Returns the Active Record Class of the Model used to scope
@@ -157,9 +157,15 @@ module Authz
 
       # Returns the name of the method used to get the name of the association
       # for this scopable.
-      # Format: "scopable_by_#{scoping_class_name.underscore}_association_name"
+      # Eg: "scopable_by_city_association_name"
       def association_method_name
         "scopable_by_#{scoping_class_name.underscore}_association_name"
+      end
+
+      # Returns the mame of the method used to apply the scopable
+      # keyword on the scoped class
+      def apply_scopable_method_name
+        "apply_#{to_s.underscore}"
       end
 
       # == Keywords
@@ -272,10 +278,9 @@ module Authz
             define_singleton_method(scopable.association_method_name) { assoc_name.to_sym }
           end
 
-
           # Applies the scopable keyword on the class
           # @return a collection of the scoped class record after applying the scope
-          define_method "apply_#{scopable.to_s.underscore}" do |keyword, requester|
+          define_method scopable.apply_scopable_method_name do |keyword, requester|
             keyword = scopable.normalize_if_special_keyword(keyword)
             # Treatment for special keywords
             return self.all if keyword == :all

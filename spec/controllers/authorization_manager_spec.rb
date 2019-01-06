@@ -96,6 +96,19 @@ module Authz
             ).to be false
           end
         end
+
+        context 'when the user has no roles' do
+          it 'should deny access by default' do
+            no_role_user = create(:user)
+            controller = TestsController.new(no_role_user, 'an_action')
+            expect(
+              controller.authorized?(controller: 'foo',
+                                     action: 'bar',
+                                     using: @report)
+            ).to be false
+          end
+
+        end
       end
       
       describe '#authorize' do
@@ -111,6 +124,12 @@ module Authz
           expect {
             controller.authorize skip_scoping: true
           }.to raise_error described_class::NotAuthorized
+        end
+
+        it 'should determine access by calling the #authorized? method' do
+          expect(controller).to receive(:authorized?).and_return true
+          controller.authorize skip_scoping: true
+
         end
       end
 
