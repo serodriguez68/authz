@@ -13,11 +13,12 @@ module Authz
         has_many :business_processes, through: :roles
         has_many :controller_actions, through: :business_processes
 
-
         # Associations for all other classes referencing the includer
         # ========================================================================
         includer_class_name = includer.model_name.to_s
-        includer_pluralized_symbol = includer_class_name.underscore.pluralize.to_sym
+        includer_pluralized_symbol = includer_class_name
+                                     .parameterize(separator: '_')
+                                     .pluralize.to_sym
 
         classes_to_extend = [Authz::Role,
                              Authz::BusinessProcess,
@@ -45,6 +46,20 @@ module Authz
         controller_actions.exists?(controller: controller, action: action)
       end
 
+      # Label used to label each authorizable instance in the context
+      # of Authz
+      def authz_label
+        if respond_to? :name
+          name
+        elsif respond_to? :email
+          email
+        elsif respond_to? :id
+          "#{self.to_s}##{id}"
+        else
+          to_s
+        end
+      end
+
       # Configure Includer for Authorization Admin
       # ==========================================================================
       class_methods do
@@ -57,6 +72,15 @@ module Authz
         def register_in_authorization_admin(identifier:)
           Authz.register_authorizable_in_admin(self, identifier)
         end
+
+        # Developers can use this to specify which method form the includer
+        # should be used inside authz to label each instance
+        def authz_label_method method_name
+          define_method 'authz_label' do
+            self.send(method_name)
+          end
+        end
+
       end
 
     end
