@@ -1,0 +1,10 @@
+aside.menu
+  ul.menu-list
+    li = link_to 'Home', root_path, class: "#{'is-active' if current_page? root_path}"
+  p.menu-label Authorization
+  ul.menu-list
+    li = link_to 'Roles', roles_path, class: "#{'is-active' if current_page? roles_path}"
+    li = link_to 'Business Processes', business_processes_path, class: "#{'is-active' if current_page? business_processes_path}"
+    li = link_to 'Controller Actions', controller_actions_path, class: "#{'is-active' if current_page? controller_actions_path}"
+  p.menu-label Authorizables
+  p.menu-label Scoping

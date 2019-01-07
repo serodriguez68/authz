@@ -1,0 +1,17 @@
+- if business_processes.blank?
+  .has-text-centered
+    p.title.is-4 No Business Processes yet
+    p.subtitle.is-6 Create one here
+    = link_to 'New business process', new_business_process_path, class: 'button is-primary'
+- else
+  = paginate business_processes
+  table.table.is-fullwidth.is-striped.is-hoverable
+    thead
+      tr
+        th ID
+        th Name
+        th Code name
+        th Description
+        th
+    tbody
+      = render business_processes

@@ -5,6 +5,8 @@ require 'authz/controllers/authorization_manager'
 require 'rails_admin'
 require 'slim-rails'
 
+require 'kaminari'
+
 module Authz
 
   class MultileRolablesNotPermitted < StandardError; end

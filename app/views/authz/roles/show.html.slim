@@ -1,0 +1,23 @@
+= content_for :nav_title do
+  = @role.name.titleize
+= content_for :nav_links do
+  = link_to 'Edit', edit_role_path(@role), class: 'button is-primary'
+
+section.section
+    .columns
+      .column
+        .card
+          .card-content
+            - if @associated_business_processes.blank?
+              = render 'authz/business_processes/empty_association', parent_edit_link: edit_controller_action_path(@role)
+            - else
+              h2.title.is-4 Business Processes
+              = render 'authz/business_processes/table', business_processes: @associated_business_processes
+      .column
+        .card
+          .card-content
+            - if @associated_controller_actions.blank?
+              = render 'authz/roles/empty_association', parent_edit_link: edit_controller_action_path(@role)
+            - else
+              h2.title.is-4 Controller Actions
+              = render 'authz/roles/table', roles: @associated_controller_actions

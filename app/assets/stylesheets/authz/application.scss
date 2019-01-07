@@ -1,9 +1,13 @@
 // Current bulma version: 0.7.2. Jan 5, 2018;
 @charset "utf-8";
 /*! bulma.io v0.7.2 | MIT License | github.com/jgthms/bulma */
+
+@import "font-awesome";
 @import "bulma/utilities/_all";
+@import "config";
 @import "bulma/base/_all";
 @import "bulma/elements/_all";
 @import "bulma/components/_all";
 @import "bulma/grid/_all";
 @import "bulma/layout/_all";
+@import "workspace";

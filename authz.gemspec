@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.2.1", ">= 5.2.1.1"
   s.add_dependency 'rails_admin', '~> 1.3'
+  s.add_dependency 'font-awesome-rails'
+  s.add_dependency 'kaminari'
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "devise"
