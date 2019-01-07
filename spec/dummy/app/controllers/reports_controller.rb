@@ -3,31 +3,31 @@ class ReportsController < ApplicationController
 
   # GET /reports
   def index
-    @reports = Report.all.includes(:user, :city, :clearance)
-    authorize
+    authorize skip_scoping: true
+    @reports = apply_authz_scopes(on: Report).includes(:user, :city, :clearance)
   end
 
   # GET /reports/1
   def show
-    authorize
+    authorize using: @report
   end
 
   # GET /reports/new
   def new
+    authorize skip_scoping: true
     @report = Report.new
-    authorize
   end
 
   # GET /reports/1/edit
   def edit
-    authorize
+    authorize using: @report
   end
 
   # POST /reports
   def create
     @report = Report.new(report_params)
-    authorize
     @report.user = current_user
+    authorize using: @report
 
     if @report.save
       redirect_to @report, notice: 'Report was successfully created.'
@@ -38,8 +38,9 @@ class ReportsController < ApplicationController
 
   # PATCH/PUT /reports/1
   def update
-    authorize
-    if @report.update(report_params)
+    @report.assign_attributes(report_params)
+    authorize using: @report
+    if @report.save
       redirect_to @report, notice: 'Report was successfully updated.'
     else
       render :edit
@@ -48,7 +49,7 @@ class ReportsController < ApplicationController
 
   # DELETE /reports/1
   def destroy
-    authorize
+    authorize using: @report
     @report.destroy
     redirect_to reports_url, notice: 'Report was successfully destroyed.'
   end
