@@ -13,10 +13,9 @@ module Authz
       def self.has_access_to_instance?(role, instance_to_check, authz_user)
         scoped_class = instance_to_check.class
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! scoped_class
-        scoping_rules = role.scoping_rules.for_scopables(applicable_scopables).load
 
         applicable_scopables.each do |as|
-          kw = scoping_rules.find_by!(scopable: as.to_s).keyword
+          kw = role.scoping_rules.find_by!(scopable: as.to_s).keyword
           return false unless as.within_scope_of_keyword?(instance_to_check,
                                                           kw,
                                                           authz_user)
@@ -56,14 +55,12 @@ module Authz
       # @param authz_user: the requesting user (injected dependency)
       def self.apply_role_scopes(role, collection_or_class, authz_user)
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! collection_or_class
-        scoping_rules = role.scoping_rules
-                            .for_scopables(applicable_scopables).load
 
         scoped = collection_or_class.all
         applicable_scopables.each do |as|
           # as = ScopableByCity
 
-          kw = scoping_rules.find_by!(scopable: as.to_s).keyword
+          kw = role.scoping_rules.find_by!(scopable: as.to_s).keyword
           # kw = 'New York'
 
           scoped = scoped.send(as.apply_scopable_method_name, kw, authz_user)
