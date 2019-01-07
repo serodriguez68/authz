@@ -16,9 +16,7 @@ module Authz
         # Associations for all other classes referencing the includer
         # ========================================================================
         includer_class_name = includer.model_name.to_s
-        includer_pluralized_symbol = includer_class_name
-                                     .parameterize(separator: '_')
-                                     .pluralize.to_sym
+        assoc_name_to_includer = includer.authorizable_association_name
 
         classes_to_extend = [Authz::Role,
                              Authz::BusinessProcess,
@@ -29,7 +27,7 @@ module Authz
         # business process
         classes_to_extend.each do |klass|
           klass.class_eval do
-            has_many includer_pluralized_symbol,
+            has_many assoc_name_to_includer,
                      through: :role_grants,
                      source_type: includer_class_name,
                      source: 'rolable'
@@ -60,9 +58,12 @@ module Authz
         end
       end
 
+
       # Configure Includer for Authorization Admin
       # ==========================================================================
       class_methods do
+        # self = Includer Class (e.g user)
+
         # Developers must use this method to register the includer on the
         # authorization admin specifying which field of attribute
         # (real or virtual)should be used in the admin to identify each
@@ -79,6 +80,12 @@ module Authz
           define_method 'authz_label' do
             self.send(method_name)
           end
+        end
+
+        # Returns a handle to the name (symbol) of the association
+        # method that points from other classes to this Authorizable
+        def authorizable_association_name
+          model_name.plural.to_sym
         end
 
       end
