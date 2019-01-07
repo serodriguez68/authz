@@ -183,6 +183,7 @@ module Authz
 
       included do |includer|
         includer.helper_method :authorized_path?
+        includer.helper_method :apply_authz_scopes
       end
 
     end
