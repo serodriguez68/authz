@@ -1,0 +1,13 @@
+= content_for :nav_title do
+  = @rolables.model_name.plural.titleize
+
+section.section
+  .container
+    table.table.is-fullwidth.is-striped.is-hoverable
+      tbody
+        - @rolables.each do |rolable|
+          tr
+            td = rolable.id
+            td = rolable.email
+            td = link_to send("#{rolable.model_name.singular}_path", rolable) do
+              i.fa-chevron-right

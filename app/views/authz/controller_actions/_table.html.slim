@@ -1,16 +1,10 @@
-- if controller_actions.blank?
-  .has-text-centered
-    p.title.is-4 No Controller Actions yet
-    p.subtitle.is-6 Create one here
-    = link_to 'New business process', new_controller_action_path, class: 'button is-primary'
-- else
-  = paginate controller_actions
-  table.table.is-fullwidth.is-striped.is-hoverable
-    thead
-      tr
-        th ID
-        th Controller Name
-        th Action Name
-        th
-    tbody
-      = render controller_actions
+= paginate controller_actions
+table.table.is-fullwidth.is-striped.is-hoverable
+  thead
+    tr
+      th ID
+      th Controller Name
+      th Action Name
+      th
+  tbody
+    = render controller_actions
