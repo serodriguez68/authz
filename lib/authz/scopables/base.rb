@@ -209,12 +209,20 @@ module Authz
       # ids of the cites in which it is available [1,2,3]
       def associated_scoping_instances_ids(instance_to_check)
         scoped_class = instance_to_check.class
+        # When the instance is an instances of the Scoping Class
+        # (e.g when we are checking the associated cities of a city)
+        return [instance_to_check.id] if scoped_class == scoping_class
+
         assoc_method = scoped_class.send(association_method_name)
         instance_scope = instance_to_check.send(assoc_method)
 
         if instance_scope.class == scoping_class
+          # When the instance is associated with ONE instance of the scoping class
+          # (e.g report is associated with one city)
           instance_scope_ids = [instance_scope.id]
         elsif instance_scope.respond_to? 'pluck'
+          # When the instance is associated with MANY instances of the scoping class
+          # (e.g announcement is available in many cities)
           instance_scope_ids = instance_scope.pluck(:id)
         else
           raise MisconfiguredAssociation,

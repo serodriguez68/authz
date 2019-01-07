@@ -279,6 +279,15 @@ module Authz
                 }.to raise_error(described_class::MisconfiguredAssociation)
               end
             end
+
+            context 'when the instance to check is an instance of the scoping class (e.g. a city in ScopableByCity)' do
+              it 'should return the id of the instance' do
+                city1 = create :city
+                city2 = create :city
+                exp_arr = [city1.id]
+                expect(ScopableByCity.associated_scoping_instances_ids(city1)).to match_array(exp_arr)
+              end
+            end
           end
 
           describe '.within_scope_of_keyword?' do
