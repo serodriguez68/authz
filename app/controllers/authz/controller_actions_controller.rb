@@ -14,18 +14,47 @@ module Authz
     end
 
     def new
+      @controller_action = ControllerAction.new
     end
 
     def create
+      @controller_action = ControllerAction.new(controller_action_create_params)
+      if @controller_action.save
+        redirect_to role_path(@controller_action)
+      else
+        render 'new'
+      end
     end
 
     def edit
+      @controller_action = ControllerAction.find(params[:id])
     end
 
     def update
+      @controller_action = ControllerAction.find(params[:id])
+      if @controller_action.update(controller_action_update_params)
+        redirect_to role_path(@controller_action)
+      else
+        render 'edit'
+      end
     end
 
     def destroy
+    end
+
+    private
+
+    def controller_action_create_params
+      params.require(:controller_action)
+            .permit(
+              :controller,
+              :action
+            )
+    end
+
+    def controller_action_update_params
+      params.require(:controller_action)
+            .permit()
     end
   end
 end

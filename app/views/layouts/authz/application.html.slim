@@ -6,6 +6,8 @@ html
     = csp_meta_tag
     = stylesheet_link_tag    "authz/application", media: "all"
     = javascript_include_tag "authz/application"
+    = javascript_include_tag 'https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js'
+
   body
     .az-sidebar
       = render 'layouts/authz/menu'

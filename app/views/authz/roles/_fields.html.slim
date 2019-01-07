@@ -1,11 +1,11 @@
 .field
   = f.label :name, class: 'label'
   .control
-    = f.text_field :name, class: 'input'
+    = f.text_field :name, class: 'input', required: true
 .field
   = f.label :description, class: 'label'
   .control
-    = f.text_area :description, class: 'input'
+    = f.text_area :description, class: 'input', required: true
 .field
   = f.label :business_processes, class: 'label'
   .control

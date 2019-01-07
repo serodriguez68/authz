@@ -1,1 +1,20 @@
-h1.title new controller action
+= content_for :nav_title do
+  = 'New Controller Action'
+
+section.section
+  .container
+    .columns
+      .column.is-three-fifths
+        .card
+          .card-content
+            = form_for @controller_action do |f|
+              = render 'basic_fields', f: f
+              = render 'association_fields', f: f
+              .field
+                .control
+                  = f.submit 'Create', class: 'button is-primary is-fullwidth'
+      .column
+        = render 'help'
+
+javascript:
+  $('form').validate()
