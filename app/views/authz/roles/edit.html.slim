@@ -1,6 +1,6 @@
 = content_for :nav_title do
-  = 'New Role'
-
+  = "#{action_name.titleize} #{@role.name}"
+  
 section.section
   .container
     .columns
