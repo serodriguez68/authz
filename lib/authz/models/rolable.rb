@@ -1,6 +1,6 @@
 module Authz
   module Models
-    module Authorizable
+    module Rolable
       extend ActiveSupport::Concern
 
       included do |includer|
@@ -42,7 +42,7 @@ module Authz
 
       # Mixed instance methods
       # ==========================================================================
-      # Label used to label each authorizable instance in the context
+      # Label used to label each rolable instance in the context
       # of Authz
       def authz_label
         if respond_to? :name
@@ -66,7 +66,7 @@ module Authz
         # (e.g.  Users will be identified by :email)
         # TODO: Modify or remove this if getting rid of Rails Admin
         def register_in_authorization_admin(identifier:)
-          Authz.register_authorizable_in_admin(self, identifier)
+          Authz.register_rolable_in_admin(self, identifier)
         end
 
         # Developers can use this to specify which method form the includer

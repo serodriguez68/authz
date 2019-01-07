@@ -1,5 +1,5 @@
 require 'authz/engine'
-require 'authz/models/authorizable'
+require 'authz/models/rolable'
 require 'authz/controllers/permission_manager'
 require 'authz/controllers/scoping_manager'
 require 'authz/controllers/authorization_manager'
@@ -25,11 +25,11 @@ module Authz
     end
   end
 
-  # Configures the authorizable class given as param in the authorization admin
+  # Configures the rolable class given as param in the authorization admin
   # using the identifier as the attribute to identify instances inside the admin
   # (e.g.  Users will be identified by :email)
   # TODO: Modify or remove this if getting rid of Rails Admin
-  def self.register_authorizable_in_admin(klass, identifier)
+  def self.register_rolable_in_admin(klass, identifier)
     includer_class_name = klass.model_name.to_s
     identifier = identifier.to_sym
 

@@ -33,14 +33,14 @@ module Authz
 
       # Error that will be raised if a user is not authorized
       class NotAuthorized < StandardError
-        attr_reader :authorizable, :controller, :action, :instance
+        attr_reader :rolable, :controller, :action, :instance
         def initialize(options = {})
-          @authorizable = options.fetch :authorizable
+          @rolable = options.fetch :rolable
           @controller = options.fetch :controller
           @action = options.fetch :action
           @instance = options.fetch(:instance, nil)
 
-          message = "#{authorizable.class} #{authorizable.id} " \
+          message = "#{rolable.class} #{rolable.id} " \
                     'does not have a role that allows him to ' \
                     "#{controller}##{action}"
 
@@ -74,10 +74,10 @@ module Authz
                                  skip_scoping: skip_scoping)
         return using if authorized
 
-        raise NotAuthorized, authorizable: authz_user,
-                             controller: params[:controller],
-                             action: params[:action],
-                             instance: using
+        raise NotAuthorized, rolable: authz_user,
+              controller: params[:controller],
+              action: params[:action],
+              instance: using
       end
 
       # Determines if a user is authorized to perform a certain controller action
