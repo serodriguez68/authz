@@ -40,6 +40,12 @@ module Authz
         base = collection_or_class.all
         scoped = base.none
         usr.roles.each do |role|
+          # TODO: an alternative implementation would be to use SQL UNION
+          # This would allow us to circumvent ActiveRecord#or structural
+          # limitations that forces us to always perform joins inside
+          # Scopables::Base.apply_scopable_method_name.
+          # See https://github.com/brianhempel/active_record_union
+          # for a gem that implents AR union
           scoped = scoped.or(apply_role_scopes(role, base, usr))
         end
         scoped
