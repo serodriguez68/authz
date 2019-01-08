@@ -290,20 +290,30 @@ module Authz
           # @return a collection of the scoped class record after applying the scope
           define_method scopable.apply_scopable_method_name do |keyword, requester|
             keyword = scopable.normalize_if_special_keyword(keyword)
-            # Treatment for special keywords
-            return self.all if keyword == :all
-
-            scoped_ids = scopable.resolve_keyword(keyword, requester)
 
             if self.name == scopable.scoping_class_name
               # If the scoped class is the same scoping class
+              # (e.g City and ScopableByCity)
+
+              # Treatment for special keywords
+              return self.all if keyword == :all
+
+              scoped_ids = scopable.resolve_keyword(keyword, requester)
               return self.where(id: scoped_ids)
+
             elsif (association_name = self.send(scopable.association_method_name))
-              # Join through the association to query
-              joined_collection = scoped_ids.nil? ? self.left_outer_joins(association_name) : self.joins(association_name)
-              return joined_collection.where(
-                  scopable.plural_association_name => { id: scoped_ids }
-              )
+              # If the scoped class scoped by the scoping class
+              # (e.g Report and ScopableByCity) Join through the association to query
+
+              joined_collection = self.joins(association_name)
+              # Report.joins(:city)
+
+              # Treatment for special keywords
+              return joined_collection.all if keyword == :all
+
+              scoped_ids = scopable.resolve_keyword(keyword, requester)
+              return joined_collection.merge(scopable.scoping_class.where(id: scoped_ids))
+              # Report.joins(:city).merge(City.where(id: [1,2,3]))
             else
               raise NoAssociationFound,
                     scoped_class: self.model_name.to_s,

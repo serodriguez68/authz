@@ -129,3 +129,15 @@ roles = Authz::Role.where('name LIKE ?', "%auditor%")
 roles.each { |r| Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: 'All') }
 
 
+# Announcements
+# ==========================================================================
+a = Announcement.create! body: "for ny and sf"
+a.cities << [ny, sf]
+
+a = Announcement.create! body: "for ny"
+a.cities << [ny]
+
+a = Announcement.create! body: "for sf"
+a.cities << [sf]
+
+Announcement.create! body: "for no one"

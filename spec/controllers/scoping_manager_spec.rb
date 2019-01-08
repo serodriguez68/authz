@@ -160,6 +160,14 @@ module Authz
             @city2 = create(:city)
             @clrnc1 = create(:clearance, level: 1)
             @clrnc2 = create(:clearance, level: 2)
+            @report1 = create(:report, city: @city1, clearance: @clrnc1)
+            @report2 = create(:report, city: @city2, clearance: @clrnc2)
+            @report3 = create(:report, city: @city2, clearance: @clrnc1)
+            @report4 = create(:report, city: @city1, clearance: @clrnc2)
+          end
+
+
+          it 'should return the ORing (union) of the applicable role scopes' do
             create(:authz_scoping_rule, scopable: 'ScopableByCity',
                    role: @role1,
                    keyword: @city1.name)
@@ -172,32 +180,52 @@ module Authz
             create(:authz_scoping_rule, scopable: 'ScopableByClearance',
                    role: @role2,
                    keyword: @clrnc2.name)
-
-            @in_report1 =  create(:report, city: @city1,
-                                           clearance: @clrnc1)
-            @in_report2 =  create(:report, city: @city2,
-                                           clearance: @clrnc2)
-            @out_report1 = create(:report, city: @city2,
-                                           clearance: @clrnc1)
-            @out_report2 = create(:report, city: @city1,
-                                           clearance: @clrnc2)
-          end
-
-
-          it 'should return the ORing (union) of the applicable role scopes' do
-            expected = Report.where(id: [@in_report1.id, @in_report2.id])
+            expected = Report.where(id: [@report1.id, @report2.id])
             expect(
               described_class.apply_scopes_for_user(Report, @usr)
             ).to match_array expected
           end
 
           it 'should not return records outside the scope' do
+            create(:authz_scoping_rule, scopable: 'ScopableByCity',
+                   role: @role1,
+                   keyword: @city1.name)
+            create(:authz_scoping_rule, scopable: 'ScopableByClearance',
+                   role: @role1,
+                   keyword: @clrnc1.name)
+            create(:authz_scoping_rule, scopable: 'ScopableByCity',
+                   role: @role2,
+                   keyword: @city2.name)
+            create(:authz_scoping_rule, scopable: 'ScopableByClearance',
+                   role: @role2,
+                   keyword: @clrnc2.name)
             expect(
               described_class.apply_scopes_for_user(Report, @usr)
-            ).not_to include @out_report1
+            ).not_to include @report3
             expect(
               described_class.apply_scopes_for_user(Report, @usr)
-            ).not_to include @out_report2
+            ).not_to include @report4
+          end
+
+          it 'should tolerate one role having a scoping rule "All" while other rules have regular keywords' do
+            # Test to make sure that the following error is not present
+            # Relation passed to #or must be structurally compatible. Incompatible values: [:joins]
+            create(:authz_scoping_rule, scopable: 'ScopableByCity',
+                                        role: @role1,
+                                        keyword: @city1.name)
+            create(:authz_scoping_rule, scopable: 'ScopableByClearance',
+                                        role: @role1,
+                                        keyword: @clrnc1.name)
+            create(:authz_scoping_rule, scopable: 'ScopableByCity',
+                                        role: @role2,
+                                        keyword: 'All')
+            create(:authz_scoping_rule, scopable: 'ScopableByClearance',
+                                        role: @role2,
+                                        keyword: @clrnc2.name)
+            expected = Report.where(id: [@report1.id, @report2.id, @report4.id])
+            expect(
+              described_class.apply_scopes_for_user(Report, @usr)
+            ).to match_array expected
           end
         end
       end
