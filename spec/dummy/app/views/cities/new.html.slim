@@ -2,4 +2,4 @@ h1 New city
 
 == render 'form'
 
-= link_to 'Back', cities_path if authorized_path? cities_path
+= link_to 'Back', cities_path if authorized_path? cities_path, skip_scoping: true

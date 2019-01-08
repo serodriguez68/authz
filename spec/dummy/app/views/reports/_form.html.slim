@@ -10,11 +10,11 @@
     .cell.medium-6
       .field
         = f.label :city
-        = f.collection_select :city_id, City.all.order(name: :asc), :id, :name
+        = f.collection_select :city_id, apply_authz_scopes(on: City).order(name: :asc), :id, :name
     .cell.medium-6
       .field
         = f.label :clearance
-        = f.collection_select :clearance_id, Clearance.all.order(name: :asc), :id, :name
+        = f.collection_select :clearance_id, apply_authz_scopes(on: Clearance).order(name: :asc), :id, :name
   .field
     = f.label :title
     = f.text_field :title

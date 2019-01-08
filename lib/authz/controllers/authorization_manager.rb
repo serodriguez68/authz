@@ -3,44 +3,112 @@ module Authz
     module AuthorizationManager
 
       extend ActiveSupport::Concern
-      # include ScopingManager
-      include Authz::Controllers::PermissionManager
 
       # Errors
       # ===========================================================================
       # Error that will be raised if a controller action has not called the
       # `authorize` or `skip_authorization` methods.
-      class AuthorizationNotPerformedError < StandardError; end
+      class AuthorizationNotPerformedError < StandardError
+        attr_reader :controller, :action
+        def initialize(options = {})
+          @controller = options.fetch :controller
+          @action = options.fetch :action
+          message = "#{controller}##{action} is missing authorization."
+          super(message)
+        end
+      end
 
-      # TODO Error that will be raised if the authorized method is not provided a
+      # Error that will be raised if the authorized method is not provided a
       # scoping instance and the skip_scoping option is not used
-      # class MissingScopingInstance < StandardError; end
+      class MissingScopingInstance < StandardError
+        attr_reader :controller, :action
+        def initialize(options = {})
+          @controller = options.fetch :controller
+          @action = options.fetch :action
+          message = "#{controller}##{action}. Provide an instance to " \
+                    'perform authorization or use the skip_scoping option'
+          super(message)
+        end
+      end
+
+      # Error that will be raised if a user is not authorized
+      class NotAuthorized < StandardError
+        attr_reader :rolable, :controller, :action, :instance
+        def initialize(options = {})
+          @rolable = options.fetch :rolable
+          @controller = options.fetch :controller
+          @action = options.fetch :action
+          @instance = options.fetch(:instance, nil)
+
+          message = "#{rolable.class} #{rolable.id} " \
+                    'does not have a role that allows him to ' \
+                    "#{controller}##{action}"
+
+          if instance.present?
+            message += " on #{instance}."
+          end
+
+          super(message)
+        end
+      end
 
       # @public api
       # ===========================================================================
       protected
 
-      # 1. TODO Check if the user is correctly skipping scoping
+      # 1. Check if the user is correctly skipping scoping
       # 2. Asks PermissionManager to check for user permission
-      # 3. TODO: Asks ScopingManager to check for user scoping access
+      # 3. Asks ScopingManager to verify the user's access to the instance
       # Managers should handle their own exceptions if a problem is found
       #
-      # @param [scoping_instance: Object] the instance that will determine access in the ScopingManager
+      # @param [using: Object] the instance that will determine
+      #        access in the ScopingManager
       # @param [skip_scoping: true] to explicitly skip scoping
       # @return [void]
-      def authorize(scoping_instance: nil, skip_scoping: false)
-        # 1. Check if the user is correctly skipping scoping
-        # skip_scoping = skip_scoping == true
-        # raise MissingScopingInstance if scoping_instance.blank? && !skip_scoping
-
+      def authorize(using: nil, skip_scoping: false)
         @_authorization_performed = true
-        # 2. Check if user has permission to this controller action
-        PermissionManager.check_permission!(authz_user,
-                                            params[:controller],
-                                            params[:action])
 
-        # 3. Check if user has access to instance
-        # ScopingManager.check_user_access_to_instance(current_user, scoping_instance) unless skip_scoping
+        authorized = authorized?(controller: params[:controller],
+                                 action: params[:action],
+                                 using: using,
+                                 skip_scoping: skip_scoping)
+        return using if authorized
+
+        raise NotAuthorized, rolable: authz_user,
+              controller: params[:controller],
+              action: params[:action],
+              instance: using
+      end
+
+      # Determines if a user is authorized to perform a certain controller action
+      # on a given instance
+      # @param controller: name of the controller
+      # @param action: name of the controller action
+      # @param using: the instance used to determine scope access
+      # @param skip_scoping: option for ignoring scoping during verification
+      def authorized?(controller:, action:, using: nil, skip_scoping: false)
+        # 1. Check if the user is correctly skipping scoping
+        skip_scoping = skip_scoping == true
+        if using.blank? && !skip_scoping
+          raise MissingScopingInstance, controller: controller, action: action
+        end
+
+        # 2. At least one of the user's roles have both Permission and Scope
+        usr = authz_user
+        usr.roles.each do |role|
+          # a. Check authorization on controller action
+          auth_on_action = PermissionManager.has_permission?(role, controller, action)
+          next unless auth_on_action
+
+          # b. Check authorization on scoping privileges
+          auth_on_scope = skip_scoping || ScopingManager.has_access_to_instance?(role, using, usr)
+
+          # c. If a rule is fully authorized, return
+          return true if auth_on_action && auth_on_scope
+        end
+
+        # 3. After searching all roles, no authorization found
+        return false
       end
 
       # Allow this action not to perform authorization.
@@ -66,8 +134,21 @@ module Authz
         # http://stackoverflow.com/questions/27932270/how-does-an-around-action-callback-work-an-explanation-is-needed
         ActiveRecord::Base.transaction do
           yield
-          raise AuthorizationNotPerformedError, "#{self.class}##{self.action_name}" unless authorization_performed?
+          unless authorization_performed?
+            raise AuthorizationNotPerformedError, controller: self.class,
+                                                  action: self.action_name
+          end
         end
+      end
+
+      # Find authz_user and forward to apply scoping rules
+      #
+      # @param on: collection or class on top of which
+      #            the user's scoping rules will be applied
+      # @return [Collection] resulting collection from applying all
+      #                      user's roles scoping rules
+      def apply_authz_scopes(on:)
+        ScopingManager.apply_scopes_for_user(on, authz_user)
       end
       # @public api ===============================================================
 
@@ -78,6 +159,32 @@ module Authz
         !!@_authorization_performed
       end
 
+      # Returns true if the user has permission for the path
+      # and :using instance given as arguments
+      #
+      # @param path: path or url that will be checked
+      # @param method: of the path or url
+      # @param using: instance that will be used to determine authorization
+      # @param skip_scoping: option to skip scoping validation
+      # @return [Boolean]
+      def authorized_path?(path, method: :get, using: nil, skip_scoping: false)
+        recognized_ca = Rails.application.routes.recognize_path path,
+                                                                method: method
+        controller_name = recognized_ca[:controller]
+        action_name = recognized_ca[:action]
+        authorized?(controller: controller_name,
+                    action: action_name,
+                    using: using,
+                    skip_scoping: skip_scoping)
+      end
+
+      # TODO: consider if it is worth creating an authorized_link_to helper that checks for authorization and renders
+      # a link if needed. Check link_to_if  (maybe create it in another file by extending the Application Helper)
+
+      included do |includer|
+        includer.helper_method :authorized_path?
+        includer.helper_method :apply_authz_scopes
+      end
 
     end
   end

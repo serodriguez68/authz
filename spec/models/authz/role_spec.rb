@@ -23,6 +23,7 @@ module Authz
       it { should have_many(:controller_actions).through(:business_processes) }
       it { should have_many(:role_grants) }
       it { should have_many(:users) }
+      it { should have_many(:scoping_rules) }
     end
 
   end

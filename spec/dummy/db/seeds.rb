@@ -1,10 +1,12 @@
 # Users
 # ==========================================================================
 general_director = User.create!(email: "general_director@cia.com", password: 'password', password_confirmation: 'password')
-director = User.create!(email: "director@cia.com", password: 'password', password_confirmation: 'password')
-special_agent = User.create!(email: "special_agent@cia.com", password: 'password', password_confirmation: 'password')
-agent = User.create!(email: "agent@cia.com", password: 'password', password_confirmation: 'password')
-auditor = User.create!(email: "auditor@cia.com", password: 'password', password_confirmation: 'password')
+ny_director = User.create!(email: "ny_director@cia.com", password: 'password', password_confirmation: 'password')
+sf_director = User.create!(email: "sf_director@cia.com", password: 'password', password_confirmation: 'password')
+ny_agent = User.create!(email: "ny_agent@cia.com", password: 'password', password_confirmation: 'password')
+sf_agent = User.create!(email: "sf_agent@cia.com", password: 'password', password_confirmation: 'password')
+ny_auditor = User.create!(email: "ny_auditor@cia.com", password: 'password', password_confirmation: 'password')
+sf_auditor = User.create!(email: "sf_auditor@cia.com", password: 'password', password_confirmation: 'password')
 
 # Clearances
 # ==========================================================================
@@ -20,17 +22,25 @@ sf = City.create!(name: 'San Francisco')
 # ==========================================================================
 # Agent only creates secret reports
 5.times do
-  Report.create!(user: agent, clearance: secret, city: ny,
+  Report.create!(user: ny_agent, clearance: secret, city: ny,
+                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  Report.create!(user: sf_agent, clearance: secret, city: sf,
                  title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
 end
 
-# Special agent creates both secret and top-secret reports
+# Directors creates both secret and top-secret reports
 5.times do
-  Report.create!(user: special_agent, clearance: secret, city: sf,
+  Report.create!(user: ny_director, clearance: secret, city: ny,
+                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+
+  Report.create!(user: sf_director, clearance: secret, city: sf,
                  title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
 end
 5.times do
-  Report.create!(user: special_agent, clearance: top_secret, city: sf,
+  Report.create!(user: ny_director, clearance: top_secret, city: ny,
+                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+
+  Report.create!(user: sf_director, clearance: top_secret, city: sf,
                  title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
 end
 
@@ -67,14 +77,17 @@ controllers_to_include.each do |controller|
   end
 end
 
-# Roles and mapping to business processes and role grants
+# Roles,  mapping to business processes and grant role to users
 # ==========================================================================
-roles_to_create = %w(general_director director special_agent agent auditor)
+roles_to_create = %w[general_director
+                     ny_director sf_director
+                     ny_agent sf_agent
+                     ny_auditor sf_auditor]
 roles_to_create.each do |role_name|
   role = Authz::Role.create!(name: role_name, description: role_name)
 
   # Mapping to business processes
-  if role.name == 'auditor'
+  if role.name.include?'auditor'
     bps = Authz::BusinessProcess.where("name LIKE ?", "%view%")
   else
     bps = Authz::BusinessProcess.all
@@ -85,3 +98,46 @@ roles_to_create.each do |role_name|
   eval(role.name).roles << role
 end
 
+
+# Scoping Rules assigned to roles
+# ==========================================================================
+# General Director
+r = Authz::Role.find_by(name: 'general_director')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByCity', keyword: 'All')
+Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: 'All')
+
+
+# Scopable By City
+city_names = { 'ny' => 'New York', 'sf' => 'San Francisco' }
+city_names.each do |sh, lng|
+  roles = Authz::Role.where('name LIKE ?', "#{sh}%")
+  roles.each do |r|
+    Authz::ScopingRule.create!(role: r, scopable: 'ScopableByCity', keyword: "#{lng}")
+  end
+end
+
+# Scopable By Clearance: Director
+roles = Authz::Role.where(name: ['ny_director', 'sf_director'])
+roles.each { |r| Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: 'All') }
+
+# Scopable By Clearance: agent
+roles = Authz::Role.where(name: ['ny_agent', 'sf_agent'])
+roles.each { |r| Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: secret.name) }
+
+# Scopable By Clearance: auditor
+roles = Authz::Role.where('name LIKE ?', "%auditor%")
+roles.each { |r| Authz::ScopingRule.create!(role: r, scopable: 'ScopableByClearance', keyword: 'All') }
+
+
+# Announcements
+# ==========================================================================
+a = Announcement.create! body: "for ny and sf"
+a.cities << [ny, sf]
+
+a = Announcement.create! body: "for ny"
+a.cities << [ny]
+
+a = Announcement.create! body: "for sf"
+a.cities << [sf]
+
+Announcement.create! body: "for no one"

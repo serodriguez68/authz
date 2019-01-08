@@ -7,9 +7,17 @@ module Authz
       it { is_expected.to validate_uniqueness_of(:controller).scoped_to(:action) }
 
       it 'should be valid when instantiated with a correct controller and action' do
+        # This will overwrite the routes file
+        Rails.application.routes.draw do
+          resources :foos, only: [:new]
+        end
 
-        controller_action =  build(:authz_controller_action, controller: 'visitors', action: 'index')
+        controller_action =  build(:authz_controller_action, controller: 'foos', action: 'new')
         expect(controller_action).to be_valid
+
+        # This is a horrible hack to force rails to reload the routes that were
+        # overwritten at the beginning of this test
+        Rails.application.reload_routes!
       end
 
       it 'should be valid when instantiated with a non-existent controller and action' do

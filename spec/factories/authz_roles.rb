@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :authz_role, class: 'Authz::Role' do
-    code { "city_director" }
-    name { "City Director" }
-    description { "A description for city director" }
+    code { name.parameterize(separator: '_') }
+    sequence(:name) { |n| "#{Faker::Company.profession} #{n}" }
+    description { name }
   end
 end

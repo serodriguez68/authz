@@ -3,7 +3,7 @@ module Authz
     # Validations
     # ==========================================================================
     validates :code, presence: true, uniqueness: true,
-              format: { with: /\A[a-z]+(_[a-z]+)*\z/,
+              format: { with: /\A[a-z][a-z0-9]*(_[a-z0-9]+)*\z/,
                         message: 'only snake_case allowed' }
     validates :name, presence: true, uniqueness: true
     validates :description, presence: true
@@ -22,7 +22,9 @@ module Authz
     has_many :role_grants,
              class_name: 'Authz::RoleGrant',
              foreign_key: 'authz_role_id'
-
+    has_many :scoping_rules,
+             class_name: 'Authz::ScopingRule',
+             foreign_key: 'authz_role_id'
 
     private
 
