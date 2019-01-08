@@ -16,8 +16,8 @@ table
     - @reports.each do |report|
       tr
         td = report.user.email
-        td = report.clearance.name
-        td = report.city.name
+        td = report.clearance.try :name
+        td = report.city.try :name
         td = report.title
         td = report.body.truncate(100)
         td = link_to 'Show', report if authorized_path? report_path(report), using: report

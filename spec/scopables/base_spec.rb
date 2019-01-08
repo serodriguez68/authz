@@ -188,9 +188,9 @@ module Authz
               @keyword = 'in_city'
               @in_city = create(:city, name: @keyword)
               out_city = create(:city, name: 'out_city')
-              clearance = create(:clearance, name: 'secret', level: 1)
-              in_report = create(:report, city: @in_city, clearance: clearance)
-              out_report = create(:report, city: out_city, clearance: clearance)
+              @clearance = create(:clearance, name: 'secret', level: 1)
+              in_report = create(:report, city: @in_city, clearance: @clearance)
+              out_report = create(:report, city: out_city, clearance: @clearance)
             end
 
             it 'should return only the subset of records according to scopable keyword' do
@@ -202,6 +202,15 @@ module Authz
               keyword = :all
               expected = Report.all
               expect(Report.apply_scopable_by_city(keyword, nil)).to match_array(expected)
+            end
+
+            it 'should return records not associated with the scoping class when the keyword resolved ids contain nil' do
+              orphan_report = create(:report, city: @in_city, clearance: @clearance)
+              orphan_report.update_columns(city_id: nil)
+              allow(ScopableByCity).to receive(:resolve_keyword).and_return([@in_city.id, nil])
+
+              expected = Report.where(city_id: [@in_city.id, nil])
+              expect(Report.apply_scopable_by_city(@keyword, nil)).to match_array(expected)
             end
           end
 
@@ -268,12 +277,29 @@ module Authz
               end
             end
 
+            context 'when the instance is orphaned from the scoping class' do
+              it 'should return an empty array when the association is singular (e.g report has no city)' do
+                in_city = create(:city, name: 'in_city')
+                clearance = create(:clearance, name: 'in_clearance', level: 1)
+
+                report = create(:report, city: in_city, clearance: clearance)
+                report.update_columns city_id: nil
+
+                expect(ScopableByCity.associated_scoping_instances_ids(report)).to match_array([])
+              end
+
+              it 'should return an empty array when the association is plural (e.g. announcement is not available in any city)' do
+                ann = create :announcement
+                expect(ScopableByCity.associated_scoping_instances_ids(ann)).to match_array([])
+              end
+            end
+
             context 'when the class of the instance has a misconfigured association for the scopable' do
               it 'should raise an error warning the user about the misconfiguration' do
                 report = create(:report)
                 scoped_class = report.class
                 assoc_method = scoped_class.send(ScopableByCity.association_method_name)
-                allow(report).to receive(assoc_method).and_return(nil)
+                allow(report).to receive(assoc_method).and_return(:foo)
                 expect {
                   ScopableByCity.associated_scoping_instances_ids(report)
                 }.to raise_error(described_class::MisconfiguredAssociation)
@@ -365,6 +391,32 @@ module Authz
                                                           nil)
                 ).to eq false
               end
+            end
+
+            context 'when the instance is not associated with any instance of the scoping class' do
+              before(:each) do
+                @city = create :city
+                @rep = create(:report)
+                @rep.update_columns city_id: nil
+              end
+              it 'should return true when the resolved keyword includes nil' do
+                allow(ScopableByCity).to(
+                  receive(:resolve_keyword).and_return([@city.id, nil])
+                )
+                expect(
+                  ScopableByCity.within_scope_of_keyword?(@rep, 'foo', nil)
+                ).to eq true
+              end
+
+              it 'should return false when the resolved keyword does not include nil' do
+                allow(ScopableByCity).to(
+                  receive(:resolve_keyword).and_return([@city.id])
+                )
+                expect(
+                  ScopableByCity.within_scope_of_keyword?(@rep, 'foo', nil)
+                ).to eq false
+              end
+
             end
           end
 

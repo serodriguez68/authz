@@ -105,7 +105,7 @@ module Authz
           @association_method = options.fetch :association_method
           message = "#{scoped_class} has a misconfigured association " \
                      "for #{scopable}. " \
-                     "Make sure that #{association_method} " \
+                     "Make sure that ##{association_method} " \
                      'returns either an instance of class' \
                      "#{scopable.scoping_class_name} " \
                      'or a collection that responds to #pluck(:id).'
@@ -194,8 +194,17 @@ module Authz
 
         instance_scope_ids = associated_scoping_instances_ids(instance_to_check)
         role_scope_ids = resolve_keyword(keyword, requester)
-        # Resolution by intersection
-        (instance_scope_ids & role_scope_ids).any?
+
+        # Resolution
+        if instance_scope_ids.any?
+          # When instance is associated to scoping class (report with city)
+          # Resolve by intersection
+          (instance_scope_ids & role_scope_ids).any?
+        else
+          # When instance is not associated to scoping class
+          # (e.g report with no city, announcement not available in any city)
+          role_scope_ids.include? nil
+        end
       end
 
       # Receives an instance of any class that is scopable
@@ -205,8 +214,10 @@ module Authz
       # For example:
       # 1. Receives a report and returns an array with the
       # the id of the city associated with the report [32]
-      # 2. Receives a product and returns an array with the
+      # or [] if not associated
+      # 2. Receives an announcement and returns an array with the
       # ids of the cites in which it is available [1,2,3]
+      # or [] if not associated
       def associated_scoping_instances_ids(instance_to_check)
         scoped_class = instance_to_check.class
         # When the instance is an instances of the Scoping Class
@@ -215,15 +226,25 @@ module Authz
 
         assoc_method = scoped_class.send(association_method_name)
         instance_scope = instance_to_check.send(assoc_method)
+        # instance_scope = report.city  => a city instance / nil
+        # instance_scope = announcement.cities => AR Relation of Cities / (may be empty)
 
         if instance_scope.class == scoping_class
           # When the instance is associated with ONE instance of the scoping class
           # (e.g report is associated with one city)
           instance_scope_ids = [instance_scope.id]
+
+        elsif instance_scope.nil?
+          # When the instance is associated with ONE instance of scoping class
+          # but the association is empty (e.g. a record with no city)
+          instance_scope_ids = []
+
         elsif instance_scope.respond_to? 'pluck'
-          # When the instance is associated with MANY instances of the scoping class
+          # When the instance is associated with MANY instances of the scoping
+          # class. Even if the association is empty
           # (e.g announcement is available in many cities)
           instance_scope_ids = instance_scope.pluck(:id)
+
         else
           raise MisconfiguredAssociation,
                 scoped_class: scoped_class,
@@ -305,10 +326,14 @@ module Authz
               # If the scoped class scoped by the scoping class
               # (e.g Report and ScopableByCity) Join through the association to query
 
-              joined_collection = self.joins(association_name)
-              # Report.joins(:city)
+              joined_collection = self.left_outer_joins(association_name)
+              # Always left_outer_joins to account for records that are not
+              # associated with the scoping class (e.g. reports with no city)
+              # Report.left_outer_joins(:city)
 
               # Treatment for special keywords
+              # TODO: the collection is forced to get joined to ensure structural
+              # compatibility with ActiveRecord#or
               return joined_collection.all if keyword == :all
 
               scoped_ids = scopable.resolve_keyword(keyword, requester)

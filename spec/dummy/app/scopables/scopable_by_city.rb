@@ -6,7 +6,7 @@ module ScopableByCity
   end
 
   def self.resolve_keyword(keyword, requester)
-    City.where('LOWER(name) IS ?', keyword.downcase).pluck(:id)
+    City.where('LOWER(name) IS ?', keyword.downcase).pluck(:id) + [nil]
   end
 
 end
