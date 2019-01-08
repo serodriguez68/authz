@@ -1,4 +1,6 @@
 # Authz
+[![Build Status](https://travis-ci.com/serodriguez68/authz.svg?token=qXv4Wq7cPeFBwcByqvAc&branch=develop)](https://travis-ci.com/serodriguez68/authz)
+
 Short description and motivation.
 
 ## Usage
