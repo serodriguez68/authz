@@ -113,6 +113,8 @@ module Authz
         end
       end
 
+      # Raised when the scoping system is used on an instance of a class
+      # that has no applicable scopables
       class NoApplicableScopables < StandardError
         attr_reader :scoped_class
 
@@ -125,11 +127,20 @@ module Authz
         end
       end
 
-      # TODO: Add an error UnresolvableKeyword when a random given keyword
-      # is given and cannot be resolved (this may require adding a method)
-      # safe_resolve_keyword that internally calls resolve_keyword and
-      # inspects it's return value to check that it is a valid return value
+      # Raised when the .resolve_keyword method returns invalid output
+      class UnresolvableKeyword < StandardError
+        attr_reader :scopable, :keyword, :requester
 
+        def initialize(options = {})
+          scopable  = options.fetch(:scopable)
+          keyword   = options.fetch(:keyword)
+          requester   = options.fetch(:requester)
+          message = "Unresolvable keyword '#{keyword}' with requester" \
+                    "#{requester} in #{scopable}. Make sure that " \
+                    '.resolve_keyword returns an array. e.g. [2, 5, nil]'
+          super(message)
+        end
+      end
 
       # Scopables that extend Scopable::Base get this behaviour
       # ===================================================================
@@ -184,6 +195,19 @@ module Authz
       end
 
       # == Resolution
+      # Calls .resolve_keyword and ensures that the returned value is
+      # valid.
+      def resolve_keyword!(keyword, requester)
+        resolved_ids = resolve_keyword(keyword, requester)
+
+        if resolved_ids.is_a? Array
+          resolved_ids
+        else
+          raise UnresolvableKeyword, scopable: self, keyword: keyword,
+                                     requester: requester
+        end
+      end
+
       # Returns true if the given instance_to_check is within the
       # scoping privileges of the given keyword, optionally passing
       # the requester to aide the resolution of the keyword.
@@ -193,7 +217,7 @@ module Authz
         return true if keyword == :all
 
         instance_scope_ids = associated_scoping_instances_ids(instance_to_check)
-        role_scope_ids = resolve_keyword(keyword, requester)
+        role_scope_ids = resolve_keyword!(keyword, requester)
 
         # Resolution
         if instance_scope_ids.any?
@@ -328,7 +352,7 @@ module Authz
               # Treatment for special keywords
               return self.all if keyword == :all
 
-              scoped_ids = scopable.resolve_keyword(keyword, requester)
+              scoped_ids = scopable.resolve_keyword!(keyword, requester)
               return self.where(id: scoped_ids)
 
             elsif (association_name = self.send(scopable.association_method_name))
@@ -345,7 +369,7 @@ module Authz
               # compatibility with ActiveRecord#or
               return joined_collection.all if keyword == :all
 
-              scoped_ids = scopable.resolve_keyword(keyword, requester)
+              scoped_ids = scopable.resolve_keyword!(keyword, requester)
               return joined_collection.merge(scopable.scoping_class.where(id: scoped_ids))
               # Report.joins(:city).merge(City.where(id: [1,2,3]))
             else
