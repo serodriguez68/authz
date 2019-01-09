@@ -418,8 +418,40 @@ module Authz
               end
 
             end
-          end
 
+            context 'when the instance is an instance of the scoping class' do
+              # e.g. verifying the creation of a new city in ScopableByCity
+              context 'when the instance has no id (it has not been persisted)' do
+                let!(:old_city) { create(:city) }
+                let(:new_city) { build :city }
+                it 'should return true if the keyword is all' do
+                  kw = :all
+                  expect(
+                    ScopableByCity.within_scope_of_keyword?(new_city, kw, nil)
+                  ).to eq true
+                end
+
+                it 'should return false if the resolved keyword does not include nil' do
+                  allow(ScopableByCity).to(
+                    receive(:resolve_keyword).and_return([old_city.id])
+                  )
+                  expect(
+                    ScopableByCity.within_scope_of_keyword?(new_city, 'foo', nil)
+                  ).to eq false
+                end
+
+                it 'should return false if the resolved keyword includes nil' do
+                  allow(ScopableByCity).to(
+                    receive(:resolve_keyword).and_return([old_city.id, nil])
+                  )
+                  expect(
+                    ScopableByCity.within_scope_of_keyword?(new_city, 'foo', nil)
+                  ).to eq false
+                end
+              end
+            end
+
+          end
         end
       end
     end
