@@ -1,5 +1,8 @@
 h1 Listing reports
-= link_to 'Create New Report', new_report_path, class: 'button' if authorized_path? new_report_path, skip_scoping: true
+= authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true
+
+
+
 table
   thead
     tr
@@ -20,7 +23,7 @@ table
         td = report.city.try :name
         td = report.title
         td = report.body.truncate(100)
-        td = link_to 'Show', report if authorized_path? report_path(report), using: report
-        td = link_to 'Edit', edit_report_path(report) if authorized_path?(edit_report_path(report), using: report)
-        td = link_to('Destroy', report, data: { confirm: 'Are you sure?' }, method: :delete) if authorized_path?(report_path(report), using: report, method: :delete)
+        td = authz_link_to 'Show', report, using: report
+        td = authz_link_to 'Edit', edit_report_path(report), using: report
+        td = authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report
 

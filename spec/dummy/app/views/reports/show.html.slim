@@ -9,15 +9,15 @@ h1 = @report.title
     .cell.medium-4
       p
         strong Clearance:&nbsp;
-        = @report.clearance.name
+        = @report.clearance.try(:name)
     .cell.medium-4
       p
         strong City:&nbsp;
-        = @report.city.name
+        = @report.city.try(:name)
 
 
   p = @report.body
 
-=> link_to 'Edit', edit_report_path(@report) if authorized_path? edit_report_path(@report), using: @report
+=> authz_link_to 'Edit', edit_report_path(@report), using: @report
 '|
-=< link_to 'Back', reports_path if authorized_path? reports_path, skip_scoping: true
+=< authz_link_to 'Back', reports_path, skip_scoping: true

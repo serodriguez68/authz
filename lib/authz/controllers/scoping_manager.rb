@@ -45,7 +45,7 @@ module Authz
           # limitations that forces us to always perform joins inside
           # Scopables::Base.apply_scopable_method_name.
           # See https://github.com/brianhempel/active_record_union
-          # for a gem that implents AR union
+          # for a gem that implements AR union
           scoped = scoped.or(apply_role_scopes(role, base, usr))
         end
         scoped

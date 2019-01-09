@@ -178,12 +178,10 @@ module Authz
                     skip_scoping: skip_scoping)
       end
 
-      # TODO: consider if it is worth creating an authorized_link_to helper that checks for authorization and renders
-      # a link if needed. Check link_to_if  (maybe create it in another file by extending the Application Helper)
-
       included do |includer|
         includer.helper_method :authorized_path?
         includer.helper_method :apply_authz_scopes
+        includer.helper Authz::Helpers::ViewHelpers
       end
 
     end
