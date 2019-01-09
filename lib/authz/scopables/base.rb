@@ -203,6 +203,14 @@ module Authz
         else
           # When instance is not associated to scoping class
           # (e.g report with no city, announcement not available in any city)
+          # TODO: there seems to be and edge case here when the instance_to_check
+          # is the same class as the scoping class.
+          # E.g. I am new york agent with authorization to create cities
+          # I am allowed ScopableByCity New York + nil
+          # The code as is allows me to create an out of scope city "zootopia"
+          # because on creation the zootopia instance in memory has no id yet
+          # (because it has not been created yet) and since the agent is allowed
+          # to scope by city nil, the next line of code allows it
           role_scope_ids.include? nil
         end
       end

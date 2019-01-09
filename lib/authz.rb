@@ -3,6 +3,7 @@ require 'authz/models/rolable'
 require 'authz/controllers/permission_manager'
 require 'authz/controllers/scoping_manager'
 require 'authz/controllers/authorization_manager'
+require 'authz/helpers/view_helpers'
 require 'authz/scopables/base'
 require 'rails_admin'
 

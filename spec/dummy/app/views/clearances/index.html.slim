@@ -1,6 +1,6 @@
 h1 List of all Clearances
 
-= link_to 'Create New Clearance Level', new_clearance_path, class: 'button' if authorized_path? new_clearance_path, skip_scoping: true
+= authz_link_to 'Create New Clearance Level', new_clearance_path, { class: 'button' },  skip_scoping: true
 table
   thead
     tr
@@ -14,6 +14,6 @@ table
       tr
         td = clearance.level
         td = clearance.name
-        td = link_to('Edit', edit_clearance_path(clearance)) if authorized_path?(edit_clearance_path(clearance), using: clearance)
-        td = link_to('Destroy', clearance, data: { confirm: 'Are you sure?' }, method: :delete) if authorized_path?(clearance_path(clearance), method: :delete, using: clearance)
+        td = authz_link_to 'Edit', edit_clearance_path(clearance), using: clearance
+        td = authz_link_to 'Destroy', clearance, { data: { confirm: 'Are you sure?' }, method: :delete },  using: clearance
 
