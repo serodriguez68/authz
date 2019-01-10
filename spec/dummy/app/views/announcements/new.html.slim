@@ -1,0 +1,25 @@
+h1 New Announcement
+
+= form_for @announcement do |f|
+  - if @announcement.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@announcement.errors.count, "error")} prohibited this announcement from being saved:"
+      ul
+        - @announcement.errors.full_messages.each do |message|
+          li = message
+
+  .grid-x.grid-margin-x
+    .cell.medium-12
+      .field
+        = f.label :body
+        = f.text_field :body
+    .cell.medium-12
+      strong Make Available In
+      ul
+        - @cities.each do |c|
+          li
+            label
+              = check_box_tag 'city_ids[]', c.id
+              = c.name
+    .cell.medium-12
+      .actions = f.submit

@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'announcements/index'
+  get 'announcements/new'
+  get 'announcements/create'
+  get 'announcements/destroy'
   mount Authz::Engine => '/authz'
 
   root to: 'visitors#index'
@@ -9,4 +13,5 @@ Rails.application.routes.draw do
   resources :cities, except: [:show]
   resources :reports
   resources :ratings, only: [:index, :new, :create, :destroy]
+  resources :announcements
 end

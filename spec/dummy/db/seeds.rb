@@ -68,7 +68,7 @@ end
 
 # Business Processes
 # ==========================================================================
-controllers_to_include = ["clearances", "cities", "reports", "ratings"]
+controllers_to_include = ["clearances", "cities", "reports", "ratings", 'announcements']
 processes_to_create = ["View", "Manage"]
 controllers_to_include.each do |controller|
   processes_to_create.each do |process|

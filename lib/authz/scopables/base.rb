@@ -53,6 +53,7 @@ module Authz
 
       # Returns an array with the special keywords
       def self.special_keywords
+        # TODO: consider adding keyword none
         [:all]
       end
 
@@ -223,6 +224,11 @@ module Authz
         if instance_scope_ids.any?
           # When instance is associated to scoping class (report with city)
           # Resolve by intersection
+          # TODO: if this becomes a problem, we could add
+          # another parameter indicating the type of the match
+          # e.g. match: :any, match: :all
+          # "any" If announcement is available in 1,2,3 and I have 3 then I can see it
+          # "all" If I am trying to create an annoucement for 1,2, and I only have 1 then it should be denied
           (instance_scope_ids & role_scope_ids).any?
         else
           # When instance is not associated to scoping class
