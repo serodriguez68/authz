@@ -22,26 +22,34 @@ sf = City.create!(name: 'San Francisco')
 # ==========================================================================
 # Agent only creates secret reports
 5.times do
-  Report.create!(user: ny_agent, clearance: secret, city: ny,
-                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
-  Report.create!(user: sf_agent, clearance: secret, city: sf,
-                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  r = Report.create!(user: ny_agent , clearance: secret, city: ny,
+                     title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  2.times { Rating.create!(report: r, score: (1..5).to_a.sample, user: ny_agent) }
+
+  r = Report.create!(user: sf_agent , clearance: secret, city: sf,
+                     title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  2.times { Rating.create!(report: r, score: (1..5).to_a.sample, user: sf_agent) }
+
 end
 
 # Directors creates both secret and top-secret reports
 5.times do
-  Report.create!(user: ny_director, clearance: secret, city: ny,
-                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  r = Report.create!(user: ny_director , clearance: secret, city: ny,
+                     title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  2.times { Rating.create!(report: r, score: (1..5).to_a.sample, user: ny_director ) }
 
-  Report.create!(user: sf_director, clearance: secret, city: sf,
-                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  r = Report.create!(user: sf_director , clearance: secret, city: sf,
+                     title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  2.times { Rating.create!(report: r, score: (1..5).to_a.sample, user: sf_director ) }
 end
 5.times do
-  Report.create!(user: ny_director, clearance: top_secret, city: ny,
-                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  r = Report.create!(user:  ny_director, clearance: top_secret, city: ny,
+                     title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  2.times { Rating.create!(report: r, score: (1..5).to_a.sample, user: ny_director) }
 
-  Report.create!(user: sf_director, clearance: top_secret, city: sf,
-                 title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  r = Report.create!(user:  sf_director, clearance: top_secret, city: sf,
+                     title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph)
+  2.times { Rating.create!(report: r, score: (1..5).to_a.sample, user: sf_director) }
 end
 
 # ==========================================================================
@@ -60,7 +68,7 @@ end
 
 # Business Processes
 # ==========================================================================
-controllers_to_include = ["clearances", "cities", "reports"]
+controllers_to_include = ["clearances", "cities", "reports", "ratings"]
 processes_to_create = ["View", "Manage"]
 controllers_to_include.each do |controller|
   processes_to_create.each do |process|

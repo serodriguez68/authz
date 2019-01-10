@@ -1,0 +1,22 @@
+h1 Listing All Ratings
+
+table
+  thead
+    tr
+      th User
+      th Report
+      th Clearance
+      th City
+      th Rating
+      th
+
+
+  tbody
+    - @ratings.each do |rating|
+      tr
+        td = rating.user_email
+        td = "#{rating.report.id} - #{rating.report_title}"
+        td = rating.clearance_name
+        td = rating.city_name
+        td = rating.score
+        td = authz_link_to 'Destroy', rating, { data: { confirm: 'Are you sure?' }, method: :delete }, using: rating

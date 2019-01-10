@@ -18,6 +18,9 @@ h1 = @report.title
 
   p = @report.body
 
+= authz_link_to 'Rate', new_rating_path(report_id: @report), using: @report
+'|
 => authz_link_to 'Edit', edit_report_path(@report), using: @report
 '|
 =< authz_link_to 'Back', reports_path, skip_scoping: true
+
