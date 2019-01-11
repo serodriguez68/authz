@@ -54,22 +54,75 @@ it is being performed on?
      - **Yes**. Good Match!
      - **No**. Sorry, **Authz** seems not to work for you.
 
-## Installation
-Add this line to your application's Gemfile:
+## Installation and Initial Setup
 
+Add this line to your application's Gemfile:
 ```ruby
 gem 'authz'
 ```
 
-And then execute:
+And then execute in your terminal:
 ```bash
-$ bundle
+$ bundle install
 ```
 
-Or install it yourself as:
+Then install and execute the Authz migrations by executing:
 ```bash
-$ gem install authz
+$ rails authz:install:migrations
+$ rails db:migrate
 ```
+
+Go to `app/models/` and open the model that manages your authenticated users (typically the `User` class) and: 
+- `include` the `Authz::Models::Rolable` module which indicates Authz that `users` can be granted roles 
+(see [Usage](#usage) for more info).
+- Use the `authz_label_method` to define which method should Authz use to label each `user` inside the admin.
+```ruby
+class User < ApplicationRecord
+  include Authz::Models::Rolable 
+  authz_label_method :email
+  # ...
+end
+```
+
+Go to `app/controllers/application_controller.rb` and: 
+- `include Authz::Controllers::AuthorizationManager`. This will make all controllers that inherit from the `ApplicationController`
+capable of performing authorization. Alternatively, you may include this only in the controllers that you want.
+- Optional: Authz will raise an `::NotAuthorized` exception whenever a user attempts
+to perform forbidden action. You may want to `rescue_from` it and define how to handle it gracefully.
+- Optional: As a safeguard you can declare an `around_action :verify_authorized` which will raise an  `::AuthorizationNotPerformedError` 
+exception if a developer forgets to authorize a controller action or to explicitly `skip_authorization` 
+(see [Usage](#usage) for more info).
+Alternatively, you may also do this inside each controller individually (particularly if you are using 
+[devise](https://github.com/plataformatec/devise)).
+- Optional: Authz by default assumes that your controllers have access to `current_user`. If this is not the case, simply
+define a `authz_user` method that points to your user.
+
+```ruby
+class ApplicationController < ActionController::Base
+  before_action :authenticate_user! # Typical for devise
+  include Authz::Controllers::AuthorizationManager
+  rescue_from Authz::Controllers::AuthorizationManager::NotAuthorized, with: :unauthorized_handler
+  # around_action :verify_authorized # Optional
+  
+  #... 
+
+  private
+  
+  def unauthorized_handler
+    msg = 'Ooops! It seems that you are not authorized to do that!'
+    respond_to do |format|
+      format.html { redirect_back fallback_location: root_url, alert: msg }
+      format.js{ render(js: "alert('#{msg}');") }
+    end
+  end
+
+  def authz_user
+    current_alien
+  end
+end
+```
+
+You are done with installation. The next step is to create some **Scoping Modules**.
 
 ## Usage
 This library has 2 types of users: 
