@@ -19,11 +19,12 @@ Get a feel for **Authz** with this [video overview (coming soon)](TO-DO).
 
 
 ## Is Authz A Good Match For My Needs?
-Authz is not a good match for everyone since applications can have widely different authorization requirements. 
-Use the following questions to help you assess if Authz is a good match for you.
+Authz was built for applications that need a particular type of authorization which is very common 
+and relatively simple. However, there are many other types of authorization rules that are out of 
+the scope of this gem. The following questions will help you assess if Authz is a good match for you.
  
 1. Are you expecting to use Authz to authorize other applications other than the application you installed it in? 
-(e.g. Using it as an authorization service for another app.)
+(e.g. Using it as an authorization service for another app)
     - **Yes**: Sorry, Authz was built to provide authorization for its host app only.
     - **No**: Good match! 
 
