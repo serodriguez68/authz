@@ -6,6 +6,7 @@
 Authz provides you with:
 - An **authorization admin** interface that allows non-developers to configure and manage how authorization works for your app. 
 The admin makes it very easy to answer questions like *"who can create top-secret reports"?* or *"what can John Doe do?"* 
+- An **opinionated** approach on how to structure your permissions that promotes clarity and maintainability.
 - An easy-to-use API that allows developers to integrate *Authz* into their apps with **very little code** while providing
 them with the tools they need. 
   - *"Can I make my views dynamic depending on the user's authorization?"* Yup!
@@ -13,19 +14,18 @@ them with the tools they need.
   - *"The role structure inside my organization changes frequently and I spend a lot of time updating the 'who-can-do-what' 
   code to keep up with the changes.'"* No worries. Use the admin to make the 
   tweaks you need, no code changes.
-- An **opinionated** approach on how to structure your permissions that promotes clarity and maintainability.
 
-Get a feel for **Authz** with this [video overview](TO-DO).
+Get a feel for **Authz** with this [video overview (coming soon)](TO-DO).
 
 
 ## Is Authz A Good Match For My Needs?
 The authorization needs of different applications can vary widely and authorization requirements can get 
  indistinguishably close to business logic. 
  
- We recognize that **Authz** is not a good match for everyone. That is why we have designed the 
+ **Authz** is not a good match for everyone. That is why we have designed the 
  following questions to help you assess if **Authz** is a good match for you.
  
-1. Are you expecting to use **Authz** to authorize other applications **other** than the application you installed it in? (e.g. Using it as an authorization service for another app.)
+1. **Are you expecting to use Authzto authorize other applications other than the application you installed it in? (e.g. Using it as an authorization service for another app.)**
     - **Yes**: Sorry, **Authz** is not for you.
     - **No**: Good match! 
 
@@ -87,15 +87,15 @@ end
 Go to `app/controllers/application_controller.rb` and: 
 - `include Authz::Controllers::AuthorizationManager`. This will make all controllers that inherit from the `ApplicationController`
 capable of performing authorization. Alternatively, you may include this only in the controllers that you want.
-- Optional: Authz will raise an `::NotAuthorized` exception whenever a user attempts
-to perform forbidden action. You may want to `rescue_from` it and define how to handle it gracefully.
+- Optional: Authz will raise a `::NotAuthorized` exception whenever a user attempts
+to perform a forbidden action. You may want to `rescue_from` it and define how to handle it gracefully.
 - Optional: As a safeguard you can declare an `around_action :verify_authorized` which will raise an  `::AuthorizationNotPerformedError` 
 exception if a developer forgets to authorize a controller action or to explicitly `skip_authorization` 
 (see [Usage](#usage) for more info).
 Alternatively, you may also do this inside each controller individually (particularly if you are using 
 [devise](https://github.com/plataformatec/devise)).
-- Optional: Authz by default assumes that your controllers have access to `current_user`. If this is not the case, simply
-define a `authz_user` method that points to your user.
+- Optional: Authz assumes that your controllers have access to `current_user`. If this is not the case, simply
+define a `authz_user` method that points to your current user.
 
 ```ruby
 class ApplicationController < ActionController::Base
