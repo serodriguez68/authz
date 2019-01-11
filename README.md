@@ -19,40 +19,41 @@ Get a feel for **Authz** with this [video overview (coming soon)](TO-DO).
 
 
 ## Is Authz A Good Match For My Needs?
-The authorization needs of different applications can vary widely and authorization requirements can get 
- indistinguishably close to business logic. 
+Authz is not a good match for everyone since applications can have widely different authorization requirements. 
+Use the following questions to help you assess if Authz is a good match for you.
  
- **Authz** is not a good match for everyone. That is why we have designed the 
- following questions to help you assess if **Authz** is a good match for you.
- 
-1. **Are you expecting to use Authzto authorize other applications other than the application you installed it in? (e.g. Using it as an authorization service for another app.)**
-    - **Yes**: Sorry, **Authz** is not for you.
+1. Are you expecting to use Authz to authorize other applications other than the application you installed it in? 
+(e.g. Using it as an authorization service for another app.)
+    - **Yes**: Sorry, Authz was built to provide authorization for its host app only.
     - **No**: Good match! 
 
-2. Do you need to grant authorization considering factors other than **the action** that is being performed and **the resource**
-it is being performed on?
+2. Do you need to grant authorization considering factors other than **the action** that is being performed 
+and **the instance/resource** it is being performed on?
     - For example:
         - Users must be denied access after 10 pm.
         - Users must be granted access based on their IP address.
         - Customers must be denied access when the transaction amount is greater than $5000.
-    - **Yes**. If these types of rules are not very common in your app, you may still benefit from **Authz** provided that you
+    - **Yes**. If these types of rules are not very common in your app, you may still benefit from Authz provided that you
  take care of these cases yourself.  If they are common, you are better off checking out other projects like 
  [Pundit](https://github.com/varvet/pundit#policies) or [CanCanCan](https://github.com/CanCanCommunity/cancancan).
     - **No**: Good match!
 
-3. Here are some examples of rules that can be configured in **Authz**. Do they look compatible with your needs?
+3. Here are some examples of rules that can be configured in Authz. Do they look compatible with your needs?
     - Examples:
         - The *general director* **role** must be able to *index/show/new/create/...* the **reports** from **all cities**
         and **all departments**.
         - The *regional director* **role** must be able to *index/show/new/create/...* the **reports** from **their city**
         and **all departments**.
-        - The *regional auditor* **role** must only be able to *index/show* (view) the **reports** of the **their city**
+        - The *regional auditor* **role** must only be able to *index/show* the **reports** of the **their city**
         and **all departments**.
         -  The *writer* **role** must be able to *index/show/new/create/...* the **reports** from **their city**
         and **their department.**
-        - *John Doe* can simultaneously be a *regional auditor* in San Francisco and a *writer* in New York for the 'Sports' department.
+        - *John Doe* can simultaneously be a *regional auditor* in San Francisco and a *writer* 
+        in New York for the 'Sports' department.
      - **Yes**. Good Match!
-     - **No**. Sorry, **Authz** seems not to work for you.
+     - **No**. Sorry, Authz was built to support rules that involve **actions** being performed on **resources**.
+     **Roles** are authorized to perform those actions on a **certain subest of those resources**, like the reports 
+     that belong to New York and the Sports Department.
 
 ## Installation and Initial Setup
 
