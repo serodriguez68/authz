@@ -1,5 +1,8 @@
 # Authz
+[![Gem Version](https://badge.fury.io/rb/authz.svg)](https://badge.fury.io/rb/authz)
 [![Build Status](https://travis-ci.com/serodriguez68/authz.svg?token=qXv4Wq7cPeFBwcByqvAc&branch=develop)](https://travis-ci.com/serodriguez68/authz)
+
+DISCLAIMER: This is WIP so stay tuned!
 
 **Authz** is an **opinionated** *almost*-**turnkey** solution for managing **authorization** in your Rails application.
 
@@ -127,20 +130,27 @@ end
 You are done with installation. The next step is to create some **Scoping Modules**.
 
 ## Usage
-This library has 2 types of users: 
+This library has 2 types of users and therefore there is a usage section for each:
 - Authorization admins (non-developers), who will manage the system once it is deployed.
 - Developers, in charge of integrating the library into their application. 
 
+Before jumping into the details for each user type, it is very important that both
+**developers** and **admins** understand how authorization rules are organised
+in Authz.
+
+### How Authorization Rules Work in Authz 
+TODO: some content about how grouping of permissions and scopables work
 
 ### Usage for Authorization Admins
-#### The Opinionated Structure
+- 3 activities that admins do
 #### Cold-start
 #### Managing the System
 #### Keeping the System Healthy
 
 
 ### Usage for Developers
-
+- Controllers
+- Views
 
 ## License
 Licensed under the MIT license, see the separate LICENSE.txt file.
