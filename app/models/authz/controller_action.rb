@@ -17,6 +17,8 @@ module Authz
     has_many :roles, through: :business_processes
     has_many :role_grants, through: :roles
 
+    accepts_nested_attributes_for :business_processes
+
     # Class Methods
     # ==========================================================================
     # Introspects the application's routes and returns a list of hashes of all

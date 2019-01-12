@@ -14,3 +14,6 @@ section.section
                   = f.submit 'Save', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
+javascript:
+  $('form').validate()
+  $('#controller_action_business_process_ids').multiSelect()

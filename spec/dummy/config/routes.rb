@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :clearances, except: [:show]
   resources :cities, except: [:show]
   resources :reports
+  resources :clients
 end
