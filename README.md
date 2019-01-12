@@ -134,7 +134,8 @@ end
 ```
 
 You are done with installation. The next step is to learn 
-[how authorization rules work in Authz](#how-authorization-rules-work-in-authz).
+[how authorization rules work in Authz](#how-authorization-rules-work-in-authz). If you already know this, go to the
+[Scopables](#scopables) section.
 
 ## Usage
 This library has 2 types of users and therefore there is a usage section for each:
@@ -239,7 +240,115 @@ not for you.**
 
 
 ### Usage for Developers
+The authorization logic bits inside your app are typically used in 3 places: [Scopables](#scopables), 
+[Controllers](#controllers) and [Views](#views). 
+
 #### Scopables
+This is the first thing to do if you have just installed the gem.
+
+Start by identifying which are the [Scoping Classes](#scoping-rules) inside your app that you need to meet your 
+authorization needs. For the rest of this section we will carry on with our newspaper example where the scoping classes
+are `City` and `Department`.
+
+A **Scopable** is a plain old ruby module that extends from `Authz::Scopables::Base` that is used to indicate to Authz
+which keywords are available for the configuration of `ScopingRules` and what do they mean.
+ 
+Given that `City` is a **scoping class**, we need to create a `ScopableByCity` module (note the naming convention) 
+that must define two methods:
+- `#available_keywords` must return an array of strings with the available keywords for scoping by city.
+- `#resolve_keyword` must translate that keyword into an array of the ids of the cities that are available for that
+keyword.  Note that it must take 2 arguments `keyword` and `requester` (the instance of the user that is being 
+authorized).
+    - If you add `+[nil]` to the array of ids resolved, you allow the bearer of the keyword to have access to
+    resources that are NOT associated with any city, like reports or comments with no city.
+- You can use the special keyword `'All'` that will give the bearers access to all cities. You don't need to 
+resolve `All` in your `#resolve_keyword` method.
+
+We recommend creating an `app/scopables` directory to place these, but you can put them wherever you want.
+
+```ruby
+module ScopableByCity
+  extend Authz::Scopables::Base
+  
+  # Must return an array of Strings
+  def self.available_keywords
+    # You query the DB to generate available keyword
+    City.all.pluck(:name) + ['All']
+    
+    # ... or you can define some custom keywords that make sense for your needs
+    %w[high-altitude low-altitude]
+    
+    # ... many applications allow some users access only to the resources they own
+    # e.g. access to "my cities"
+    %w[mine All]
+  end
+  
+  # Must return an array if ids
+  def self.resolve_keyword(keyword, requester)
+    # If your keyword is an attribute, you can resolve it like this  
+    City.where('LOWER(name) IS ?', keyword.downcase).pluck(:id) + [nil]
+   
+    # ... Or if it is something else
+    if keyword == 'high-altitude'
+     City.get_high_altitude.pluck(:id)
+    elsif keyword == 'low-altitude'
+      City.get_low_altitude.pluck(:id)
+    end 
+    
+    # ... You can even use the requester to resolve using anything of your domain
+    if keyword == 'mine'
+      requester.cities.pluck(:id) 
+    end
+  end
+
+end
+``` 
+
+The next step is to indicate to Authz which models of your app need to be scoped by city for authorization purposes.
+For example, if we want to grant or deny authorization for `Reports` based on the  city scoping rule, we must
+include the `ScopableByCity` in the `Report` class.
+- The `Report` class must have an active record association to `City`. It can be any type of association,
+including `through: :other_model`.
+- Authz will use automatically look for associations based on the name of the Scopable (`:city` and `:cities` in
+this case). If your association name is different or if you have both `:city` and `:cities` associations, indicate the
+name of the association to use using `#set_scopable_by_city_association_name`.
+
+```ruby
+class Report < ApplicationRecord
+  belongs_to :city
+  include ScopableByCity
+  # set_scopable_by_city_association_name :ciudad
+end
+```
+
+You might want to determine access to instances of a class based on more than one `ScopingRule`. For example, for
+reports we want to grant access only if the requester has the correct `City` and `Department`.
+
+This is very easy to achieve. Create a `ScopableByDepartment` module and include it in the `Report` class.
+```ruby
+class Report < ApplicationRecord
+  belongs_to :city
+  belongs_to :department
+  include ScopableByCity
+  include ScopableByDepartment
+end
+```
+
+The **scoping classes** like `City` and `Department` are trivially scopable by themselves. For example only users
+with access to the `City` instance 'New York' will be able to perform actions on it (like update it).
+```ruby
+class City < ApplicationRecord
+  # No association needed of course...
+  include ScopableByCity 
+end
+```
+
+Note that for a given role, the defined scoping rules apply equally on all models. For example, given that the
+'ny sports editor' role has a City scoping rule of 'New York' and a Department scoping rule of 'Sports' these rules
+will apply whenever a 'ny sports editor' is trying to act upon a `Report` or `Comment`. 
+
+<!--- Modify this if we add the functionality of default keywords and overrides for specific actions  --->
+
 #### Controllers
 #### Views
 
