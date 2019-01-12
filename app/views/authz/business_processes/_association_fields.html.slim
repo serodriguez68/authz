@@ -1,0 +1,9 @@
+.field
+  = f.label :business_process_ids, class: 'label'
+  .control
+    = f.select 'role_ids', options_for_select(::Authz::Role.all.pluck(:name, :id), f.object.role_ids), {}, { multiple: true }
+
+.field
+  = f.label :controller_action_ids, class: 'label'
+  .control
+    = f.select 'controller_action_ids', options_for_select(::Authz::ControllerAction.all.map{|ca| [ca.to_s, ca.id]}, f.object.controller_action_ids), {}, { multiple: true }

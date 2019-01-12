@@ -8,9 +8,15 @@ section.section
         .card
           .card-content
             = form_for @business_process do |f|
-              = render 'fields', f: f
+              = render 'basic_fields', f: f
+              = render 'association_fields', f: f
               .field
                 .control
                   = f.submit 'Create', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
+
+javascript:
+  $('form').validate()
+  $('#business_process_role_ids').multiSelect()
+  $('#business_process_controller_action_ids').multiSelect()

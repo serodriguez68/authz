@@ -48,7 +48,9 @@ module Authz
       params.require(:business_process)
             .permit(
               :name,
-              :description
+              :description,
+              controller_action_ids: [],
+              role_ids: []
             )
     end
   end
