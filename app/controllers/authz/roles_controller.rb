@@ -12,6 +12,7 @@ module Authz
       @associated_controller_actions = @role.controller_actions.distinct.page(1)
       @associated_business_processes = @role.business_processes.distinct.page(1)
       @authorized_instances = @role.role_grants.page(1)
+
     end
 
     def new

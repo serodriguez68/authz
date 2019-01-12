@@ -8,6 +8,6 @@ section.section
         - @rolables.each do |rolable|
           tr
             td = rolable.id
-            td = rolable.email
+            td = rolable.authz_label
             td = link_to send("#{rolable.model_name.singular}_path", rolable) do
               i.fa-chevron-right
