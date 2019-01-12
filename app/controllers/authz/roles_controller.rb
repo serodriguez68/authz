@@ -9,8 +9,8 @@ module Authz
 
     def show
       @role = Role.find(params[:id])
-      @associated_controller_actions = @role.controller_actions.distinct.page(params[:controller_actions_page]).per(1)
-      @associated_business_processes = @role.business_processes.distinct.page(params[:business_processes_page]).per(1)
+      @associated_controller_actions = @role.controller_actions.distinct.page(params[:controller_actions_page]).per(10)
+      @associated_business_processes = @role.business_processes.distinct.page(params[:business_processes_page]).per(10)
 
     end
 

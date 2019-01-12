@@ -9,8 +9,8 @@ module Authz
     def show
       @rolable = rolable.find(params[:id])
       @associated_roles = @rolable.roles.page(1)
-      @associated_business_processes = @rolable.business_processes.page(1)
-      @associated_controller_actions = @rolable.controller_actions.page(1)
+      @associated_business_processes = @rolable.business_processes.page(params[:business_processes_page])
+      @associated_controller_actions = @rolable.controller_actions.page(params[:controller_actions_page])
     end
 
     def edit

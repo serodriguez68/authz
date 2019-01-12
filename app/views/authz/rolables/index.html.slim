@@ -3,11 +3,12 @@
 
 section.section
   .container
-    table.table.is-fullwidth.is-striped.is-hoverable
-      tbody
-        - @rolables.each do |rolable|
-          tr
-            td = rolable.id
-            td = rolable.authz_label
-            td = link_to send("#{rolable.model_name.singular}_path", rolable) do
-              i.fa-chevron-right
+    .card
+      table.table.is-fullwidth.is-striped.is-hoverable
+        tbody
+          - @rolables.each do |rolable|
+            tr
+              td = rolable.id
+              td = rolable.authz_label
+              td = link_to send("#{rolable.model_name.singular}_path", rolable) do
+                i.fa-chevron-right
