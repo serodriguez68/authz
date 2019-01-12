@@ -4,14 +4,13 @@ module Authz
   class RolesController < ApplicationController
 
     def index
-      @roles = Role.all.page(params[:page])
+      @roles = Role.all.page(params[:roles_page])
     end
 
     def show
       @role = Role.find(params[:id])
-      @associated_controller_actions = @role.controller_actions.distinct.page(1)
-      @associated_business_processes = @role.business_processes.distinct.page(1)
-      @authorized_instances = @role.role_grants.page(1)
+      @associated_controller_actions = @role.controller_actions.distinct.page(params[:controller_actions_page]).per(1)
+      @associated_business_processes = @role.business_processes.distinct.page(params[:business_processes_page]).per(1)
 
     end
 

@@ -6,20 +6,16 @@
 section.section
   .columns
     .column
-      .card
-        .card-content
-          - if @associated_business_processes.blank?
-            = render 'authz/business_processes/empty_association', parent_edit_link: edit_controller_action_path(@role)
-          - else
-            h2.title.is-4 Business Processes
-            = render 'authz/business_processes/table', business_processes: @associated_business_processes
+      h2.title.is-4 Business Processes
+      - if @associated_business_processes.blank?
+        = render 'authz/business_processes/empty_association', parent_edit_link: edit_controller_action_path(@role)
+      - else
+        = render 'authz/business_processes/table', business_processes: @associated_business_processes
     .column
-      .card
-        .card-content
-          - if @associated_controller_actions.blank?
-            = render 'authz/roles/empty_association', parent_edit_link: edit_controller_action_path(@role)
-          - else
-            h2.title.is-4 Controller Actions
-            = render 'authz/roles/table', roles: @associated_controller_actions
+      h2.title.is-4 Controller Actions
+      - if @associated_controller_actions.blank?
+        = render 'authz/controller_actions/empty_association', parent_edit_link: edit_controller_action_path(@role)
+      - else
+        = render 'authz/controller_actions/table', controller_actions: @associated_controller_actions
   - Authz.rolables.each do |rolable|
     = render 'authz/rolables/table_from_association', rolable: rolable, parent_instance: @role

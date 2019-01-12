@@ -6,13 +6,11 @@
 section.section
   .columns
     .column
-      .card
-        .card-content
-          - if @associated_business_processes.blank?
-            = render 'authz/business_processes/empty_association', parent_edit_link: edit_controller_action_path(@controller_action)
-          - else
-            h2.title.is-4 Business Processes
-            = render 'authz/business_processes/table', business_processes: @associated_business_processes
+      - if @associated_business_processes.blank?
+        = render 'authz/business_processes/empty_association', parent_edit_link: edit_controller_action_path(@controller_action)
+      - else
+        h2.title.is-4 Business Processes
+        = render 'authz/business_processes/table', business_processes: @associated_business_processes
     .column
       - if @associated_roles.blank?
         = render 'authz/roles/empty_association', parent_edit_link: edit_controller_action_path(@controller_action)

@@ -3,14 +3,13 @@ require_dependency "authz/application_controller"
 module Authz
   class ControllerActionsController < ApplicationController
     def index
-      @controller_actions = ControllerAction.all.page(params[:page])
+      @controller_actions = ControllerAction.all.page(params[:controller_actions_page])
     end
 
     def show
       @controller_action = ControllerAction.find(params[:id])
-      @associated_business_processes = @controller_action.business_processes.distinct.page(1)
-      @associated_roles = @controller_action.roles.distinct.page(1)
-      @authorized_instances = @controller_action.role_grants.page(1)
+      @associated_business_processes = @controller_action.business_processes.distinct.page(params[:business_processes_page]).per(1)
+      @associated_roles = @controller_action.roles.distinct.page(params[:roles_page]).per(1)
     end
 
     def new
