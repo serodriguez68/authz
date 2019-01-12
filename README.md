@@ -349,9 +349,120 @@ will apply whenever a 'ny sports editor' is trying to act upon a `Report` or `Co
 dealing with `Reports` you want to apply the 'New York' keyword and when dealing with `Comments` you want to apply
 the 'San Francisco" keyword, you need to define 2 different roles (**they probably are 2 different roles**).
 
-<!--- Modify this if we add the functionality of default keywords and overrides for specific actions  --->
+<!--- TODO: Modify this if we add the functionality of default keywords and overrides for specific actions  --->
 
 #### Controllers
+
+##### `authorize`
+
+The `authorize` method is used to perform authorization on a controller action. You must supply the instance
+on which the action is trying to be executed using the `using: @report` argument.
+ 
+```ruby
+class ReportsController < ApplicationController
+  #...
+  def show
+    @report = Report.find(params[:id])
+    authorize using: @report
+    # Will raise Authz::Controllers::AuthorizationManager::NotAuthorized
+    # if not authorized 
+  end
+end
+```
+
+Authz will check if the current user has any role that allows him to do the action `Report#show` on the instance
+`@report` taking into account the role's *Scoping Rules*. 
+
+<!--- TODO: If we relax the authorize method to allow for passing custom actions, put that here  --->
+
+For some actions, we really don't have a sensible instance to use for authorization. For these cases we can
+perform authorization by checking only the permission to do the action using the `skip_scoping: true` argument.
+
+```ruby
+class ReportsController < ApplicationController
+  #...
+  def new
+     authorize skip_scoping: true
+     @report = Report.new
+  end
+  
+  def create
+    @report = Report.new(report_params)
+    @report.user = current_user
+    authorize using: @report
+
+    if @report.save
+      redirect_to @report, notice: 'Report was successfully created.'
+    else
+      render :new
+    end
+  end
+end
+```
+
+For the most part, you can keep the traditional coding style of Rails' Restful controller actions 
+and just include `authorize`. 
+Notable exceptions are actions that attempt to `#update` (and in some cases `#create`) an instance since we want to 
+make sure that the instance is within the **scoping rules** _after_ the changes are applied. For example, a 
+'ny sports writer' should not be able to update the city of a `report` to 'San Francisco'. 
+
+For simple cases we can use `.assign_attributes` and Authz will rely on Rails' in memory association proxies to 
+determine authorization.
+```ruby
+def update
+    @report.assign_attributes(report_params)
+    authorize using: @report
+    if @report.save
+      redirect_to @report, notice: 'Report was successfully updated.'
+    else
+      render :edit
+    end
+ end
+```
+
+For complex cases, where we *have* to save the `@report` *first* to be able to find the `City` to which it ends
+ up associated to, you can wrap your controller action inside a database transaction that will be
+rolledback if `authorize` raises an exception. Examples of these 'complex cases' are:
+- Callbacks that affect the instance's association to the **scoping classes** during the `save` lifecycle.
+- Deep associations that rely on the creation of many intermediate instances to find out the resulting
+associated `City`.
+- Overriding of `ActiveRecord`'s `update`, `save`, `create` or similar methods that manipulate the instance's
+association to the **scoping classes**.
+- Any other path / quirk / hack that does not allow `ActiveRecord` to pick up the association in memory.   
+
+```ruby
+def update
+    ActiveRecord::Base.transaction do
+        @report = Report.find(params[:id])
+        if @report.update(report_params)
+          authorize using: @report # Raises if not authorized
+          redirect_to @report, notice: 'Report was successfully updated.'
+        else
+          render :edit
+        end
+     end
+ end
+``` 
+ 
+##### `apply_authz_scopes`
+When retrieving collections from classes that are **scopable by something** we can retrieve only the instances
+the `current_user`'s roles have access to using the `apply_authz_scopes` method.
+
+For example, if we want to retrieve the `Reports` that are within the `current_user`'role's scoping rules for
+`City` and `Department`:
+
+```ruby
+def index
+    authorize skip_scoping: true
+    @reports = apply_authz_scopes(on: Report) # Returns an AR relation
+                 .includes(:user, :city, :clearance)
+                 .order('cities.name ASC')
+end
+```
+`apply_authz_scopes` takes a `class` or an  `ActiveRecord::Relation` and applies the applicable scoping rules
+on top of the given argument. The method returns an `ActiveRecord::Relation` so it can be chained with other
+query methods. 
+
 #### Views
 
 
