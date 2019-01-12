@@ -75,6 +75,14 @@ $ rails authz:install:migrations
 $ rails db:migrate
 ```
 
+Go to `config/routes.rb` and mount the Authz engine admin on the path of your choice:
+```ruby
+Rails.application.routes.draw do
+  mount Authz::Engine => '/authz'
+  # ...
+end
+```
+
 Go to `app/models/` and open the model that manages your authenticated users (typically the `User` class) and: 
 - `include` the `Authz::Models::Rolable` module which indicates Authz that `users` can be granted roles 
 (see [Usage](#usage) for more info).
@@ -218,7 +226,7 @@ _Note to developers: if you are thinking "NY Sports Editor and SF Sports Editor,
 repetition..." take a look at the [Scopables](#scopables) section. It is simple to DRY this up, it's just 
 easier to explain the concepts this way._
 
-These **Scoping Classes** are typically exists inside the application's domain logic or they are easy enough to 
+These **Scoping Classes** typically exists inside the application's domain logic or are easy enough to 
 implement and fit nicely into the domain. 
 **If you can't express you authorization rules in terms of Scoping Classes then Authz is probably 
 not for you.**
