@@ -199,6 +199,12 @@ module Authz
             expect(Report.apply_scopable_by_city(keyword, nil)).to match_array(expected)
           end
 
+          it 'should return no records when the resolve_keyword method returns an empty array' do
+            keyword = 'something that returns empty'
+            allow(ScopableByCity).to receive(:resolve_keyword!).and_return([])
+            expect(Report.apply_scopable_by_city(keyword, nil)).to match_array(Report.none)
+          end
+
           it 'should return records not associated with the scoping class when the keyword resolved ids contain nil' do
             orphan_report = create(:report, city: @in_city, clearance: @clearance)
             orphan_report.update_columns(city_id: nil)
