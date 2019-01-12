@@ -2,8 +2,6 @@
 [![Gem Version](https://badge.fury.io/rb/authz.svg)](https://badge.fury.io/rb/authz)
 [![Build Status](https://travis-ci.com/serodriguez68/authz.svg?token=qXv4Wq7cPeFBwcByqvAc&branch=master)](https://travis-ci.com/serodriguez68/authz)
 
-DISCLAIMER: This is WIP so stay tuned!
-
 **Authz** is an **opinionated** *almost*-**turnkey** solution for managing **authorization** in your Rails application.
 
 Authz provides you with:
@@ -145,14 +143,14 @@ In Authz `users` are granted one or many `roles`. Roles determine what a user is
 _John_ may only _edit blog post #1_ if he has been granted at least one role that is authorized to do so.
 As a consequence, a `user` with no roles cannot do anything.
 
-A `role` is granted **permission** over multiple actions and the **scope** of instances 
-on which it can exercise those actions. [Permissions](#permissions) and [Scoping Rules](#scoping-rules) are the 
-core components that determine if an **action** over a **resource** is authorized. 
+A `role` has **permission** to perform some actions on a certain **scope** (set) of instances.
+[Permissions](#permissions) and [Scoping Rules](#scoping-rules) are the 
+core components to determine if an **action** over a **resource** is authorized. 
 The next figure illustrates this with an example.
 
 <div align="center">
     <center>
-        <img src="/readme_images/roles_permissions_scopes_struct.png" width="800"/>
+        <img src="/readme_images/intro_to_structure.png" width="800"/>
     </center>
 </div>
 
@@ -160,16 +158,16 @@ Lets dive a little deeper into [Permissions](#permissions) and [Scoping Rules](#
 
 #### Permissions
 **Permissions** is the term we use to denote what a role can do. Permissions are actually organised in a
-hierarchical structure designed to make the system intuitive and manageable.
+hierarchical structure designed to make the system intuitive and maintainable.
 
 At the most fine-grained level we find the `ControllerActions`. Simply put, a `ControllerAction` is an 
-_action_ that can be performed over a **resource type**; for example `Reports#update` indicates the action 
-of updating resources of type _Report_.
+_action_ that can be performed over a **resource class**; for example `Reports#update` indicates the action 
+of updating resources of class _Report_.
 
 _`ControllerActions` are a common thing in the developer world so don't worry, your developers will help you set-up 
 this part._
 
-`ControllerActions` are grouped into `BusinessProcesses` that denote a _real-life_ process
+`ControllerActions` are grouped into `BusinessProcesses`, each reflecting a _real-life_ process
 that your business has. For example, a newspaper might have _"publish reports"_ and _"write reports"_ processes, each
 requiring a different set of controller actions to get the job done.
 
@@ -181,11 +179,50 @@ example.
          <img src="/readme_images/permissions_hierarchy.png" width="800"/>
      </center>
  </div>
+ 
+ We strongly recommend thinking about your authorization needs in terms of _actions_, _business processes_ and _roles_
+ as this structure is easy to explain to other non-technical stakeholders.  However, you are more than welcome to
+ bend this suggestion and use the `BusinessProcesses` and `Roles` as mere groupings in any way it makes sense for
+ your business.
+
 
 #### Scoping Rules
+**Permissions** only define what a given role can do over certain **resource classes**. `ScopingRules` determine 
+on which entities those permissions can be applied. This is better explained through an example.
 
+Lets imagine that our multi-city newspaper application needs to implement the 
+following authorization rules:
+- As a _"New York Sports Editor"_ I need to be able to perform the _"publish report"_ and _"moderate comments"_ 
+business processes only for the Sports department and for New York.
+- As a _"San Fran Sports Editor"_ ... same as above... only for the Sports department and for San Francisco.
+- As a _"Director"_ I need to be able to perform all business processes for all cities and for all departments.
 
+The application for this newspaper needs multiple models to work: the `Cities` 
+where it operates, the `Departments` in which the business is internally divided, the `Reports` they produce, 
+the `Readers`that have paid for a subscription, the `Comments` the readers leave on the reports, etc. 
+However, despite all these models, only the information about the `City` and the `Department` is relevant to
+the authorization rules.
 
+We call these classes **Scoping Classes** as they define the scope of the permissions granted to a role. For the
+case of the "New York Sports Editor" role, the permissions to _"publish reports"_ and to _"moderate comments"_ are scoped 
+down to `Reports` and `Comments` that belong to "New York" `City` and the "Sports" `Department`. We refer to these
+as the **Scoping Rules**. The next figure illustrates how everything fits together. 
+
+<div align="center">
+     <center>
+         <img src="/readme_images/how_everything_fits_together.png" width="800"/>
+     </center>
+ </div>
+ 
+_Note to developers: if you are thinking "NY Sports Editor and SF Sports Editor, that looks like a unnecessary 
+repetition..." take a look at the [Scopables](#scopables) section. It is simple to DRY this up, it's just 
+easier to explain the concepts this way._
+
+These **Scoping Classes** are typically exists inside the application's domain logic or they are easy enough to 
+implement and fit nicely into the domain. 
+**If you can't express you authorization rules in terms of Scoping Classes then Authz is probably 
+not for you.**
+   
 ### Usage for Authorization Admins
 - 3 activities that admins do
 #### Cold-start
@@ -194,8 +231,14 @@ example.
 
 
 ### Usage for Developers
-- Controllers
-- Views
+#### Scopables
+#### Controllers
+#### Views
+
+
+## Good Practices
+- Visibility is important. Security holes are often related to people not understanding the system. 
+- Minimum set of authorized stuff
 
 ## License
 Licensed under the MIT license, see the separate LICENSE.txt file.
