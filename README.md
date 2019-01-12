@@ -146,12 +146,39 @@ _John_ may only _edit blog post #1_ if he has been granted at least one role tha
 As a consequence, a `user` with no roles cannot do anything.
 
 A `role` is granted **permission** over multiple actions and the **scope** of instances 
-on which it can exercise those actions. **Permissions** and **Scoping Rules** are the core components that
-determine if an **action** over a **resource** is authorized. The next figure illustrates this with an
-example.
+on which it can exercise those actions. [Permissions](#permissions) and [Scoping Rules](#scoping-rules) are the 
+core components that determine if an **action** over a **resource** is authorized. 
+The next figure illustrates this with an example.
 
-<img src="/readme_images/roles_permissions_scopes_struct.png" width="600"/>
+<center>
+    <img src="/readme_images/roles_permissions_scopes_struct.png" width="800"/>
+</center>
 
+Lets dive a little deeper into [Permissions](#permissions) and [Scoping Rules](#scoping-rules).
+
+#### Permissions
+**Permissions** is the term we use to denote what a role can do. Permissions are actually organised in a
+hierarchical structure designed to make the system intuitive and manageable.
+
+At the most fine-grained level we find the `ControllerActions`. Simply put, a `ControllerAction` is an 
+_action_ that can be performed over a **resource type**; for example `Reports#update` indicates the action 
+of updating resources of type _Report_.
+
+_`ControllerActions` are a common thing in the developer world so don't worry, your developers will help you set-up 
+this part._
+
+`ControllerActions` are grouped into `BusinessProcesses` that denote a _real-life_ process
+that your business has. For example, a newspaper might have _"publish reports"_ and _"write reports"_ processes, each
+requiring a different set of controller actions to get the job done.
+
+`Roles` are granted the power to execute one or many `BusinessProcesses`. The next figure illustrates this with an
+example. 
+
+ <center>
+     <img src="/readme_images/permissions_hierarchy.png" width="800"/>
+ </center>
+
+#### Scoping Rules
 
 
 
