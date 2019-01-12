@@ -1,6 +1,6 @@
 # Authz
 [![Gem Version](https://badge.fury.io/rb/authz.svg)](https://badge.fury.io/rb/authz)
-[![Build Status](https://travis-ci.com/serodriguez68/authz.svg?token=qXv4Wq7cPeFBwcByqvAc&branch=develop)](https://travis-ci.com/serodriguez68/authz)
+[![Build Status](https://travis-ci.com/serodriguez68/authz.svg?token=qXv4Wq7cPeFBwcByqvAc&branch=master)](https://travis-ci.com/serodriguez68/authz)
 
 DISCLAIMER: This is WIP so stay tuned!
 
@@ -54,8 +54,8 @@ and **the instance/resource** it is being performed on?
         and **their department.**
         - *John Doe* can simultaneously be a *regional auditor* in San Francisco and a *writer* 
         in New York for the 'Sports' department.
-     - **Yes**. Good Match!
-     - **No**. Sorry, Authz was built to support rules that involve **actions** being performed on **resources**.
+     - **Yes**: Good Match!
+     - **No**: Sorry, Authz was built to support rules that involve **actions** being performed on **resources**.
      **Roles** are authorized to perform those actions on a **certain subest of those resources**, like the reports 
      that belong to New York and the Sports Department.
 
@@ -127,7 +127,8 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-You are done with installation. The next step is to create some **Scoping Modules**.
+You are done with installation. The next step is to learn 
+[how authorization rules work in Authz](#how-authorization-rules-work-in-authz).
 
 ## Usage
 This library has 2 types of users and therefore there is a usage section for each:
@@ -138,8 +139,21 @@ Before jumping into the details for each user type, it is very important that bo
 **developers** and **admins** understand how authorization rules are organised
 in Authz.
 
-### How Authorization Rules Work in Authz 
-TODO: some content about how grouping of permissions and scopables work
+### How Authorization Rules Work in Authz
+
+In Authz `users` are granted one or many `roles`. Roles determine what a user is authorized to do, for example,
+_John_ may only _edit blog post #1_ if he has been granted at least one role that is authorized to do so.
+As a consequence, a `user` with no roles cannot do anything.
+
+A `role` is granted **permission** over multiple actions and the **scope** of instances 
+on which it can exercise those actions. **Permissions** and **Scoping Rules** are the core components that
+determine if an **action** over a **resource** is authorized. The next figure illustrates this with an
+example.
+
+<img src="/readme_images/roles_permissions_scopes_struct.png" width="600"/>
+
+
+
 
 ### Usage for Authorization Admins
 - 3 activities that admins do
