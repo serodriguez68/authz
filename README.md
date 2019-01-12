@@ -150,9 +150,11 @@ on which it can exercise those actions. [Permissions](#permissions) and [Scoping
 core components that determine if an **action** over a **resource** is authorized. 
 The next figure illustrates this with an example.
 
-<center>
-    <img src="/readme_images/roles_permissions_scopes_struct.png" width="800"/>
-</center>
+<div align="center">
+    <center>
+        <img src="/readme_images/roles_permissions_scopes_struct.png" width="800"/>
+    </center>
+</div>
 
 Lets dive a little deeper into [Permissions](#permissions) and [Scoping Rules](#scoping-rules).
 
@@ -174,9 +176,11 @@ requiring a different set of controller actions to get the job done.
 `Roles` are granted the power to execute one or many `BusinessProcesses`. The next figure illustrates this with an
 example. 
 
- <center>
-     <img src="/readme_images/permissions_hierarchy.png" width="800"/>
- </center>
+<div align="center">
+     <center>
+         <img src="/readme_images/permissions_hierarchy.png" width="800"/>
+     </center>
+ </div>
 
 #### Scoping Rules
 
