@@ -240,7 +240,7 @@ not for you.**
 
 
 ### Usage for Developers
-The authorization logic bits inside your app are typically used in 3 places: [Scopables](#scopables), 
+The authorization logic bits inside your app typically live in 3 places: [Scopables](#scopables), 
 [Controllers](#controllers) and [Views](#views). 
 
 #### Scopables
@@ -250,40 +250,40 @@ Start by identifying which are the [Scoping Classes](#scoping-rules) inside your
 authorization needs. For the rest of this section we will carry on with our newspaper example where the scoping classes
 are `City` and `Department`.
 
-A **Scopable** is a plain old ruby module that extends from `Authz::Scopables::Base` that is used to indicate to Authz
-which keywords are available for the configuration of `ScopingRules` and what do they mean.
+A **Scopable** is a plain old ruby module that extends from `Authz::Scopables::Base`. *Scopables* are used to indicate 
+to Authz which keywords are available for the configuration of `ScopingRules` and what do they mean.
  
 Given that `City` is a **scoping class**, we need to create a `ScopableByCity` module (note the naming convention) 
 that must define two methods:
 - `#available_keywords` must return an array of strings with the available keywords for scoping by city.
-- `#resolve_keyword` must translate that keyword into an array of the ids of the cities that are available for that
-keyword.  Note that it must take 2 arguments `keyword` and `requester` (the instance of the user that is being 
+- `#resolve_keyword` must translate the given keyword into an array of the ids of the cities that are available for that
+keyword.  The method must take 2 arguments: `keyword` and `requester` (the instance of the user that is being 
 authorized).
     - If you add `+[nil]` to the array of ids resolved, you allow the bearer of the keyword to have access to
     resources that are NOT associated with any city, like reports or comments with no city.
-- You can use the special keyword `'All'` that will give the bearers access to all cities. You don't need to 
+- You can use the special keyword `'All'`, which will give the bearer access to all cities. You don't need to 
 resolve `All` in your `#resolve_keyword` method.
 
-We recommend creating an `app/scopables` directory to place these, but you can put them wherever you want.
+We recommend creating an `app/scopables` directory to place the scopables, but you can put them wherever you want.
 
 ```ruby
 module ScopableByCity
   extend Authz::Scopables::Base
   
-  # Must return an array of Strings
+  # It must return an array of strings
   def self.available_keywords
-    # You query the DB to generate available keyword
+    # You can query the DB to generate the available keywords
     City.all.pluck(:name) + ['All']
     
     # ... or you can define some custom keywords that make sense for your needs
     %w[high-altitude low-altitude]
     
-    # ... many applications allow some users access only to the resources they own
+    # ... many applications allow some users to access only resources "they own"
     # e.g. access to "my cities"
     %w[mine All]
   end
   
-  # Must return an array if ids
+  # It must return an array if ids
   def self.resolve_keyword(keyword, requester)
     # If your keyword is an attribute, you can resolve it like this  
     City.where('LOWER(name) IS ?', keyword.downcase).pluck(:id) + [nil]
@@ -295,7 +295,7 @@ module ScopableByCity
       City.get_low_altitude.pluck(:id)
     end 
     
-    # ... You can even use the requester to resolve using anything of your domain
+    # ... You can even use the requester to resolve using anything in your domain
     if keyword == 'mine'
       requester.cities.pluck(:id) 
     end
@@ -334,7 +334,7 @@ class Report < ApplicationRecord
 end
 ```
 
-The **scoping classes** like `City` and `Department` are trivially scopable by themselves. For example only users
+The **scoping classes** like `City` and `Department` are trivially scopable by themselves. For example, only users
 with access to the `City` instance 'New York' will be able to perform actions on it (like update it).
 ```ruby
 class City < ApplicationRecord
@@ -345,7 +345,9 @@ end
 
 Note that for a given role, the defined scoping rules apply equally on all models. For example, given that the
 'ny sports editor' role has a City scoping rule of 'New York' and a Department scoping rule of 'Sports' these rules
-will apply whenever a 'ny sports editor' is trying to act upon a `Report` or `Comment`. 
+will apply whenever a 'ny sports editor' is trying to act upon a `Report` or `Comment`. If for some reason, when
+dealing with `Reports` you want to apply the 'New York' keyword and when dealing with `Comments` you want to apply
+the 'San Francisco" keyword, you need to define 2 different roles (**they probably are 2 different roles**).
 
 <!--- Modify this if we add the functionality of default keywords and overrides for specific actions  --->
 
