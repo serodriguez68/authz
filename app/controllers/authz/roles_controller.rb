@@ -49,6 +49,8 @@ module Authz
             .permit(
               :name,
               :description,
+              business_process_ids: [],
+              role_grant_ids: []
             )
     end
   end

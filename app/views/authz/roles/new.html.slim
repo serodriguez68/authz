@@ -14,3 +14,8 @@ section.section
                   = f.submit 'Create', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
+
+javascript:
+  $('form').validate()
+  $('#role_business_process_ids').multiSelect()
+  $('#role_role_grant_ids').multiSelect()
