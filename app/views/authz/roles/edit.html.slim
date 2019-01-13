@@ -9,13 +9,9 @@ section.section
           = render 'layouts/authz/error_messages', object: @role
           .card-content
             = form_for @role do |f|
-              = render 'fields', f: f
+              = render 'fields', f: f, name_validation_path: edit_validations_role_name_path(@role)
               .field
                 .control
                   = f.submit 'Save', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
-javascript:
-  $('form').validate()
-  $('#role_business_process_ids').multiSelect()
-  $('#role_role_grant_ids').multiSelect()

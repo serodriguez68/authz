@@ -9,20 +9,9 @@ section.section
           = render 'layouts/authz/error_messages', object: @business_process
           .card-content
             = form_for @business_process do |f|
-              = render 'basic_fields', f: f
-              = render 'association_fields', f: f
+              = render 'fields', f: f, name_validation_path: new_validations_business_process_name_path
               .field
                 .control
                   = f.submit 'Create', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
-javascript:
-  $('#business_process_name').rules('add',{
-    messages: {
-      remote: 'This process name already exists'
-    },
-    remote: {
-      url: $('#business_process_name').data('validation-path'),
-      type: 'get'
-    }
-  })

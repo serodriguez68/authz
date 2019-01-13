@@ -9,86 +9,9 @@ section.section
           = render 'layouts/authz/error_messages', object: @business_process
           .card-content
             = form_for @business_process do |f|
-              = render 'basic_fields', f: f
-              = render 'association_fields', f: f
+              = render 'fields', f: f, name_validation_path: edit_validations_business_process_name_path(@business_process)
               .field
                 .control
                   = f.submit 'Save', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
-
-javascript:
-  $('form').validate()
-  $('#business_process_role_ids').multiSelect({
-    selectableHeader: "<div class='field'><input type='text' class='input search-input' autocomplete='off' placeholder='Search...'></div>",
-    selectionHeader: "<div class='field'><input type='text' class='input search-input' autocomplete='off' placeholder='Search...'></div>",
-    afterInit: function(ms){
-      var that = this,
-          $selectableSearch = that.$selectableUl.prev(),
-          $selectionSearch = that.$selectionUl.prev(),
-          selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-          selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
-
-      that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-      .on('keydown', function(e){
-        if (e.which === 40){
-          that.$selectableUl.focus();
-          return false;
-        }
-      });
-
-      that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-      .on('keydown', function(e){
-        if (e.which == 40){
-          that.$selectionUl.focus();
-          return false;
-        }
-      });
-    },
-    afterSelect: function(){
-      this.qs1.cache();
-      this.qs2.cache();
-    },
-    afterDeselect: function(){
-      this.qs1.cache();
-      this.qs2.cache();
-    }
-  })
-
-
-
-  $('#business_process_controller_action_ids').multiSelect({
-  selectableHeader: "<div class='field'><input type='text' class='input search-input' autocomplete='off' placeholder='Search...'></div>",
-  selectionHeader: "<div class='field'><input type='text' class='input search-input' autocomplete='off' placeholder='Search...'></div>",
-    afterInit: function(ms){
-      var that = this,
-          $selectableSearch = that.$selectableUl.prev(),
-          $selectionSearch = that.$selectionUl.prev(),
-          selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-          selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
-
-      that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-      .on('keydown', function(e){
-        if (e.which === 40){
-          that.$selectableUl.focus();
-          return false;
-        }
-      });
-
-      that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-      .on('keydown', function(e){
-        if (e.which == 40){
-          that.$selectionUl.focus();
-          return false;
-        }
-      });
-    },
-    afterSelect: function(){
-      this.qs1.cache();
-      this.qs2.cache();
-    },
-    afterDeselect: function(){
-      this.qs1.cache();
-      this.qs2.cache();
-    }
-  })

@@ -7,8 +7,8 @@ Authz::Engine.routes.draw do
   namespace :validations do
     resources :controller_names, only: [:new]
     resources :action_names, only: [:new]
-    resources :business_process_names, only: [:new]
-    resources :role_names, only: [:new]
+    resources :business_process_names, only: [:new, :edit]
+    resources :role_names, only: [:new, :edit]
   end
 
   Authz.rolables.each do |rolable|

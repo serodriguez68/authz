@@ -9,23 +9,9 @@ section.section
           = render 'layouts/authz/error_messages', object: @role
           .card-content
             = form_for @role do |f|
-              = render 'fields', f: f
+              = render 'fields', f: f, name_validation_path: new_validations_role_name_path
               .field
                 .control
                   = f.submit 'Create', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
-
-javascript:
-  $('form').validate()
-  $('#role_business_process_ids').multiSelect()
-  $('#role_role_grant_ids').multiSelect()
-  $('#role_name').rules('add',{
-    messages: {
-      remote: 'This role name already exists'
-    },
-    remote: {
-      url: $('#role_name').data('validation-path'),
-      type: 'get'
-    }
-  })

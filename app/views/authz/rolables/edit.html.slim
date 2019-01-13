@@ -17,6 +17,5 @@ section.section
         / = render 'help'
 javascript:
   $('form').validate()
-
-  $('#' + "#{@rolable.class.model_name.singular}" + '_role_ids').multiSelect()
-  $('#role_role_grant_ids').multiSelect()
+  $('#' + "#{@rolable.class.model_name.singular}" + '_role_ids').multiSelect(window.quicksearchConfig.init)
+  $('#role_role_grant_ids').multiSelect(window.quicksearchConfig.init)
