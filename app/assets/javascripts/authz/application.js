@@ -14,3 +14,10 @@
 //= require jquery
 //= require activestorage
 //= require_tree .
+$(document).ready(function() {
+  $('tr.is-clickable').click(function(){
+    var url = $(this).data('url')
+    window.location.href = url
+    // console.log('clicked!');
+  })
+})

@@ -8,7 +8,7 @@ section.section
       table.table.is-fullwidth.is-striped.is-hoverable
         tbody
           - @rolables.each do |rolable|
-            tr
+            tr.is-clickable[data-url="#{send("#{rolable.model_name.singular}_path", rolable)}"]
               td = rolable.id
               td = rolable.authz_label
               td = link_to send("#{rolable.model_name.singular}_path", rolable) do
