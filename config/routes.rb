@@ -8,6 +8,7 @@ Authz::Engine.routes.draw do
     resources :controller_names, only: [:new]
     resources :action_names, only: [:new]
     resources :business_process_names, only: [:new]
+    resources :role_names, only: [:new]
   end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

@@ -1,7 +1,7 @@
 .field
   = f.label :name, class: 'label'
   .control
-    = f.text_field :name, class: 'input', required: true
+    = f.text_field :name, class: 'input', required: true, data: { validation_path: new_validations_role_name_path }
 .field
   = f.label :description, class: 'label'
   .control
