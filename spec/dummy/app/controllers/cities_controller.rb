@@ -3,25 +3,26 @@ class CitiesController < ApplicationController
 
   # GET /cities
   def index
-    authorize
-    @cities = City.all
+    authorize skip_scoping: true
+    @cities = apply_authz_scopes on: City.all
   end
 
   # GET /cities/new
   def new
+    authorize skip_scoping: true
     @city = City.new
-    authorize
   end
 
   # GET /cities/1/edit
   def edit
-    authorize
+    authorize using: @city
   end
 
   # POST /cities
   def create
-    authorize
+
     @city = City.new(city_params)
+    authorize using: @city
 
     if @city.save
       redirect_to cities_url, notice: 'City was successfully created.'
@@ -32,8 +33,9 @@ class CitiesController < ApplicationController
 
   # PATCH/PUT /cities/1
   def update
-    authorize
-    if @city.update(city_params)
+    @city.assign_attributes(city_params)
+    authorize using: @city
+    if @city.save
       redirect_to cities_url, notice: 'City was successfully updated.'
     else
       render :edit
@@ -42,7 +44,7 @@ class CitiesController < ApplicationController
 
   # DELETE /cities/1
   def destroy
-    authorize
+    authorize using: @city
     @city.destroy
     redirect_to cities_url, notice: 'City was successfully destroyed.'
   end

@@ -1,0 +1,17 @@
+h1 Ratings report: #{@report.title}
+= form_for @rating do |f|
+  - if @rating.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@rating.errors.count, "error")} prohibited this rating from being saved:"
+      ul
+        - @rating.errors.full_messages.each do |message|
+          li = message
+
+  .grid-x.grid-margin-x
+    .cell.medium-6
+      .field
+        = f.label :score
+        = f.select :score, (1..5).to_a
+
+        = f.hidden_field :report_id
+  .actions = f.submit

@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_053841) do
+ActiveRecord::Schema.define(version: 2019_01_04_080155) do
+
+  create_table "announcement_cities", force: :cascade do |t|
+    t.integer "announcement_id"
+    t.integer "city_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_id"], name: "index_announcement_cities_on_announcement_id"
+    t.index ["city_id"], name: "index_announcement_cities_on_city_id"
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "authz_business_process_has_controller_actions", force: :cascade do |t|
     t.integer "authz_controller_action_id"
@@ -63,6 +78,17 @@ ActiveRecord::Schema.define(version: 2018_11_30_053841) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "authz_scoping_rules", force: :cascade do |t|
+    t.string "scopable"
+    t.integer "authz_role_id", null: false
+    t.string "keyword"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authz_role_id"], name: "index_authz_scoping_rules_on_authz_role_id"
+    t.index ["keyword"], name: "index_authz_scoping_rules_on_keyword"
+    t.index ["scopable"], name: "index_authz_scoping_rules_on_scopable"
+  end
+
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -74,6 +100,16 @@ ActiveRecord::Schema.define(version: 2018_11_30_053841) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "report_id"
+    t.integer "user_id"
+    t.integer "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_ratings_on_report_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "reports", force: :cascade do |t|

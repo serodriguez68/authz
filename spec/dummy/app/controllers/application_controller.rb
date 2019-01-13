@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   include Authz::Controllers::AuthorizationManager
-  rescue_from Authz::Controllers::PermissionManager::PermissionNotGranted, with: :unauthorized_handler
+  rescue_from Authz::Controllers::AuthorizationManager::NotAuthorized, with: :unauthorized_handler
 
   private
 

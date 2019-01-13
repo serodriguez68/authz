@@ -2,7 +2,8 @@ nav
   ul.menu
     li.menu-text
       small = "#{current_user.email}"
-    li = link_to "Clearances", clearances_path if authorized_path? clearances_path
-    li = link_to "Cities", cities_path if authorized_path? cities_path
-    li = link_to "Reports", reports_path if authorized_path? reports_path
+    li = authz_link_to "Clearances", clearances_path, skip_scoping: true
+    li = authz_link_to "Cities", cities_path, skip_scoping: true
+    li = authz_link_to "Reports", reports_path, skip_scoping: true
+    li = authz_link_to "Announcements", announcements_path, skip_scoping: true
     li = link_to "Logout", destroy_user_session_path, method: :delete

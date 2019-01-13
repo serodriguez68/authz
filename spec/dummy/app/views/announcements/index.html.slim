@@ -1,0 +1,21 @@
+h1 Listing all Announcements
+= authz_link_to 'Create New Announcement', new_announcement_path, { class: 'button' }, skip_scoping: true
+
+table
+  thead
+    tr
+      th id
+      th Created At
+      th Body
+      th Available Cities
+      th
+
+
+  tbody
+    - @announcements.each do |ann|
+      tr
+        td = ann.id
+        td = ann.created_at.to_date
+        td = ann.body
+        td = available_cities_name(ann)
+        td = authz_link_to 'Destroy', ann, { data: { confirm: 'Are you sure?' }, method: :delete }, using: ann

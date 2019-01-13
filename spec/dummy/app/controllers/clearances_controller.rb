@@ -3,26 +3,26 @@ class ClearancesController < ApplicationController
 
   # GET /clearances
   def index
-    authorize
-    @clearances = Clearance.all
+    authorize skip_scoping: true
+    @clearances = apply_authz_scopes(on: Clearance)
   end
 
 
   # GET /clearances/new
   def new
-    authorize
+    authorize skip_scoping: true
     @clearance = Clearance.new
   end
 
   # GET /clearances/1/edit
   def edit
-    authorize
+    authorize using: @clearance
   end
 
   # POST /clearances
   def create
-    authorize
     @clearance = Clearance.new(clearance_params)
+    authorize using: @clearance
 
     if @clearance.save
       redirect_to clearances_url, notice: 'Clearance was successfully created.'
@@ -33,8 +33,9 @@ class ClearancesController < ApplicationController
 
   # PATCH/PUT /clearances/1
   def update
-    authorize
-    if @clearance.update(clearance_params)
+    @clearance.assign_attributes(clearance_params)
+    authorize using: @clearance
+    if @clearance.save
       redirect_to clearances_url, notice: 'Clearance was successfully updated.'
     else
       render :edit
@@ -43,7 +44,7 @@ class ClearancesController < ApplicationController
 
   # DELETE /clearances/1
   def destroy
-    authorize
+    authorize using: @clearance
     @clearance.destroy
     redirect_to clearances_url, notice: 'Clearance was successfully destroyed.'
   end

@@ -7,4 +7,6 @@ class Clearance < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   has_many :reports
+
+  include ScopableByClearance
 end

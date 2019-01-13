@@ -2,7 +2,7 @@ h1 Editing report
 
 == render 'form'
 
-=> link_to 'Show', @report  if authorized_path? report_path(@report)
+=> authz_link_to 'Show', @report, using: @report
 '|
-=< link_to 'Back', reports_path if authorized_path? reports_path
+=< authz_link_to 'Back', reports_path, skip_scoping: true
 

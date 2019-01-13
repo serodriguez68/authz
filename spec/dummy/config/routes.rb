@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   resources :clearances, except: [:show]
   resources :cities, except: [:show]
   resources :reports
-  resources :clients
+  # resources :ratings, only: [:index, :new, :create, :destroy]
+  resources :announcements, only: [:index, :new, :create, :destroy]
 end
