@@ -3,7 +3,6 @@
   .control
     = f.select 'business_process_ids', options_for_select(::Authz::BusinessProcess.all.pluck(:name, :id), f.object.business_process_ids), {}, { multiple: true }
 javascript:
-  $('form').validate()
   $('#controller_action_business_process_ids').multiSelect({
     selectableHeader: "<input type='text' style='margin-bottom: 1rem' class='input search-input' autocomplete='off' placeholder='Search...'>",
     selectionHeader: "<input type='text' style='margin-bottom: 1rem' class='input search-input' autocomplete='off' placeholder='Search...'>",

@@ -1,8 +1,8 @@
 .field
   = f.label :controller, class: 'label'
   .control
-    = f.text_field :controller, class: 'input', required: true
+    = f.text_field :controller, class: 'input', required: true, data: { validation_path: new_validations_controller_name_path }
 .field
   = f.label :action, class: 'label'
   .control
-    = f.text_field :action, class: 'input', required: true
+    = f.text_field :action, class: 'input', required: true, data: { validation_path: new_validations_action_name_path }

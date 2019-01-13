@@ -15,3 +15,29 @@ section.section
                   = f.submit 'Create', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
+
+javascript:
+  $('form').validate()
+  $('#controller_action_controller').rules('add',{
+    messages: {
+      remote: 'This controller name does not exist'
+    },
+    remote: {
+      url: $('#controller_action_controller').data('validation-path'),
+      type: 'get'
+    }
+  })
+  $('#controller_action_action').rules('add',{
+    messages: {
+      remote: 'This action name does not exist for this controller'
+    },
+    remote: {
+      url: $('#controller_action_action').data('validation-path'),
+      type: 'get',
+      data: {
+        controller_name: function(){
+          return $('#controller_action_controller').val()
+        }
+      }
+    }
+  })
