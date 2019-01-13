@@ -18,6 +18,12 @@ module Authz
     end
 
     def update
+      @rolable = rolable.find(params[:id])
+      if @rolable.update(rolable_params)
+        redirect_to send("#{@rolable.model_name.singular}_path", @rolable)
+      else
+        render 'edit'
+      end
     end
 
     private
@@ -29,6 +35,11 @@ module Authz
         next unless regex.match request.path_info
         return klass
       end
+    end
+
+    def rolable_params
+      params.require(rolable.model_name.singular)
+        .permit(role_ids: [])
     end
 
 
