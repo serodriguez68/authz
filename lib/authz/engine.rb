@@ -1,5 +1,3 @@
-require 'font-awesome-rails'
-
 module Authz
   class Engine < ::Rails::Engine
     isolate_namespace Authz

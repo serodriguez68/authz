@@ -9,6 +9,7 @@ require 'rails_admin'
 require 'slim-rails'
 
 require 'kaminari'
+require 'font-awesome-rails'
 
 module Authz
 
