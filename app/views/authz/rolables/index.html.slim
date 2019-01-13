@@ -4,6 +4,7 @@
 section.section
   .container
     .card
+      .card-content = paginate @rolables
       table.table.is-fullwidth.is-striped.is-hoverable
         tbody
           - @rolables.each do |rolable|
