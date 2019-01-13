@@ -370,13 +370,14 @@ class ReportsController < ApplicationController
 end
 ```
 
-Authz will check if the current user has any role that allows him to do the action `Report#show` on the instance
-`@report` taking into account the role's *Scoping Rules*. 
+Authz will check if the current user has any role that allows him to do the action `Reports#show` on the instance
+`@report` taking into account the role's *Scoping Rules*. Note that the controller and action name are automatically
+inferred.
 
 <!--- TODO: If we relax the authorize method to allow for passing custom actions, put that here  --->
 
-For some actions, we really don't have a sensible instance to use for authorization. For these cases we can
-perform authorization by checking only the permission to do the action using the `skip_scoping: true` argument.
+For some actions, we really don't have a sensible instance to use for authorization. In these cases we can
+use the `skip_scoping: true` argument to perform authorization based on the permitted actions only.
 
 ```ruby
 class ReportsController < ApplicationController
@@ -385,8 +386,20 @@ class ReportsController < ApplicationController
      authorize skip_scoping: true
      @report = Report.new
   end
-  
-  def create
+end
+```
+
+For the most part, we can keep the traditional RESTful controller action coding style and just include `authorize`. 
+Notable exceptions are actions that attempt to `#update` or `#create` an instance since we want to 
+make sure that the instance is within the **scoping rules** _after_ it has been saved. For example, a 
+'ny sports writer' should not be able to update the city of a 'New York' `report` to 'San Francisco'. 
+
+In simple cases we don't have to do much as Rails handles this through in memory association proxies:
+- `#create` actions keep their RESTful style.
+- In `#update` actions we can use `.assign_attributes` to change the instance in memory and authz
+will verify it with the new information.
+```ruby
+def create
     @report = Report.new(report_params)
     @report.user = current_user
     authorize using: @report
@@ -396,19 +409,8 @@ class ReportsController < ApplicationController
     else
       render :new
     end
-  end
 end
-```
 
-For the most part, you can keep the traditional coding style of Rails' Restful controller actions 
-and just include `authorize`. 
-Notable exceptions are actions that attempt to `#update` (and in some cases `#create`) an instance since we want to 
-make sure that the instance is within the **scoping rules** _after_ the changes are applied. For example, a 
-'ny sports writer' should not be able to update the city of a `report` to 'San Francisco'. 
-
-For simple cases we can use `.assign_attributes` and Authz will rely on Rails' in memory association proxies to 
-determine authorization.
-```ruby
 def update
     @report.assign_attributes(report_params)
     authorize using: @report
@@ -420,9 +422,9 @@ def update
  end
 ```
 
-For complex cases, where we *have* to save the `@report` *first* to be able to find the `City` to which it ends
- up associated to, you can wrap your controller action inside a database transaction that will be
-rolledback if `authorize` raises an exception. Examples of these 'complex cases' are:
+In complex cases, where we have to save the `@report` **first** to determine the associated `City`, 
+we can wrap our controller action inside a database transaction that will be
+rolledback if `authorize` raises an exception. Examples of these _'complex cases'_ are:
 - Callbacks that affect the instance's association to the **scoping classes** during the `save` lifecycle.
 - Deep associations that rely on the creation of many intermediate instances to find out the resulting
 associated `City`.
@@ -445,10 +447,10 @@ def update
 ``` 
  
 ##### `apply_authz_scopes`
-When retrieving collections from classes that are **scopable by something** we can retrieve only the instances
-the `current_user`'s roles have access to using the `apply_authz_scopes` method.
+We can scope down the retrieval of collections to comply  with the user's scoping rules using the 
+`apply_authz_scopes` method.
 
-For example, if we want to retrieve the `Reports` that are within the `current_user`'role's scoping rules for
+For example, if we want to retrieve the `Reports` that are within the `current_user` role's scoping rules for
 `City` and `Department`:
 
 ```ruby
