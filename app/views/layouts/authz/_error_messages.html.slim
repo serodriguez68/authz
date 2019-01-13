@@ -1,0 +1,8 @@
+- if object.errors.any?
+  .message.is-danger
+    .message-header This form has some errors
+    .message-body
+      ul
+        - object.errors.full_messages.each do |msg|
+          li
+            = msg

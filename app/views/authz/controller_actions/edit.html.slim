@@ -6,6 +6,7 @@ section.section
     .columns
       .column.is-three-fifths
         .card
+          = render 'layouts/authz/error_messages', object: @controller_action
           .card-content
             = form_for @controller_action do |f|
               = render 'association_fields', f: f
