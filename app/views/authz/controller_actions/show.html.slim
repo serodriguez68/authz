@@ -1,7 +1,9 @@
 = content_for :nav_title do
   = @controller_action.to_s
 = content_for :nav_links do
-  = link_to 'Edit', edit_controller_action_path(@controller_action), class: 'button is-primary'
+  .buttons
+    = link_to 'Edit', edit_controller_action_path(@controller_action), class: 'button is-primary'
+    = link_to 'Destroy', controller_action_path(@controller_action), method: :delete, class: 'button is-danger', data: { confirm: '¿Are you sure? This action is undoable' }
 
 section.section
   .columns

@@ -41,6 +41,12 @@ module Authz
     end
 
     def destroy
+      @role = Role.find(params[:id])
+      if @role.destroy
+        redirect_to roles_path
+      else
+        render 'show'
+      end
     end
 
     def role_params

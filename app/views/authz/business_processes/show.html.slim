@@ -1,7 +1,9 @@
 = content_for :nav_title do
   = @business_process.name.titleize
 = content_for :nav_links do
-  = link_to 'Edit', edit_business_process_path(@business_process), class: 'button is-primary'
+  .buttons
+    = link_to 'Edit', edit_business_process_path(@business_process), class: 'button is-primary'
+    = link_to 'Destroy', business_process_path(@business_process), method: :delete, class: 'button is-danger', data: { confirm: '¿Are you sure? This action is undoable' }
 
 section.section
   .columns

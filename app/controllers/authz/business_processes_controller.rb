@@ -39,6 +39,12 @@ module Authz
     end
 
     def destroy
+      @business_process = BusinessProcess.find(params[:id])
+      if @business_process.destroy
+        redirect_to business_processes_path
+      else
+        render 'show'
+      end
     end
 
     private

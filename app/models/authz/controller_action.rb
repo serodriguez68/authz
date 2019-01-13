@@ -12,7 +12,8 @@ module Authz
     # ==========================================================================
     has_many :business_process_has_controller_actions,
              class_name: 'Authz::BusinessProcessHasControllerAction',
-             foreign_key: 'authz_controller_action_id'
+             foreign_key: 'authz_controller_action_id',
+             dependent: :destroy
     has_many :business_processes, through: :business_process_has_controller_actions
     has_many :roles, through: :business_processes
     has_many :role_grants, through: :roles

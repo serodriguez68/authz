@@ -1,7 +1,9 @@
 = content_for :nav_title do
   = @role.name.titleize
 = content_for :nav_links do
-  = link_to 'Edit', edit_role_path(@role), class: 'button is-primary'
+  .buttons
+    = link_to 'Edit', edit_role_path(@role), class: 'button is-primary'
+    = link_to 'Destroy', role_path(@role), method: :delete, class: 'button is-danger', data: { confirm: '¿Are you sure? This action is undoable' }
 
 section.section
   .columns

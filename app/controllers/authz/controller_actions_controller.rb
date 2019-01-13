@@ -39,6 +39,12 @@ module Authz
     end
 
     def destroy
+      @controller_action = ControllerAction.find(params[:id])
+      if @controller_action.destroy
+        redirect_to controller_actions_path
+      else
+        render 'show'
+      end
     end
 
     private
