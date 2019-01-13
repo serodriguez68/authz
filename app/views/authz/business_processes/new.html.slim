@@ -15,3 +15,13 @@ section.section
                   = f.submit 'Create', class: 'button is-primary is-fullwidth'
       .column
         = render 'help'
+javascript:
+  $('#business_process_name').rules('add',{
+    messages: {
+      remote: 'This process name already exists'
+    },
+    remote: {
+      url: $('#business_process_name').data('validation-path'),
+      type: 'get'
+    }
+  })
