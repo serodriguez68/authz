@@ -60,16 +60,6 @@ module Authz
       class_methods do
         # self = Includer Class (e.g user)
 
-        # Developers must use this method to register the includer on the
-        # authorization admin specifying which field of attribute
-        # (real or virtual)should be used in the admin to identify each
-        # instance.
-        # (e.g.  Users will be identified by :email)
-        # TODO: Modify or remove this if getting rid of Rails Admin
-        def register_in_authorization_admin(identifier:)
-          Authz.register_rolable_in_admin(self, identifier)
-        end
-
         # Developers can use this to specify which method form the includer
         # should be used inside authz to label each instance
         def authz_label_method method_name

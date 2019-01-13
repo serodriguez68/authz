@@ -11,11 +11,7 @@ Authz::Engine.routes.draw do
     resources :role_names, only: [:new]
   end
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-
   Authz.rolables.each do |rolable|
     resources rolable.authorizable_association_name, only: [:index, :show, :edit, :update], controller: :rolables
   end
-
-
 end
