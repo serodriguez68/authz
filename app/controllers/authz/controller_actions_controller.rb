@@ -3,7 +3,7 @@ require_dependency "authz/application_controller"
 module Authz
   class ControllerActionsController < ApplicationController
     def index
-      @controller_actions = ControllerAction.all.page(params[:controller_actions_page])
+      @controller_actions = ControllerAction.all.order(created_at: :desc).page(params[:controller_actions_page])
     end
 
     def show
