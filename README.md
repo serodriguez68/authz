@@ -499,7 +499,7 @@ or `skip_scoping: true` if no sensible instance exists.
 <%= authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true %>
 ```
 
-## Authorization Good Practices and Bad Practices
+## Authorization Good and Bad Practices
 A non exhaustive list of generally accepted authorization wisdom and things we've learned from using Authz ourselves:
 
 ### Good Practices 
@@ -525,7 +525,7 @@ pure **Runtime resolution** and pure **Static resolution**, with most systems fa
 
 <div align="center">
      <center>
-         <img src="/readme_images/rule_resolution_time_tradeoffs.png" width="800"/>
+         <img src="/readme_images/rule_resolution_time_tradeoffs.png" width="700"/>
      </center>
  </div>  
 
