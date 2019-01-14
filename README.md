@@ -306,7 +306,7 @@ end
 
 The next step is to indicate to Authz which models of your app need to be scoped by city for authorization purposes.
 For example, if we want to grant or deny authorization for `Reports` based on the  city scoping rule, we must
-include the `ScopableByCity` in the `Report` class.
+`include` the `ScopableByCity` in the `Report` class.
 - The `Report` class must have an active record association to `City`. It can be any type of association,
 including `through: :other_model`.
 - Authz will use automatically look for associations based on the name of the Scopable (`:city` and `:cities` in
@@ -450,7 +450,7 @@ def update
 We can scope down the retrieval of collections to comply  with the user's scoping rules using the 
 `apply_authz_scopes` method.
 
-For example, if we want to retrieve the `Reports` that are within the `current_user` role's scoping rules for
+For example, if we want to retrieve the `Reports` that are within the `current_user`'s scoping rules for
 `City` and `Department`:
 
 ```ruby
@@ -463,10 +463,41 @@ end
 ```
 `apply_authz_scopes` takes a `class` or an  `ActiveRecord::Relation` and applies the applicable scoping rules
 on top of the given argument. The method returns an `ActiveRecord::Relation` so it can be chained with other
-query methods. 
+query methods.
+
+`apply_authz_scopes` is also available as a view helper in case you need to use it inside a view. 
 
 #### Views
 
+##### `authorized_path?`
+The `authorized_path?` view helper can be used to check if the `current_user` is authorized for a given _url/path_.
+Under the hood, Authz will ask our `router` for the controller and action in charge of resolving the given _url/path_ 
+and use that for determining authorization. 
+
+Similar to the `authorize` method above, we need to provide either a `using: instance` or `skip_scoping: true` if no
+sensible instance exists.
+
+`authorized_path?` can be used to conditionally display parts of the view, most commonly a  `link_to`.
+
+```erb
+<%= link_to 'Edit', edit_report_path(report) if authorized_path?(edit_report_path(report), using: report) =>
+<%= link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete } if authorized_path?(report_path(report), method: :delete, using: report) =>
+<%= link_to('Create New Report', new_report_path) if authorized_path?(new_report_path, skip_scoping: true) %>
+```    
+
+##### `authz_link_to`
+The pattern of rendering a link only if the `current_user` is authorized to use it is so common that it deserves it's
+own helper.
+
+`authz_link_to` takes the same 3 arguments than Rail's `link_to` helper (i.e. `name, options = {}, html_options = {}`). 
+Additionally you need to provide the `using: instance` to use against the scoping rules 
+or `skip_scoping: true` if no sensible instance exists.
+
+```erb
+<%= authz_link_to 'Edit', edit_report_path(report), {}, using: report =>
+<%= authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report =>
+<%= authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true %>
+```
 
 ## Good Practices
 - Visibility is important. Security holes are often related to people not understanding the system. 
