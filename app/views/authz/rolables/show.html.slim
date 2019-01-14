@@ -1,0 +1,28 @@
+= content_for :nav_title do
+  = @rolable.authz_label
+= content_for :nav_links do
+  = link_to 'Edit', send("edit_#{@rolable.model_name.singular}_path", @rolable), class: 'button is-primary'
+
+section.section
+  .container
+    .columns
+      .column
+        h2.title.is-4 Roles
+        - if @associated_roles.blank?
+          = render 'authz/roles/empty_association', parent_edit_link: send("edit_#{@rolable.model_name.singular}_path", @rolable)
+        - else
+          = render 'authz/roles/table', roles: @associated_roles
+      .column
+        h2.title.is-4 Business Processes
+        - if @associated_business_processes.blank?
+          = render 'authz/business_processes/empty_association', parent_edit_link: send("edit_#{@rolable.model_name.singular}_path", @rolable)
+        - else
+          = render 'authz/business_processes/table', business_processes: @associated_business_processes
+
+    .columns
+      .column
+        h2.title.is-4 Controller Actions
+        - if @associated_controller_actions.blank?
+          = render 'authz/controller_actions/empty_association', parent_edit_link: send("edit_#{@rolable.model_name.singular}_path", @rolable)
+        - else
+          = render 'authz/controller_actions/table', controller_actions: @associated_controller_actions

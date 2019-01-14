@@ -1,0 +1,14 @@
+aside.menu
+  ul.menu-list
+    li = link_to 'Home', root_path, class: "#{'is-active' if current_page? root_path}"
+  p.menu-label Authorization
+  ul.menu-list
+    li = link_to 'Roles', roles_path, class: "#{'is-active' if current_page? roles_path}"
+    li = link_to 'Business Processes', business_processes_path, class: "#{'is-active' if current_page? business_processes_path}"
+    li = link_to 'Controller Actions', controller_actions_path, class: "#{'is-active' if current_page? controller_actions_path}"
+  p.menu-label Rolables
+  ul.menu-list
+    - Authz.rolables.map(&:authorizable_association_name).each do |association_name|
+      li = link_to association_name.to_s.titleize, send("#{association_name}_path"), class: "#{'is-active' if current_page? send("#{association_name}_path")}"
+
+  p.menu-label Scoping

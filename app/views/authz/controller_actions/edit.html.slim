@@ -1,0 +1,17 @@
+= content_for :nav_title do
+  = "#{action_name.titleize} #{@controller_action.to_s}"
+
+section.section
+  .container
+    .columns
+      .column.is-three-fifths
+        .card
+          = render 'layouts/authz/error_messages', object: @controller_action
+          .card-content
+            = form_for @controller_action do |f|
+              = render 'association_fields', f: f
+              .field
+                .control
+                  = f.submit 'Save', class: 'button is-primary is-fullwidth'
+      .column
+        = render 'help'

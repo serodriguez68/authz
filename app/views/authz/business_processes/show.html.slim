@@ -1,0 +1,23 @@
+= content_for :nav_title do
+  = @business_process.name.titleize
+= content_for :nav_links do
+  .buttons
+    = link_to 'Edit', edit_business_process_path(@business_process), class: 'button is-primary'
+    = link_to 'Destroy', business_process_path(@business_process), method: :delete, class: 'button is-danger', data: { confirm: '¿Are you sure? This action is undoable' }
+
+section.section
+  .columns
+    .column
+      h2.title.is-4 Controller Actions
+      - if @associated_controller_actions.blank?
+        = render 'authz/controller_actions/empty_association', parent_edit_link: edit_business_process_path(@business_process)
+      - else
+        = render 'authz/controller_actions/table', controller_actions: @associated_controller_actions
+    .column
+      h2.title.is-4 Roles
+      - if @associated_roles.blank?
+        = render 'authz/roles/empty_association', parent_edit_link: edit_business_process_path(@business_process)
+      - else
+        = render 'authz/roles/table', roles: @associated_roles
+  - Authz.rolables.each do |rolable|
+    = render 'authz/rolables/table_from_association', rolable: rolable, parent_instance: @business_process

@@ -3,7 +3,8 @@ module Authz
     # Associations
     # ==========================================================================
     belongs_to :role, class_name: 'Authz::Role',
-                      foreign_key: 'authz_role_id'
+                      foreign_key: 'authz_role_id',
+                      optional: true
     belongs_to :rolable, polymorphic: true
 
     # Validations

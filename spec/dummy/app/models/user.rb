@@ -7,7 +7,6 @@ class User < ApplicationRecord
   has_many :reports
 
   include Authz::Models::Rolable
-  register_in_authorization_admin identifier: :name
   authz_label_method :name
 
   def name

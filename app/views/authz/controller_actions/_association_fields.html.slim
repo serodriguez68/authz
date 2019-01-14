@@ -1,0 +1,4 @@
+.field
+  = f.label :business_processes, class: 'label'
+  .control
+    = f.select 'business_process_ids', options_for_select(::Authz::BusinessProcess.all.pluck(:name, :id), f.object.business_process_ids), {}, { multiple: true }

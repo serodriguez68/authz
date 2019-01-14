@@ -1,0 +1,6 @@
+tr.is-clickable[data-url="#{controller_action_path(controller_action)}"]
+  td = controller_action.id
+  td = controller_action.controller
+  td = controller_action.action
+  td = link_to controller_action_path(controller_action) do
+    i.fa-chevron-right.fa

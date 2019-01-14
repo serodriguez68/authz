@@ -1,0 +1,17 @@
+= content_for :nav_title do
+  = 'New Business Process'
+
+section.section
+  .container
+    .columns
+      .column.is-three-fifths
+        .card
+          = render 'layouts/authz/error_messages', object: @business_process
+          .card-content
+            = form_for @business_process do |f|
+              = render 'fields', f: f, name_validation_path: new_validations_business_process_name_path
+              .field
+                .control
+                  = f.submit 'Create', class: 'button is-primary is-fullwidth'
+      .column
+        = render 'help'

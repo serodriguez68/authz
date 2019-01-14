@@ -1,0 +1,15 @@
+= content_for :nav_title do
+  = @rolables.model_name.plural.titleize
+
+section.section
+  .container
+    .card
+      .card-content = paginate @rolables, views_prefix: 'authz'
+      table.table.is-fullwidth.is-striped.is-hoverable
+        tbody
+          - @rolables.each do |rolable|
+            tr.is-clickable[data-url="#{send("#{rolable.model_name.singular}_path", rolable)}"]
+              td = rolable.id
+              td = rolable.authz_label
+              td = link_to send("#{rolable.model_name.singular}_path", rolable) do
+                i.fa-chevron-right.fa
