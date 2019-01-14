@@ -480,8 +480,8 @@ sensible instance exists.
 `authorized_path?` can be used to conditionally display parts of the view, most commonly a  `link_to`.
 
 ```erb
-<%= link_to 'Edit', edit_report_path(report) if authorized_path?(edit_report_path(report), using: report) =>
-<%= link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete } if authorized_path?(report_path(report), method: :delete, using: report) =>
+<%= link_to 'Edit', edit_report_path(report) if authorized_path?(edit_report_path(report), using: report) %>
+<%= link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete } if authorized_path?(report_path(report), method: :delete, using: report) %>
 <%= link_to('Create New Report', new_report_path) if authorized_path?(new_report_path, skip_scoping: true) %>
 ```    
 
@@ -494,8 +494,8 @@ Additionally you need to provide the `using: instance` to use against the scopin
 or `skip_scoping: true` if no sensible instance exists.
 
 ```erb
-<%= authz_link_to 'Edit', edit_report_path(report), {}, using: report =>
-<%= authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report =>
+<%= authz_link_to 'Edit', edit_report_path(report), {}, using: report %>
+<%= authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report %>
 <%= authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true %>
 ```
 
