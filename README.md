@@ -232,7 +232,8 @@ implement and fit nicely into the domain.
 **If you can't express you authorization rules in terms of Scoping Classes then Authz is probably 
 not for you.**
    
-### Usage for Authorization Admins
+### Usage for Authorization Admins 
+TODO: we are working on this... stay tuned
 - 3 activities that admins do
 #### Cold-start
 #### Managing the System
