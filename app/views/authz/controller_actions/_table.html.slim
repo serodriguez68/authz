@@ -1,0 +1,12 @@
+.card
+  .card-content
+    = paginate controller_actions, views_prefix: 'authz', param_name: 'controller_actions_page'
+  table.table.is-fullwidth.is-striped.is-hoverable
+    thead
+      tr
+        th ID
+        th Controller Name
+        th Action Name
+        th
+    tbody
+      = render controller_actions

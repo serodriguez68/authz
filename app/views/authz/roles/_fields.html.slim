@@ -1,0 +1,18 @@
+.field
+  = f.label :name, class: 'label'
+  .control
+    = f.text_field :name, class: 'input', required: true, data: { validation_path: name_validation_path }
+.field
+  = f.label :description, class: 'label'
+  .control
+    = f.text_area :description, class: 'input', required: true
+
+.field
+  = f.label :business_process_ids, class: 'label'
+  .control
+    = f.select 'business_process_ids', options_for_select(::Authz::BusinessProcess.all.pluck(:name, :id), f.object.business_process_ids), {}, { multiple: true }
+
+.field
+  = f.label :role_grant_ids, class: 'label'
+  .control
+    = f.select 'role_grant_ids', options_for_select(::Authz::RoleGrant.all.map{|rg| [rg.rolable.authz_label, rg.id]}, f.object.role_grant_ids), {}, { multiple: true }

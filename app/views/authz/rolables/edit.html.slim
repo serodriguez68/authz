@@ -1,0 +1,21 @@
+= content_for :nav_title do
+  = "#{action_name.titleize} #{@rolable.authz_label}"
+
+section.section
+  .container
+    .columns
+      .column.is-three-fifths
+        .card
+          = render 'layouts/authz/error_messages', object: @rolable
+          .card-content
+            = form_for @rolable do |f|
+              = render 'fields', f: f
+              .field
+                .control
+                  = f.submit 'Save', class: 'button is-primary is-fullwidth'
+      .column
+        / = render 'help'
+javascript:
+  $('form').validate()
+  $('#' + "#{@rolable.class.model_name.singular}" + '_role_ids').multiSelect(window.quicksearchConfig.init)
+  $('#role_role_grant_ids').multiSelect(window.quicksearchConfig.init)

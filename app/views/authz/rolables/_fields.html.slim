@@ -1,0 +1,4 @@
+.field
+  = f.label :role_ids, class: 'label'
+  .control
+    = f.select 'role_ids', options_for_select(::Authz::Role.all.pluck(:name, :id), f.object.role_ids), {}, { multiple: true }

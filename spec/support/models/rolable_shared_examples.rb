@@ -7,13 +7,6 @@ RSpec.shared_examples 'rolable' do
     it { should have_many(:controller_actions).through(:business_processes) }
     it { should have_many(:scoping_rules).through(:roles) }
   end
-
-  describe '.register_in_authorization_admin' do
-    it 'should call Authz.register_rolable_in_admin' do
-      expect(Authz).to receive(:register_rolable_in_admin).with(described_class, :foo)
-      described_class.register_in_authorization_admin(identifier: :foo)
-    end
-  end
   
   describe '#authz_label' do
     it 'should have a default behaviour' do

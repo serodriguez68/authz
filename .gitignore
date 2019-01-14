@@ -10,4 +10,4 @@ spec/dummy/storage/
 spec/dummy/tmp/*
 .idea/*
 authz-*.gem
-
+spec/dummy/.byebug_history
