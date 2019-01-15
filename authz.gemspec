@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 5.2.1", ">= 5.2.1.1"
+  s.add_dependency "rails", "~> 5.0"
   s.add_dependency 'font-awesome-rails'
   s.add_dependency 'kaminari'
   s.add_dependency 'jquery-rails'
