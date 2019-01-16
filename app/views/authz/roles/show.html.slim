@@ -19,5 +19,25 @@ section.section
         = render 'authz/controller_actions/empty_association', parent_edit_link: edit_controller_action_path(@role)
       - else
         = render 'authz/controller_actions/table', controller_actions: @associated_controller_actions
+section.section
+  h2.title.is-4 Scoping Rules
+  .card
+    table.table.is-fullwidth
+      thead
+        tr
+          th Name
+          th Value
+          th
+      tbody
+        - @scoping_rules.each do |rule_name, instance|
+          tr
+            td = rule_name
+            td = instance.try(:keyword) || 'Not created yet'
+            td
+              - if instance
+                = link_to 'Edit', edit_role_scoping_rule_path(@role, instance), class: 'button is-primary'
+              - else
+                = link_to 'New', new_role_scoping_rule_path(@role, scopable: rule_name), class: 'button is-primary'
+section.section
   - Authz.rolables.each do |rolable|
     = render 'authz/rolables/table_from_association', rolable: rolable, parent_instance: @role
