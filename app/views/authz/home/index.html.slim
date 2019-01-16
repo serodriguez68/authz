@@ -31,7 +31,7 @@ section.section
       .column.is-one-quarter
         .card
           .card-content.has-text-centered
-            p.title = ::Authz::ScopingRule.where.not(keyword: ::Authz::Scopables::Base.get_scopables_modules.map{|scoping_module| scoping_module.available_keywords}.flatten.uniq).count
+            p.title = ::Authz::ScopingRule.where.not(keyword: ::Authz::Scopables::Base.get_scopables_modules.map{|scoping_module| scoping_module.available_keywords}.flatten.uniq).pluck(:keyword).uniq.count
             p Keywords that no longer apply
       .column
         .columns
