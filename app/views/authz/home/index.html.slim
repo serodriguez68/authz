@@ -1,6 +1,10 @@
+
+= content_for :nav_title do
+  | Maintenance Dashboard
+
 section.section
   .container
-    h1.title Maintenance Dashboard
+    h2.title.is-4 Controller Actions
     .columns
       .column.is-one-quarter
         .card
@@ -27,34 +31,29 @@ section.section
                     td
 section.section
   .container
+    h2.title.is-4 Unused scopable keywords
     .columns
-      .column.is-one-quarter
-        .card
-          .card-content.has-text-centered
-            p.title = ::Authz::ScopingRule.where.not(keyword: ::Authz::Scopables::Base.get_scopables_modules.map{|scoping_module| scoping_module.available_keywords}.flatten.uniq).pluck(:keyword).uniq.count
-            p Keywords that no longer apply
-      .column
-        .columns
-          - ::Authz::Scopables::Base.get_scopables_names.each do |scoping_module|
-            .column
-              .card
-                table.table.is-fullwidth
-                  thead
-                    tr
-                      th = scoping_module
-                  tbody
-                    - stale_keywords = ::Authz::ScopingRule.where(scopable: scoping_module).where.not(keyword: scoping_module.constantize.available_keywords).pluck(:keyword).uniq
-                    - if stale_keywords.blank?
-                      tr
-                        td.has-text-centered Nothing here
-                    - stale_keywords.each do |keyword|
-                      tr
-                        td = keyword
+      - ::Authz::Scopables::Base.get_scopables_names.each do |scoping_module|
+        .column
+          .card
+            table.table.is-fullwidth
+              thead
+                tr
+                  th = scoping_module
+              tbody
+                - stale_keywords = ::Authz::ScopingRule.where(scopable: scoping_module).where.not(keyword: scoping_module.constantize.available_keywords).pluck(:keyword).uniq
+                - if stale_keywords.blank?
+                  tr
+                    td.has-text-centered Everything OK!
+                - stale_keywords.each do |keyword|
+                  tr
+                    td = keyword
 
 
 
 section.section
   .container
+    h2.title.is-4 Scopables not in codebase
     .columns
       .column.is-one-quarter
         .card
