@@ -14,6 +14,7 @@ $(document).ready(function() {
 
     $('#role_business_process_ids').multiSelect(window.quicksearchConfig.init)
     $('#role_role_grant_ids').multiSelect(window.quicksearchConfig.init)
+    $('#role_user_ids').multiSelect(window.quicksearchConfig.init)
 
   }
 })
