@@ -17,4 +17,4 @@
     = f.label "#{rolable.model_name.singular}_ids", class: 'label'
     .control
       / = f.select 'role_grant_ids', options_for_select(::Authz::RoleGrant.all.map{|rg| [rg.rolable.authz_label, rg.id]}, f.object.role_grant_ids), {}, { multiple: true }
-      = f.select 'user_ids', options_for_select(rolable.all.map{|u|[u.authz_label, u.id]}, f.object.role_grant_ids), {}, { multiple: true }
+      = f.select "#{rolable.model_name.singular}_ids", options_for_select(rolable.all.map{|u|[u.authz_label, u.id]}, f.object.role_grant_ids), {}, { multiple: true }
