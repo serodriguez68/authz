@@ -11,4 +11,4 @@ aside.menu
     - Authz.rolables.map(&:authorizable_association_name).each do |association_name|
       li = link_to association_name.to_s.titleize, send("#{association_name}_path"), class: "#{'is-active' if current_page? send("#{association_name}_path")}"
 
-  p.menu-label Scoping
+  / p.menu-label Scoping

@@ -13,7 +13,8 @@ module Authz
       @associated_business_processes = @role.business_processes.distinct.page(params[:business_processes_page]).per(10)
       @scoping_rules = {}
       ::Authz::Scopables::Base.get_scopables_modules.each do |scoping_module|
-        @scoping_rules[scoping_module.to_s] = ScopingRule.find_by_scopable(scoping_module.to_s)
+        @scoping_rules[scoping_module.to_s] = ScopingRule.find_by(scopable: scoping_module.to_s,
+                                                                  role: @role)
       end
     end
 
