@@ -55,7 +55,7 @@ module Authz
               :name,
               :description,
               business_process_ids: [],
-              role_grant_ids: []
+              user_ids: [],
             )
     end
   end
