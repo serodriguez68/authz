@@ -1,0 +1,17 @@
+= content_for :nav_title do
+  = "#{@scopable} for #{@role.name.titleize}"
+section.section
+  .columns.is-centered
+    .column.is-one-third
+      .card
+        = render 'layouts/authz/error_messages', object: @role
+        .card-content
+          = form_for @scoping_rule, url: role_scoping_rules_path(@role) do |f|
+            = f.hidden_field :scopable
+            .field
+              = f.label :keyword, class: 'label'
+              .control
+                .select = f.select :keyword, options_for_select(@available_keywords, @scoping_rule.try(:keyword)), include_blank: 'Select one', required: true
+
+            .field
+              = f.submit 'Create', class: 'button is-primary'

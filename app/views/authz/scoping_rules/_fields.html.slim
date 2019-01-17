@@ -1,0 +1,5 @@
+= f.hidden_field :scopable
+.field
+  = f.label :keyword, class: 'label'
+  .control
+    .select = f.select :keyword, options_for_select(options, scoping_rule.try(:keyword)), include_blank: 'Select one', required: true
