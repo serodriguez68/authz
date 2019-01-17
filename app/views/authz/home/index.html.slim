@@ -1,3 +1,69 @@
+
+= content_for :nav_title do
+  | Maintenance Dashboard
+
 section.section
   .container
-    h1.title Home!
+    h2.title.is-4 Controller Actions
+    .columns
+      .column.is-one-quarter
+        .card
+          .card-content.has-text-centered
+            p.title = number_with_delimiter @non_created_controller_actions.count
+            p Controller actions to be created
+      .column
+        .card
+          table.table.is-fullwidth
+            thead
+              tr
+                th Controller
+                th Action
+                th
+            tbody
+              - if @non_created_controller_actions.blank?
+                tr
+                  td.has-text-centered[colspan="3"] Up to date!
+              - else
+                - @non_created_controller_actions.each do |h|
+                  tr
+                    td = h[:controller]
+                    td = h[:action]
+                    td
+section.section
+  .container
+    h2.title.is-4 Unused scopable keywords
+    .columns
+      - ::Authz::Scopables::Base.get_scopables_names.each do |scoping_module|
+        .column
+          .card
+            table.table.is-fullwidth
+              thead
+                tr
+                  th = scoping_module
+              tbody
+                - stale_keywords = ::Authz::ScopingRule.where(scopable: scoping_module).where.not(keyword: scoping_module.constantize.available_keywords).pluck(:keyword).uniq
+                - if stale_keywords.blank?
+                  tr
+                    td.has-text-centered Everything OK!
+                - stale_keywords.each do |keyword|
+                  tr
+                    td = keyword
+
+
+
+section.section
+  .container
+    h2.title.is-4 Scopables not in codebase
+    .columns
+      .column.is-one-quarter
+        .card
+          .card-content.has-text-centered
+            p.title = @invalid_scoping_rules.count
+            p Scopables removed from code but still present in the database
+      .column
+        .card
+          table.table.is-fullwidth
+            tbody
+              - @invalid_scoping_rules.each do |rule_name|
+                tr
+                  td = rule_name
