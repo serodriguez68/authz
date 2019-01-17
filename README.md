@@ -78,7 +78,7 @@ $ rails db:migrate
 Go to `config/routes.rb` and mount the Authz engine admin on the path of your choice:
 ```ruby
 Rails.application.routes.draw do
-  mount Authz::Engine => '/authz'
+  mount Authz::Engine => '/authz', as: 'authz'
   # ...
 end
 ```
