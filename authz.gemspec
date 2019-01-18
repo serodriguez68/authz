@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.metadata    = {
     "homepage_uri" => "https://github.com/serodriguez68/authz",
-    "changelog_uri" => "https://github.com/serodriguez68/authz/CHANGELOG.md",
+    "changelog_uri" => "https://github.com/serodriguez68/authz/blob/master/CHANGELOG.md",
     "source_code_uri" => "https://github.com/serodriguez68/authz",
     "bug_tracker_uri" => "https://github.com/serodriguez68/authz/issues",
   }
