@@ -20,7 +20,7 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
 <!--- TODO: Change link to video  --->
 
 ## Table of Content
-- [Is Authz A Good Match For My Needs?](#is-authz-a-good-match-for-my-needs-)
+- [Is Authz A Good Match For My Needs?](#is-authz-a-good-match-for-my-needs)
 - [Installation and Initial Setup](#installation-and-initial-setup)
 - [Usage](#usage)
   * [How Authorization Rules Work in Authz](#how-authorization-rules-work-in-authz)
@@ -33,11 +33,11 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
   * [Usage for Developers](#usage-for-developers)
     + [Scopables](#scopables)
     + [Controllers](#controllers)
-      - [`authorize`](#-authorize-)
-      - [`apply_authz_scopes`](#-apply-authz-scopes-)
+      - [`authorize`](#authorize)
+      - [`apply_authz_scopes`](#apply_authz_scopes)
     + [Views](#views)
-      - [`authorized_path?`](#-authorized-path--)
-      - [`authz_link_to`](#-authz-link-to-)
+      - [`authorized_path?`](#authorized_path)
+      - [`authz_link_to`](#authz_link_to)
 - [Authorization Good and Bad Practices](#authorization-good-and-bad-practices)
   * [Good Practices](#good-practices)
   * [Bad Practices](#bad-practices)
