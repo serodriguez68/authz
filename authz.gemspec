@@ -10,9 +10,15 @@ Gem::Specification.new do |s|
   s.authors     = ["Sergio Rodriguez"]
   s.email       = ["se.rodriguez68@gmail.com"]
   s.homepage    = "https://github.com/serodriguez68/authz"
-  s.summary     = "An opinionated almost-turnkey solution for managing authorization"
-  s.description = "An opinionated almost-turnkey solution for managing authorization"
+  s.summary     = "An opinionated almost-turnkey solution for managing authorization in Rails"
+  s.description = "An opinionated almost-turnkey solution for managing authorization in Rails"
   s.license     = "MIT"
+  s.metadata    = {
+    "homepage_uri" => "https://github.com/serodriguez68/authz",
+    "changelog_uri" => "https://github.com/serodriguez68/authz/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/serodriguez68/authz",
+    "bug_tracker_uri" => "https://github.com/serodriguez68/authz/issues",
+  }
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
