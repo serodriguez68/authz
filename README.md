@@ -16,8 +16,32 @@ them with the tools they need.
   code to keep up with the changes.'"* No worries. Use the admin to make the 
   tweaks you need, no code changes.
 
-Get a feel for **Authz** with this [video overview (coming soon)](TO-DO).
+Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.com/).
+<!--- TODO: Change link to video  --->
 
+## Table of Content
+- [Is Authz A Good Match For My Needs?](#is-authz-a-good-match-for-my-needs-)
+- [Installation and Initial Setup](#installation-and-initial-setup)
+- [Usage](#usage)
+  * [How Authorization Rules Work in Authz](#how-authorization-rules-work-in-authz)
+    + [Permissions](#permissions)
+    + [Scoping Rules](#scoping-rules)
+  * [Usage for Authorization Admins](#usage-for-authorization-admins)
+    + [Cold-start](#cold-start)
+    + [Managing the System](#managing-the-system)
+    + [Keeping the System Healthy](#keeping-the-system-healthy)
+  * [Usage for Developers](#usage-for-developers)
+    + [Scopables](#scopables)
+    + [Controllers](#controllers)
+      - [`authorize`](#-authorize-)
+      - [`apply_authz_scopes`](#-apply-authz-scopes-)
+    + [Views](#views)
+      - [`authorized_path?`](#-authorized-path--)
+      - [`authz_link_to`](#-authz-link-to-)
+- [Authorization Good and Bad Practices](#authorization-good-and-bad-practices)
+  * [Good Practices](#good-practices)
+  * [Bad Practices](#bad-practices)
+- [License](#license)
 
 ## Is Authz A Good Match For My Needs?
 Authz was built for applications that need a particular type of authorization which is very common 
