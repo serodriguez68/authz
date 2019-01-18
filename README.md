@@ -81,6 +81,8 @@ and **the instance/resource** it is being performed on?
      **Roles** are authorized to perform those actions on a **certain subest of those resources**, like the reports 
      that belong to New York and the Sports Department.
 
+[Back to table of content](#table-of-content)
+
 ## Installation and Initial Setup
 
 Add this line to your application's Gemfile:
@@ -161,6 +163,8 @@ You are done with installation. The next step is to learn
 [how authorization rules work in Authz](#how-authorization-rules-work-in-authz). If you already know this, go to the
 [Scopables](#scopables) section.
 
+[Back to table of content](#table-of-content)
+
 ## Usage
 This library has 2 types of users and therefore there is a usage section for each:
 - Authorization admins (non-developers), who will manage the system once it is deployed.
@@ -188,6 +192,8 @@ The next figure illustrates this with an example.
 </div>
 
 Lets dive a little deeper into [Permissions](#permissions) and [Scoping Rules](#scoping-rules).
+
+[Back to table of content](#table-of-content)
 
 #### Permissions
 **Permissions** is the term we use to denote what a role can do. Permissions are actually organised in a
@@ -218,6 +224,7 @@ example.
  bend this suggestion and use the `BusinessProcesses` and `Roles` as mere groupings in any way it makes sense for
  your business.
 
+[Back to table of content](#table-of-content)
 
 #### Scoping Rules
 **Permissions** only define what a given role can do over certain **resource classes**. `ScopingRules` determine 
@@ -255,6 +262,8 @@ These **Scoping Classes** typically exists inside the application's domain logic
 implement and fit nicely into the domain. 
 **If you can't express you authorization rules in terms of Scoping Classes then Authz is probably 
 not for you.**
+
+[Back to table of content](#table-of-content)
    
 ### Usage for Authorization Admins 
 TODO: we are working on this... stay tuned
@@ -263,6 +272,7 @@ TODO: we are working on this... stay tuned
 #### Managing the System
 #### Keeping the System Healthy
 
+[Back to table of content](#table-of-content)
 
 ### Usage for Developers
 The authorization logic bits inside your app typically live in 3 places: [Scopables](#scopables), 
@@ -375,6 +385,7 @@ dealing with `Reports` you want to apply the 'New York' keyword and when dealing
 the 'San Francisco" keyword, you need to define 2 different roles (**they probably are 2 different roles**).
 
 <!--- TODO: Modify this if we add the functionality of default keywords and overrides for specific actions  --->
+[Back to table of content](#table-of-content)
 
 #### Controllers
 
@@ -471,6 +482,8 @@ def update
  end
 ``` 
  
+[Back to table of content](#table-of-content)
+ 
 ##### `apply_authz_scopes`
 We can scope down the retrieval of collections to comply  with the user's scoping rules using the 
 `apply_authz_scopes` method.
@@ -492,6 +505,8 @@ query methods.
 
 `apply_authz_scopes` is also available as a view helper in case you need to use it inside a view. 
 
+[Back to table of content](#table-of-content)
+
 #### Views
 
 ##### `authorized_path?`
@@ -510,6 +525,8 @@ sensible instance exists.
 <%= link_to('Create New Report', new_report_path) if authorized_path?(new_report_path, skip_scoping: true) %>
 ```    
 
+[Back to table of content](#table-of-content)
+
 ##### `authz_link_to`
 The pattern of rendering a link only if the `current_user` is authorized to use it is so common that it deserves it's
 own helper.
@@ -523,6 +540,7 @@ or `skip_scoping: true` if no sensible instance exists.
 <%= authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report %>
 <%= authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true %>
 ```
+[Back to table of content](#table-of-content)
 
 ## Authorization Good and Bad Practices
 A non exhaustive list of generally accepted authorization wisdom and things we've learned from using Authz ourselves:
@@ -565,5 +583,9 @@ This sucks but it's the truth. Almost everything you code requires some type of 
 code quickly gets everywhere. If you just 'wing it' with a couple of boolean flags in the `User` model you are 
 almost guaranteed to have a painful re-write. 
 
+[Back to table of content](#table-of-content)
+
 ## License
 Licensed under the MIT license, see the separate LICENSE.txt file.
+
+[Back to table of content](#table-of-content)
