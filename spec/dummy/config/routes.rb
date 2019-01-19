@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount Authz::Engine => '/authz'
+  mount Authz::Engine => '/authz', as: :authz
 
   root to: 'visitors#index'
 

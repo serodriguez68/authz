@@ -22,12 +22,45 @@ module Authz
 
     # Class Methods
     # ==========================================================================
-    # Introspects the application's routes and returns a list of hashes of all
-    # reachable controller actions with the format
-    # { "orders" =>["new", "edit", "update"] }
+
+    # Extracts the reachable controller actions declared in the host app's router
+    def self.main_app_reachable_controller_actions
+      extract_reachable_controller_actions(Rails.application)
+    end
+
+    # Extracts the reachable controller actions declared in the Engine's router
+    def self.engine_reachable_controller_actions
+      extract_reachable_controller_actions(Authz::Engine)
+    end
+
+    # Combines the reachable controller actions from the engine and the main app
+    # giving precedence to the main app in case of overwrite
     def self.reachable_controller_actions
+      app_cas = main_app_reachable_controller_actions
+      engine_cas =  engine_reachable_controller_actions
+      repeated_keys = app_cas.keys & engine_cas.keys
+      res = engine_cas.merge(app_cas)
+      repeated_keys.each { |rk| res[rk] = app_cas[rk] | engine_cas[rk] }
+      res
+    end
+
+    # Instance Methods
+    # ==========================================================================
+    def to_s
+      "#{controller}##{action}-#{id}"
+    end
+
+    private
+
+    # Introspects the given application's or engine's routes and returns a list
+    # of hashes of all reachable controller actions with the format
+    # { "orders" =>["new", "edit", "update"],
+    #   "authz/business_processes" => ["index", ...]  }
+    # @param app: An instance of a rails application or Engine
+    #             e.g. Rails.application or Authz::Engine
+    def self.extract_reachable_controller_actions(app)
       result = {}
-      routes = Rails.application.routes.set.anchored_routes.map(&:defaults).uniq
+      routes = app.routes.set.anchored_routes.map(&:defaults).uniq
       routes.each do |route|
         controller = route[:controller]
         action = route[:action]
@@ -40,13 +73,7 @@ module Authz
       result
     end
 
-    # Instance Methods
-    # ==========================================================================
-    def to_s
-      "#{controller}##{action}-#{id}"
-    end
 
-    private
 
     def controller_action_pair_exist
       unless self.class.reachable_controller_actions[controller].try(:include?, action)

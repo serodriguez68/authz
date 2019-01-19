@@ -29,17 +29,59 @@ module Authz
 
     describe 'Class Methods' do
 
-      it 'should return the reachable controller actions according to the routes' do
-        # This will overwrite the routes file
-        Rails.application.routes.draw do
-          resources :cities, only: [:new, :create]
+      describe '.reachable_controller_actions' do
+        it 'should return the combined reachable controller actions from the engine and the main app' do
+          allow(described_class).to(
+            receive(:main_app_reachable_controller_actions)
+          ).and_return(
+             {'cities' => ['create', 'new'], 'authz/rolables' => ['bar']}
+          )
+
+          allow(described_class).to(
+            receive(:engine_reachable_controller_actions)
+          ).and_return(
+            {'authz/roles' => ['new'], 'authz/rolables' => ['index']}
+          )
+
+          expected_result = {
+            'cities' => ['create', 'new'],
+            'authz/roles' => ['new'],
+             'authz/rolables' => ['bar', 'index']
+          }
+
+          result = described_class.reachable_controller_actions
+          expect(result).to include(expected_result)
         end
-        expected_result = { 'cities' => ['create', 'new'] } # Actions have order dependency
-        result = described_class.reachable_controller_actions
-        expect(result).to eq(expected_result)
-        # This is a horrible hack to force rails to reload the routes that were
-        # overwritten at the beginning of this test
-        Rails.application.reload_routes!
+      end
+
+      describe '.main_app_reachable_controller_actions' do
+        it 'should return the reachable controller actions declared on the main app router' do
+          # This will overwrite the routes file
+          Rails.application.routes.draw do
+            resources :cities, only: [:new, :create]
+          end
+          expected_result = { 'cities' => ['create', 'new'] } # Actions have order dependency
+          result = described_class.main_app_reachable_controller_actions
+          expect(result).to eq(expected_result)
+          # This is a horrible hack to force rails to reload the routes that were
+          # overwritten at the beginning of this test
+          Rails.application.reload_routes!
+        end
+      end
+
+      describe '.engine_reachable_controller_actions' do
+        it 'should return the reachable controller actions declared on the engine router' do
+          # This will overwrite the routes file
+          Authz::Engine.routes.draw do
+            resources :groups, only: [:new, :create]
+          end
+          expected_result = { 'authz/groups' => ['create', 'new'] } # Actions have order dependency
+          result = described_class.engine_reachable_controller_actions
+          expect(result).to eq(expected_result)
+          # This is a horrible hack to force rails to reload the routes that were
+          # overwritten at the beginning of this test
+          Rails.application.reload_routes!
+        end
       end
 
     end
