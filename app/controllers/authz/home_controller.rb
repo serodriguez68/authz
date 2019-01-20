@@ -3,6 +3,7 @@ require_dependency "authz/application_controller"
 module Authz
   class HomeController < ApplicationController
     def index
+      authorize skip_scoping: true
       routes = Rails.application.routes.set.anchored_routes.map(&:defaults).uniq
       not_found = []
       routes.each do |route|
