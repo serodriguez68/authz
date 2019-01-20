@@ -95,10 +95,22 @@ And then execute in your terminal:
 $ bundle install
 ```
 
-Then install and execute the Authz migrations by executing:
+Then install Authz executing:
 ```bash
-$ rails authz:install:migrations
+$ rails authz:install
+# => config/initializer/authz.rb gets created
+# => The authz migrations are installed
 $ rails db:migrate
+```
+
+Go to `config/initializer/authz.rb` and configure:
+```ruby
+Authz.configure do |config|
+  # The method that Authz should use to force authentication to the Authorization Admin
+  config.force_authentication_method = :authenticate_user!
+  # The method used to access the current user
+  config.current_user_method = :current_user
+end
 ```
 
 Go to `config/routes.rb` and mount the Authz engine admin on the path of your choice:
@@ -126,13 +138,12 @@ Go to `app/controllers/application_controller.rb` and:
 capable of performing authorization. Alternatively, you may include this only in the controllers that you want.
 - Optional: Authz will raise a `::NotAuthorized` exception whenever a user attempts
 to perform a forbidden action. You may want to `rescue_from` it and define how to handle it gracefully.
+The admin will also use this handler when unauthorized access is attempted, but only if placed inside the `ApplicationController`.
 - Optional: As a safeguard you can declare an `around_action :verify_authorized` which will raise an  `::AuthorizationNotPerformedError` 
 exception if a developer forgets to authorize a controller action or to explicitly `skip_authorization` 
 (see [Usage](#usage) for more info).
 Alternatively, you may also do this inside each controller individually (particularly if you are using 
 [devise](https://github.com/plataformatec/devise)).
-- Optional: Authz assumes that your controllers have access to `current_user`. If this is not the case, simply
-define a `authz_user` method that points to your current user.
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -144,17 +155,16 @@ class ApplicationController < ActionController::Base
   #... 
 
   private
-  
+  # Note that the redirect uses main_app.(something).
+  # main_app is must be used to avoid ambiguity between
+  # your app and the engines you use if there are route helpers 
+  # with the same name (like root_url)  
   def unauthorized_handler
     msg = 'Ooops! It seems that you are not authorized to do that!'
     respond_to do |format|
-      format.html { redirect_back fallback_location: root_url, alert: msg }
+      format.html { redirect_back fallback_location: main_app.root_url, alert: msg }
       format.js{ render(js: "alert('#{msg}');") }
     end
-  end
-
-  def authz_user
-    current_alien
   end
 end
 ```

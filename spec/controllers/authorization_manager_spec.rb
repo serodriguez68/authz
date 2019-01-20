@@ -190,6 +190,31 @@ module Authz
         end
       end
 
+      describe '#authz_user' do
+
+        it 'should call the current_user_method specified in the configuration' do
+          # Setup
+          class (self.class)::TestsController < ApplicationController
+            include Authz::Controllers::AuthorizationManager
+            public(*Authz::Controllers::AuthorizationManager.protected_instance_methods)
+            attr_reader :current_pirate
+            def initialize(current_pirate)
+              @current_pirate = current_pirate
+            end
+          end
+          klass = (self.class)::TestsController
+          controller = klass.new(:foo)
+          prev = Authz.current_user_method
+          Authz.current_user_method = :current_pirate
+          # Test
+          expect(controller).to receive(:current_pirate).and_return nil
+          controller.authz_user
+          # Teardown
+          Authz.current_user_method = prev
+        end
+
+      end
+
     end
   end
 end

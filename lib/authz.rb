@@ -28,4 +28,19 @@ module Authz
             "Only the Authorization of one model (like a User) is currently supported"
     end
   end
+
+  # The method controllers use to force authentication
+  mattr_accessor :force_authentication_method
+  @@force_authentication_method = :authenticate_user!
+
+  # The method used to access the instance of a current user
+  mattr_accessor :current_user_method
+  @@current_user_method = :current_user
+
+  # Allows the configuration of the gem using the
+  # Authz.configure do |config| syntax
+  def self.configure
+    yield self
+  end
+
 end

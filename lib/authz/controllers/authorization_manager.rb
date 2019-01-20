@@ -120,8 +120,9 @@ module Authz
       # Hook method to allow customization of user used in the authorization
       # process
       def authz_user
-        current_user
+        send(Authz.current_user_method)
       end
+
 
       # Raises an error if authorization has not been performed.
       # `around_action` filter and transaction rollbacks changes in db
@@ -182,6 +183,7 @@ module Authz
         includer.helper_method :authorized_path?
         includer.helper_method :apply_authz_scopes
         includer.helper Authz::Helpers::ViewHelpers
+        includer.helper_method :authz_user
       end
 
     end
