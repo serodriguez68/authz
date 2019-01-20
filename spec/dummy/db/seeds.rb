@@ -58,7 +58,7 @@ end
 
 # Controller Actions
 # ==========================================================================
-Authz::ControllerAction.reachable_controller_actions.each do |controller, actions|
+Authz::ControllerAction.main_app_reachable_controller_actions.each do |controller, actions|
   actions.each do |action|
     Authz::ControllerAction.create!(
         controller: controller,
@@ -149,3 +149,23 @@ a = Announcement.create! body: "for sf"
 a.cities << [sf]
 
 Announcement.create! body: "for no one"
+
+
+# Authz Authorization
+# ==========================================================================
+# Controller Actions
+Authz::ControllerAction.engine_reachable_controller_actions.each do |controller, actions|
+  actions.each do |action|
+    Authz::ControllerAction.create!(
+      controller: controller,
+      action: action)
+  end
+end
+
+# Business Process
+bp = Authz::BusinessProcess.create!(name: 'Manage authorization', description: 'Manage authorization')
+bp.controller_actions << Authz::ControllerAction.where('controller LIKE ?', 'authz/%')
+
+# Role: Grant Business Process to an existing role
+r = Authz::Role.find_by(name: 'general_director')
+r.business_processes << [bp]

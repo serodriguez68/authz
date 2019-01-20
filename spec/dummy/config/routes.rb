@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  mount Authz::Engine => '/authz', as: :authz
-
   root to: 'visitors#index'
 
   devise_for :users
+  mount Authz::Engine => '/authz', as: :authz
   get 'user_root' => 'reports#index', as: :user_root
   resources :clearances, except: [:show]
   resources :cities, except: [:show]

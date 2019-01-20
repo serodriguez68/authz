@@ -6,4 +6,5 @@ nav
     li = authz_link_to "Cities", cities_path, skip_scoping: true
     li = authz_link_to "Reports", reports_path, skip_scoping: true
     li = authz_link_to "Announcements", announcements_path, skip_scoping: true
+    li = authz_link_to 'Manage Authorization', authz.root_url, skip_scoping: true
     li = link_to "Logout", destroy_user_session_path, method: :delete

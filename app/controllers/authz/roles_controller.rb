@@ -53,6 +53,8 @@ module Authz
       end
     end
 
+    private
+
     def role_params
       params.require(:role)
             .permit(
