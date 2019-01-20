@@ -9,6 +9,8 @@ module Authz
 
     before(:each) do
       routes.draw { get "custom" => "authz/application#custom" }
+      # skip authorize before action
+      allow(controller).to receive(:authorize).and_return(nil)
 
       # FIXME: For some reason devise is not loading correctly
       # and DeviseController is not defined, so wer are forced to

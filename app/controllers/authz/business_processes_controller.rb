@@ -2,6 +2,7 @@ require_dependency "authz/application_controller"
 
 module Authz
   class BusinessProcessesController < ApplicationController
+
     def index
       @business_processes = BusinessProcess.all.order(created_at: :desc).page(params[:business_processes_page])
     end

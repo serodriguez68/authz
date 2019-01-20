@@ -1,8 +1,10 @@
 module Authz
   class ApplicationController < ::ApplicationController
+    include Authz::Controllers::AuthorizationManager
+
     protect_from_forgery with: :exception
     before_action :authenticate_authz_user
-    include Authz::Controllers::AuthorizationManager
+    before_action { authorize skip_scoping: true }
     around_action :verify_authorized
 
     private
