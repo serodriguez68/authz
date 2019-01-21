@@ -1,4 +1,4 @@
 = content_for :nav_title do
   = controller_name.titleize
 = content_for :nav_links do
-  = link_to 'New', send("new_#{controller_name.singularize}_path"), class: 'button is-primary'
+  = authz_link_to 'New', send("new_#{controller_name.singularize}_path"), {class: 'button is-primary'}, skip_scoping: true

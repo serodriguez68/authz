@@ -1,7 +1,7 @@
 = content_for :nav_title do
   = @rolable.authz_label
 = content_for :nav_links do
-  = link_to 'Edit', send("edit_#{@rolable.model_name.singular}_path", @rolable), class: 'button is-primary'
+  = authz_link_to 'Edit', send("edit_#{@rolable.model_name.singular}_path", @rolable), {class: 'button is-primary'}, skip_scoping: true
 
 section.section
   .container

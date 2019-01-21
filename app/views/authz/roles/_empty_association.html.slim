@@ -4,4 +4,4 @@
       p.title.is-4.has-text-centered No Roles associated yet
       p Roles are the main grouping for your users in your software. For example: Office manager, General Director or Business Analyst.
     .content.has-text-centered
-      = link_to 'Add role', parent_edit_link, class: 'button is-primary'
+      = authz_link_to 'Add role', parent_edit_link, {class: 'button is-primary'}, skip_scoping: true

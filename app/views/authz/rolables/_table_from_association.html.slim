@@ -16,5 +16,8 @@ h2.title.is-5 = rolable.authorizable_association_name.capitalize
           tr.is-clickable[data-url="#{send("#{child_instance.model_name.singular}_path", child_instance)}"]
             td
             td = child_instance.authz_label
-            td = link_to send("#{child_instance.model_name.singular}_path", child_instance) do
-              i.fa-chevron-right.fa
+
+            - show_rolable_path = send("#{child_instance.model_name.singular}_path", child_instance)
+            - if authorized_path? show_rolable_path, skip_scoping: true
+                td = link_to show_rolable_path do
+                  i.fa-chevron-right.fa

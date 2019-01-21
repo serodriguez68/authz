@@ -2,5 +2,8 @@ tr.is-clickable[data-url="#{controller_action_path(controller_action)}"]
   td = controller_action.id
   td = controller_action.controller
   td = controller_action.action
-  td = link_to controller_action_path(controller_action) do
-    i.fa-chevron-right.fa
+
+  - show_ca_path = controller_action_path(controller_action)
+  - if authorized_path? show_ca_path, skip_scoping: true
+      td = link_to show_ca_path do
+        i.fa-chevron-right.fa

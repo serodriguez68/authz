@@ -4,4 +4,4 @@
       p.title.is-4.has-text-centered No Controller Actions associated yet
       p Controller Actions are the code in your app that ultimately perform modifications over data.
     .has-text-centered
-      = link_to 'Add Controller Action', parent_edit_link, class: 'button is-primary'
+      = authz_link_to 'Add Controller Action', parent_edit_link, {class: 'button is-primary'}, skip_scoping: true

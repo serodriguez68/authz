@@ -11,5 +11,8 @@ section.section
             tr.is-clickable[data-url="#{send("#{rolable.model_name.singular}_path", rolable)}"]
               td = rolable.id
               td = rolable.authz_label
-              td = link_to send("#{rolable.model_name.singular}_path", rolable) do
-                i.fa-chevron-right.fa
+
+              - show_rolable_path = send("#{rolable.model_name.singular}_path", rolable)
+              - if authorized_path? show_rolable_path, skip_scoping: true
+                td = link_to show_rolable_path do
+                  i.fa-chevron-right.fa

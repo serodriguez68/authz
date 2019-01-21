@@ -3,7 +3,7 @@
     .has-text-centered
       p.title.is-4 No Business Processes yet
       p.subtitle.is-6 Create one here
-      = link_to 'New business process', new_business_process_path, class: 'button is-primary'
+      = authz_link_to 'New business process', new_business_process_path, {class: 'button is-primary'}, skip_scoping: true
   - else
     .card
       .card-content = paginate business_processes, views_prefix: 'authz', param_name: 'business_processes_page'

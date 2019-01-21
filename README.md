@@ -549,6 +549,8 @@ or `skip_scoping: true` if no sensible instance exists.
 <%= authz_link_to 'Edit', edit_report_path(report), {}, using: report %>
 <%= authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report %>
 <%= authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true %>
+# Note that we are explictly wrapping the 3rd argument in {} to avoid ambiguity in the params.
+# If you get an 'unknown keyword: class' error, it's caused by this.
 ```
 [Back to table of content](#table-of-content)
 
@@ -594,6 +596,13 @@ code quickly gets everywhere. If you just 'wing it' with a couple of boolean fla
 almost guaranteed to have a painful re-write. 
 
 [Back to table of content](#table-of-content)
+
+## Common Problems and Solutions
+- When linking from your app into the Authz Admin, make sure you use the `root_url` helper and NOT the `root_path`.
+If you don't, you will get an `ActionController::RoutingError No route matches...`. In other words, 
+if you mounted Authz `as: authz` in your router, use: 
+```authz_link_to 'Authorization Admin', authz.root_url, skip_scoping: true```.
+ 
 
 ## License
 Licensed under the MIT license, see the separate LICENSE.txt file.

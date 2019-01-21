@@ -4,4 +4,4 @@
       p.title.is-4.has-text-centered No Business Processes associated yet
       p Business Processes are the parents of grouped actions needed to perform a task. For example: Ship Orders, Create invoice or Revert reimbursement.
     .has-text-centered
-      = link_to 'Add business process', parent_edit_link, class: 'button is-primary'
+      = authz_link_to 'Add business process', parent_edit_link, {class: 'button is-primary'}, skip_scoping: true

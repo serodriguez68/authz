@@ -3,5 +3,8 @@ tr.is-clickable[data-url="#{role_path(role)}"]
   td = role.name
   td = role.code
   td = role.description
-  td = link_to role_path(role) do
-    i.fa-chevron-right.fa
+
+  - show_r_path = role_path(role)
+  - if authorized_path? show_r_path, skip_scoping: true
+    td = link_to show_r_path do
+      i.fa-chevron-right.fa

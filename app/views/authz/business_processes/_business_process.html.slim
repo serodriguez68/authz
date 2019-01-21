@@ -3,5 +3,8 @@ tr.is-clickable[data-url="#{business_process_path(business_process)}"]
   td = business_process.name
   td = business_process.code
   td = business_process.description
-  td = link_to business_process_path(business_process) do
-    i.fa-chevron-right.fa
+
+  - show_bp_path = business_process_path(business_process)
+  - if authorized_path? show_bp_path, skip_scoping: true
+    td = link_to show_bp_path do
+      i.fa-chevron-right.fa
