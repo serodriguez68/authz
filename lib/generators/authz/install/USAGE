@@ -1,0 +1,2 @@
+Description:
+    Generates the initializer for you to configure Authz and installs the migrations.

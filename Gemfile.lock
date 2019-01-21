@@ -6,6 +6,7 @@ PATH
       jquery-rails
       kaminari
       rails (~> 5.0)
+      slim-rails
 
 GEM
   remote: https://rubygems.org/
@@ -300,7 +301,6 @@ DEPENDENCIES
   sass-rails
   selenium-webdriver
   shoulda-matchers
-  slim-rails
   sprockets-es6
   sqlite3
   travis
