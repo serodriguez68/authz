@@ -9,9 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Maintenance dashboard on the Admin
 
 ### Added
+- Add `rails g authz:install` as part of the installation process.
+- Add `rake authz:seed_admin` task to create an initial business process
+capable of accessing the app.
 - The Admin is now authorized using the Authz infrastructure
 - The current_user and force authentication methods are now 
 configured through an initializer and NOT by overriding them
+
+### Removed
+- `rails authz:install:migrations` is no longer required as part of the installation.
+It has been replaced by the `rails g authz:install` generator.
   
 
 ## [0.0.1.alpha3] - 2018-01-18
