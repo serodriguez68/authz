@@ -103,6 +103,15 @@ $ rails authz:install
 $ rails db:migrate
 ```
 
+Seed Authz's tables with the data required to control access to the Authorization Admin.
+This will create a [Business Process](#permissions) in the `Authz::BusinessProcesses` table.
+Any role that is granted that business process will get full access to the Authorization Admin.
+- Later, you will also probably want to run this in production to configure it. 
+See [Cold Start](#cold-start) for more details.
+ ```bash
+$ rails authz:seed_admin
+```
+
 Go to `config/initializer/authz.rb` and configure:
 ```ruby
 Authz.configure do |config|
@@ -279,6 +288,8 @@ not for you.**
 TODO: we are working on this... stay tuned
 - 3 activities that admins do
 #### Cold-start
+
+
 #### Managing the System
 #### Keeping the System Healthy
 
