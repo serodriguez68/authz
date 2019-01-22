@@ -114,6 +114,10 @@ $ rails authz:seed_admin
 
 Go to `config/initializer/authz.rb` and configure:
 ```ruby
+unless Rails.configuration.eager_load
+  # The scopables location
+  Dir[Rails.root.join('app/scopables/**/*.rb')].each{ |f| require f }
+end
 Authz.configure do |config|
   # The method that Authz should use to force authentication into the Authorization Admin
   config.force_authentication_method = :authenticate_user!
@@ -321,6 +325,7 @@ authorized).
 resolve `All` in your `#resolve_keyword` method.
 
 We recommend creating an `app/scopables` directory to place the scopables, but you can put them wherever you want.
+Just remember to adjust the `authz.rb` initializer accordingly.
 
 ```ruby
 module ScopableByCity
