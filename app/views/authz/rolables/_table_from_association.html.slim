@@ -1,11 +1,11 @@
 h2.title.is-5 = rolable.authorizable_association_name.capitalize
 .card
   table.table.is-fullwidth.is-striped.is-hoverable
-    thead
-      tr
-        th Avatar
-        th Label
-        th
+    / thead
+    /   tr
+    /     / th Avatar
+    /     th Name
+    /     / th
     tbody
       - all_instances = parent_instance.public_send(rolable.authorizable_association_name).distinct
       - if all_instances.blank?
@@ -15,9 +15,14 @@ h2.title.is-5 = rolable.authorizable_association_name.capitalize
         - all_instances.each do |child_instance|
           tr.is-clickable[data-url="#{send("#{child_instance.model_name.singular}_path", child_instance)}"]
             td
-            td = child_instance.authz_label
+              span[style="display: flex; align-items: center"]
+                span[style="border-radius: 50%; background-color: #b0cfff; height: 50px; width: 50px; display: inline-flex; justify-content: center; align-items:center; margin-right: 1rem; background-image: url(#{child_instance.authz_avatar_url})"]
+                  span[style="color: white; font-weight: bold"] N/A
+                span = child_instance.authz_label
+              / = child_instance.authz_avatar_url
+            / td = child_instance.authz_label
 
             - show_rolable_path = send("#{child_instance.model_name.singular}_path", child_instance)
             - if authorized_path? show_rolable_path, skip_scoping: true
-                td = link_to show_rolable_path do
-                  i.fa-chevron-right.fa
+                / td = link_to show_rolable_path do
+                /   i.fa-chevron-right.fa

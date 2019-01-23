@@ -54,6 +54,11 @@ module Authz
         end
       end
 
+      def authz_avatar_url
+        # 'missing.png'
+        'http://i.pravatar.cc/60'
+      end
+
 
       # Configure Includer for Authorization Admin
       # ==========================================================================
@@ -64,6 +69,12 @@ module Authz
         # should be used inside authz to label each instance
         def authz_label_method method_name
           define_method 'authz_label' do
+            self.send(method_name)
+          end
+        end
+
+        def authz_avatar_url method_name
+          define_method 'authz_avatar_url' do
             self.send(method_name)
           end
         end
