@@ -3,11 +3,9 @@ module Authz
     # Associations
     # ==========================================================================
     belongs_to :controller_action, class_name: 'Authz::ControllerAction',
-                                   foreign_key: 'authz_controller_action_id',
-                                   optional: true
+                                   foreign_key: 'authz_controller_action_id'
     belongs_to :business_process, class_name: 'Authz::BusinessProcess',
-                                  foreign_key: 'authz_business_process_id',
-                                  optional: true
+                                  foreign_key: 'authz_business_process_id'
 
     # Validations
     # ===========================================================================

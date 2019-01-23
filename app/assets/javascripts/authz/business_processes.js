@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if (page.controller() == 'business_processes' && (page.action() == 'new' || page.action() == 'edit')) {
+  if (page.controller() == 'business_processes' && (page.action() == 'new' || page.action() == 'edit' || page.action() == 'create' || page.action() == 'update')) {
     $('form').validate()
 
     $('#business_process_name').rules('add',{

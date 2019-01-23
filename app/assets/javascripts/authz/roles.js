@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if (page.controller() == 'roles' && (page.action() == 'new' || page.action() == 'edit')) {
+  if (page.controller() == 'roles' && (page.action() == 'new' || page.action() == 'edit' || page.action() == 'create' || page.action() == 'update')) {
 
     $('form').validate()
     $('#role_name').rules('add',{
