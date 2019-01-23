@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if (page.controller() == 'controller_actions' && page.action() == 'new') {
+  if (page.controller() == 'controller_actions' && (page.action() == 'new') || (page.action() == 'edit')) {
     $('form').validate()
     $('#controller_action_controller').rules('add',{
       messages: {
