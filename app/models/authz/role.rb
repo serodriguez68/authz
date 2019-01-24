@@ -36,7 +36,7 @@ module Authz
     # Cached version of has_permission?
     def cached_has_permission?(controller_name, action_name)
       Rails.cache.fetch([cache_key_with_version, controller_name, action_name]) do
-        p "refreshing cache for #{name}"
+        p "refreshing cache for #{name} for #{controller_name}##{action_name}"
         has_permission?(controller_name, action_name)
       end
     end

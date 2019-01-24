@@ -35,6 +35,7 @@ module Authz
       # @param authz_user: the user from which the roles are going to
       #                    be used
       def self.apply_scopes_for_user(collection_or_class, authz_user)
+        p 'apply_scopes_for_user'
         usr = authz_user
 
         base = collection_or_class.all
@@ -60,9 +61,12 @@ module Authz
       #                             be applied
       # @param authz_user: the requesting user (injected dependency)
       def self.apply_role_scopes(role, collection_or_class, authz_user)
+        p 'apply_role_scopes'
+
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! collection_or_class
 
         scoped = collection_or_class.all
+
         applicable_scopables.each do |as|
           # as = ScopableByCity
 

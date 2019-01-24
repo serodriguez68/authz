@@ -35,6 +35,7 @@ module Authz
     end
 
     def touch_roles
+      p "Touching roles #{roles.pluck(:name)}"
       roles.update_all(updated_at: Time.now)
     end
 
