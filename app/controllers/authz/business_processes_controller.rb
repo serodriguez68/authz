@@ -24,6 +24,9 @@ module Authz
     def create
       @business_process = BusinessProcess.new(business_process_params)
       if @business_process.save
+        # FIXME: make sure that saving and deleting associated
+        # controller_action_ids and role_ids actually go through Rails
+        # and trigger cache invalidation
         redirect_to business_process_path(@business_process)
       else
         render 'new'
@@ -36,6 +39,9 @@ module Authz
 
     def update
       @business_process = BusinessProcess.find(params[:id])
+      # FIXME: make sure that saving and deleting associated
+      # controller_action_ids and role_ids actually go through Rails
+      # and trigger cache invalidation
       if @business_process.update(business_process_params)
         redirect_to business_process_path(@business_process)
       else

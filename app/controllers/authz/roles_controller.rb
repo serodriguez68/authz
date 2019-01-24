@@ -24,6 +24,9 @@ module Authz
 
     def create
       @role = Role.new(role_params)
+      # FIXME: make sure that saving and deleting associated
+      # business processes actually go through Rails
+      # and trigger cache invalidation
       if @role.save
         redirect_to role_path(@role)
       else
@@ -38,6 +41,9 @@ module Authz
     def update
       @role = Role.find(params[:id])
       if @role.update(role_params)
+        # FIXME: make sure that saving and deleting associated
+        # business processes actually go through Rails
+        # and trigger cache invalidation
         redirect_to role_path(@role)
       else
         render 'edit'

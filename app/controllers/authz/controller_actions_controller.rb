@@ -19,6 +19,9 @@ module Authz
     def create
       @controller_action = ControllerAction.new(controller_action_create_params)
       if @controller_action.save
+        # FIXME: make sure that saving and deleting associated
+        # controller_action_ids actually go through Rails
+        # and trigger cache invalidation
         redirect_to controller_action_path(@controller_action)
       else
         render 'new'
@@ -32,6 +35,9 @@ module Authz
     def update
       @controller_action = ControllerAction.find(params[:id])
       if @controller_action.update(controller_action_update_params)
+        # FIXME: make sure that saving and deleting associated
+        # controller_action_ids actually go through Rails
+        # and trigger cache invalidation
         redirect_to controller_action_path(@controller_action)
       else
         render 'edit'
