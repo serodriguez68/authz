@@ -56,13 +56,12 @@ module Authz
     private
 
     def role_params
+      permitted_arguments = [:name, :description, business_process_ids: []]
+      ::Authz.rolables.each do |rolable|
+        permitted_arguments << { "#{rolable.model_name.singular}_ids"=> [] }
+      end
       params.require(:role)
-            .permit(
-              :name,
-              :description,
-              business_process_ids: [],
-              user_ids: [],
-            )
+            .permit(permitted_arguments)
     end
   end
 end

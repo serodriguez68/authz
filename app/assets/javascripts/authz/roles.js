@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if (page.controller() == 'roles' && (page.action() == 'new' || page.action() == 'edit')) {
+  if (page.controller() == 'roles' && (page.action() == 'new' || page.action() == 'edit' || page.action() == 'create' || page.action() == 'update')) {
 
     $('form').validate()
     $('#role_name').rules('add',{
@@ -11,10 +11,6 @@ $(document).ready(function() {
         type: 'get'
       }
     })
-
-    $('#role_business_process_ids').multiSelect(window.quicksearchConfig.init)
-    $('#role_role_grant_ids').multiSelect(window.quicksearchConfig.init)
-    $('#role_user_ids').multiSelect(window.quicksearchConfig.init)
-
+    $('.j-multiselectable').multiSelect(window.quicksearchConfig.init)
   }
 })
