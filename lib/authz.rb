@@ -1,6 +1,5 @@
 require 'authz/engine'
 require 'authz/models/rolable'
-require 'authz/controllers/permission_manager'
 require 'authz/controllers/scoping_manager'
 require 'authz/controllers/authorization_manager'
 require 'authz/helpers/view_helpers'
@@ -11,7 +10,6 @@ require 'jquery-rails'
 require 'font-awesome-rails'
 
 module Authz
-
   class MultileRolablesNotPermitted < StandardError; end
 
   mattr_reader :rolables

@@ -5,8 +5,8 @@ class ReportsController < ApplicationController
   def index
     authorize skip_scoping: true
     @reports = apply_authz_scopes(on: Report)
-               .includes(:user, :city, :clearance)
-               .order('cities.name ASC')
+                 .includes(:user, :city, :clearance)
+                 .order('cities.name ASC')
   end
 
   # GET /reports/1

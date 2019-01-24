@@ -4,6 +4,7 @@ module Authz
       let(:current_user) { build(:user) }
       let(:controller) { TestsController.new(current_user, 'an_action') }
 
+
       describe '#authorized?' do
         before(:each) do
           @role1 = create :authz_role
@@ -11,6 +12,7 @@ module Authz
           current_user.roles << [@role1, @role2]
           @report = create :report
         end
+
         it 'should raise an error when no scoping instance is provided' do
           expect {
             controller.authorized? controller: 'foo', action: 'bar'
@@ -18,7 +20,7 @@ module Authz
         end
 
         it 'should not raise the MissingScopingInstance error when the skip_scoping option is used' do
-          allow(PermissionManager).to receive(:has_permission?).and_return(true)
+          allow(@role1).to receive(:has_permission?).and_return(true)
           expect {
             controller.authorized?(controller: 'foo', action: 'bar',
                                    skip_scoping: true)
@@ -27,7 +29,7 @@ module Authz
 
         context 'when the user is authorized' do
           it 'should return true' do
-            allow(PermissionManager).to receive(:has_permission?).and_return(true)
+            allow(@role1).to receive(:has_permission?).and_return(true)
             allow(ScopingManager).to receive(:has_access_to_instance?).and_return(true)
             expect(
               controller.authorized?(controller: 'foo', action: 'bar', using: 'baz')
@@ -40,14 +42,14 @@ module Authz
             con = 'controller'
             act = 'action'
             
-            expect(PermissionManager).to(
-              receive(:has_permission?).with(@role1, con, act)
+            expect(@role1).to(
+              receive(:has_permission?).with(con, act)
                 .once
                 .and_return(true)
             )
             
-            expect(PermissionManager).to(
-              receive(:has_permission?).with(@role2, con, act)
+            expect(@role2).to(
+              receive(:has_permission?).with(con, act)
                 .once.and_return(true)
             )
             
@@ -76,14 +78,14 @@ module Authz
             con = 'controller'
             act = 'action'
 
-            expect(PermissionManager).to(
-              receive(:has_permission?).with(@role1, con, act)
+            expect(@role1).to(
+              receive(:has_permission?).with(con, act)
                 .once
                 .and_return(false)
             )
 
-            expect(PermissionManager).to(
-              receive(:has_permission?).with(@role2, con, act)
+            expect(@role2).to(
+              receive(:has_permission?).with(con, act)
                 .once.and_return(false)
             )
 

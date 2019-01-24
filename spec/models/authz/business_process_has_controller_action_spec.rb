@@ -3,7 +3,7 @@ module Authz
 
     describe 'Associations' do
       it { should belong_to(:controller_action) }
-      it { should belong_to(:business_process) }
+      it { should belong_to(:business_process).touch(true) }
     end
 
     describe 'validations' do

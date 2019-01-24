@@ -20,6 +20,10 @@ module Authz
 
     accepts_nested_attributes_for :business_processes
 
+    # Callbacks
+    # ==========================================================================
+    after_update :touch_upstream_instances
+
     # Class Methods
     # ==========================================================================
 
@@ -73,12 +77,17 @@ module Authz
       result
     end
 
-
-
     def controller_action_pair_exist
       unless self.class.reachable_controller_actions[controller].try(:include?, action)
         errors.add(:base, 'the controller action you are trying to save is not included in the routes')
       end
+    end
+
+    def touch_upstream_instances
+      time = Time.now
+      business_process_has_controller_actions.update_all(updated_at: time)
+      business_processes.update_all(updated_at: time)
+      roles.update_all(updated_at: time)
     end
 
   end

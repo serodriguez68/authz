@@ -27,6 +27,27 @@ module Authz
       it { should have_many(:users) }
     end
 
+    describe 'Callbacks' do
+      describe 'touching associated roles' do
+        before(:each) do
+          @bp = create(:authz_business_process)
+          @role = create(:authz_role)
+          @bp.roles << @role
+        end
+        it 'should touch roles when touched' do
+          expect {
+            @bp.touch
+          }.to change { @role.reload.updated_at }
+        end
+
+        it 'should touch roles when updated' do
+          expect {
+            @bp.update(name: 'foo')
+          }.to change { @role.reload.updated_at }
+        end
+      end
+    end
+
 
   end
 end

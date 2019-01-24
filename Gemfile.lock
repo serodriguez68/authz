@@ -166,6 +166,8 @@ GEM
       json
       websocket (~> 1.0)
     rack (2.0.6)
+    rack-mini-profiler (1.0.1)
+      rack (>= 1.2.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.2)
@@ -297,6 +299,7 @@ DEPENDENCIES
   faker
   foundation-rails
   launchy
+  rack-mini-profiler
   rspec-rails
   sass-rails
   selenium-webdriver

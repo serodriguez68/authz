@@ -11,6 +11,7 @@ module Authz
     # Callbacks
     # ==========================================================================
     before_validation :extract_code_from_name, on: [:create]
+    after_touch :debug_touch
 
     # Associations
     # ==========================================================================
@@ -27,10 +28,30 @@ module Authz
              class_name: 'Authz::ScopingRule',
              foreign_key: 'authz_role_id'
 
+    # Returns true if the role has access to the given controller action
+    def has_permission?(controller_name, action_name)
+      controller_actions.exists?(controller: controller_name, action: action_name)
+    end
+
+    # Cached version of has_permission?
+    def cached_has_permission?(controller_name, action_name)
+      Rails.cache.fetch([cache_key_with_version, controller_name, action_name]) do
+        p "refreshing cache for #{name}"
+        has_permission?(controller_name, action_name)
+      end
+    end
+
     private
 
     def extract_code_from_name
       self.code = name.parameterize(separator: '_') if name.present?
     end
+
+
+    private
+    def debug_touch
+      p "#{name} has been touched"
+    end
+
   end
 end

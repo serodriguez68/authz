@@ -48,6 +48,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'binding_of_caller'
   s.add_development_dependency 'travis'
   s.add_development_dependency 'travis-lint'
+  s.add_development_dependency 'rack-mini-profiler'
 
 
 end

@@ -7,7 +7,8 @@ module Authz
                                    optional: true
     belongs_to :business_process, class_name: 'Authz::BusinessProcess',
                                   foreign_key: 'authz_business_process_id',
-                                  optional: true
+                                  optional: true,
+                                  touch: true
 
     # Validations
     # ===========================================================================

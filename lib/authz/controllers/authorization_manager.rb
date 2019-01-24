@@ -56,10 +56,9 @@ module Authz
       # ===========================================================================
       protected
 
-      # 1. Check if the user is correctly skipping scoping
-      # 2. Asks PermissionManager to check for user permission
-      # 3. Asks ScopingManager to verify the user's access to the instance
-      # Managers should handle their own exceptions if a problem is found
+      # Enforces authorization when called.
+      # Raises an exception when the unauthorized.
+      # The exception may be rescued to provided custom behaviour.
       #
       # @param [using: Object] the instance that will determine
       #        access in the ScopingManager
@@ -97,7 +96,7 @@ module Authz
         usr = authz_user
         usr.roles.each do |role|
           # a. Check authorization on controller action
-          auth_on_action = PermissionManager.has_permission?(role, controller, action)
+          auth_on_action = role.cached_has_permission?(controller, action)
           next unless auth_on_action
 
           # b. Check authorization on scoping privileges

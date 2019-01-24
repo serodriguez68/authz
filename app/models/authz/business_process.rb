@@ -11,6 +11,8 @@ module Authz
     # Callbacks
     # ==========================================================================
     before_validation :extract_code_from_name, on: [:create]
+    after_touch :touch_roles
+    after_update :touch_roles
 
     # Associations
     # ==========================================================================
@@ -30,6 +32,10 @@ module Authz
 
     def extract_code_from_name
       self.code = name.parameterize(separator: '_') if name.present?
+    end
+
+    def touch_roles
+      roles.update_all(updated_at: Time.now)
     end
 
   end

@@ -94,6 +94,36 @@ module Authz
       it { should have_many(:users) }
     end
 
+    describe 'Callbacks' do
+      describe '#touch_upstream_instances' do
+        it 'should touch all upstream associated models' do
+          ca = create(:authz_controller_action)
+          ca2 = build(:authz_controller_action)
+          create_list(:authz_business_process_has_controller_action, 2, controller_action: ca)
+          bphcas = ca.business_process_has_controller_actions
+          bps = ca.business_processes
+          create_list(:authz_role_has_business_process, 2, business_process: bps.first)
+          create_list(:authz_role_has_business_process, 2, business_process: bps.last)
+          roles = ca.roles
+
+          aggregate_failures 'upstream models' do
+            expect{
+              ca.update(controller: ca2.controller, action: ca2.action)
+            }.to change { bphcas.pluck(:updated_at) }
+
+            expect{
+              ca.update(controller: ca2.controller, action: ca2.action)
+            }.to change { bps.pluck(:updated_at) }
+
+            expect{
+              ca.update(controller: ca2.controller, action: ca2.action)
+            }.to change { roles.pluck(:updated_at) }
+          end
+        end
+      end
+
+    end
+
   end
 end
 
