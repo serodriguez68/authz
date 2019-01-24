@@ -62,7 +62,14 @@ module Authz
           r.cached_has_permission?(ca.controller, ca.action)
         end
 
-        it 'should refresh the cache when a controller action is added to a business process' do
+        it 'should refresh the cache when a granted controller action is destroyed' do
+          ca.destroy
+          r.reload
+          expect(r).to receive(:has_permission?).with(ca.controller, ca.action)
+          r.cached_has_permission?(ca.controller, ca.action)
+        end
+
+        it 'should refresh the cache when a controller action is added to a granted business process' do
           ca2 = create :authz_controller_action
           bp.controller_actions << ca2
           r.reload
@@ -70,8 +77,23 @@ module Authz
           r.cached_has_permission?(ca.controller, ca.action)
         end
 
-        it 'should refresh the cache when a controller action is removed from a business process' do
+        it 'should refresh the cache when a controller action is removed from a granted business process' do
           bphca.destroy
+          r.reload
+          expect(r).to receive(:has_permission?).with(ca.controller, ca.action)
+          r.cached_has_permission?(ca.controller, ca.action)
+        end
+
+        it 'should refresh the cache when a bp_has_ca is updated' do
+          ca2 = create :authz_controller_action
+          bphca.update(controller_action: ca2)
+          r.reload
+          expect(r).to receive(:has_permission?).with(ca.controller, ca.action)
+          r.cached_has_permission?(ca.controller, ca.action)
+        end
+
+        it 'should refresh the cache then a granted business process is destroyed' do
+          bp.destroy
           r.reload
           expect(r).to receive(:has_permission?).with(ca.controller, ca.action)
           r.cached_has_permission?(ca.controller, ca.action)
@@ -87,6 +109,14 @@ module Authz
 
         it 'should refresh the cache when the role is withdrawn from a business process' do
           rhpb.destroy
+          r.reload
+          expect(r).to receive(:has_permission?).with(ca.controller, ca.action)
+          r.cached_has_permission?(ca.controller, ca.action)
+        end
+
+        it 'should refresh the cache when a role_has_bp is updated' do
+          bp2 = create :authz_business_process
+          rhpb.update(business_process: bp2)
           r.reload
           expect(r).to receive(:has_permission?).with(ca.controller, ca.action)
           r.cached_has_permission?(ca.controller, ca.action)
