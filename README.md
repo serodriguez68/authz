@@ -570,6 +570,17 @@ or `skip_scoping: true` if no sensible instance exists.
 ```
 [Back to table of content](#table-of-content)
 
+## Performance and Caching
+#### In-request caching
+- Comment on how to silence Active Record Cache logs
+
+#### Cross-request caching
+- Link to rails guides configure cache store
+
+#### Fragment and Russian Doll caching
+- User.roles_cache_key
+ 
+
 ## Authorization Good and Bad Practices
 A non exhaustive list of generally accepted authorization wisdom and things we've learned from using Authz ourselves:
 
