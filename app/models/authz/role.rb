@@ -18,6 +18,7 @@ module Authz
     has_many :role_has_business_processes,
              class_name: 'Authz::RoleHasBusinessProcess',
              foreign_key: 'authz_role_id',
+             inverse_of: :role,
              dependent: :destroy
     has_many :business_processes,
              through: :role_has_business_processes,
@@ -27,10 +28,12 @@ module Authz
     has_many :role_grants,
              class_name: 'Authz::RoleGrant',
              foreign_key: 'authz_role_id',
+             inverse_of: :role,
              dependent: :destroy
     has_many :scoping_rules,
              class_name: 'Authz::ScopingRule',
              foreign_key: 'authz_role_id',
+             inverse_of: :role,
              dependent: :destroy
 
     # Returns true if the role has access to the given controller action

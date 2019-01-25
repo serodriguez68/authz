@@ -13,6 +13,7 @@ module Authz
     has_many :business_process_has_controller_actions,
              class_name: 'Authz::BusinessProcessHasControllerAction',
              foreign_key: 'authz_controller_action_id',
+             inverse_of: :controller_action,
              dependent: :destroy
     has_many :business_processes,
              through: :business_process_has_controller_actions,
