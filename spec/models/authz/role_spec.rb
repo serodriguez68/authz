@@ -1,5 +1,7 @@
 module Authz
   RSpec.describe Role, type: :model do
+    let(:cache_configurator) { Authz }
+
     describe 'validations' do
       it { is_expected.to validate_presence_of :code }
       it { is_expected.to validate_presence_of :name }
@@ -47,6 +49,7 @@ module Authz
       
       describe 'caching' do
         before(:each) do
+          cache_configurator.cross_request_caching = true
           r.cached_has_permission?(ca.controller, ca.action)
         end
 
@@ -173,7 +176,10 @@ module Authz
 
       describe 'caching' do
         # Caches the result to test expiration
-        before(:each) { r.cached_granted_keyword_for(scopable1) }
+        before(:each) do
+          cache_configurator.cross_request_caching = true
+          r.cached_granted_keyword_for(scopable1)
+        end
 
         it 'should return from cache if nothing has changed' do
           expect(r).not_to receive(:granted_keyword_for)

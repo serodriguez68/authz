@@ -1,4 +1,5 @@
 require 'authz/engine'
+require 'authz/cache'
 require 'authz/models/rolable'
 require 'authz/controllers/scoping_manager'
 require 'authz/controllers/authorization_manager'
@@ -34,6 +35,14 @@ module Authz
   # The method used to access the instance of a current user
   mattr_accessor :current_user_method
   @@current_user_method = :current_user
+
+  # Configuration to enable cross request caching
+  mattr_accessor :cross_request_caching
+  @@cross_request_caching = false
+
+  # The attribute that points to the cache module
+  mattr_reader :cache
+  @@cache = Authz::Cache
 
   # Allows the configuration of the gem using the
   # Authz.configure do |config| syntax

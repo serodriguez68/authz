@@ -42,7 +42,7 @@ module Authz
 
     # Cached version of has_permission?
     def cached_has_permission?(controller_name, action_name)
-      Rails.cache.fetch([cache_key, controller_name, action_name]) do
+      Authz.cache.fetch([cache_key, controller_name, action_name]) do
         has_permission?(controller_name, action_name)
       end
     end
@@ -57,7 +57,7 @@ module Authz
 
     # Cached version of #granted_keyword_for
     def cached_granted_keyword_for(scopable)
-      Rails.cache.fetch([cache_key, scopable.to_s]) do
+      Authz.cache.fetch([cache_key, scopable.to_s]) do
         granted_keyword_for(scopable)
       end
     end
