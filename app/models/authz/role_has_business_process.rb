@@ -7,7 +7,8 @@ module Authz
                foreign_key: 'authz_business_process_id',
                inverse_of: :role_has_business_processes
     belongs_to :role, class_name: 'Authz::Role',
-               foreign_key: 'authz_role_id'
+               foreign_key: 'authz_role_id',
+               inverse_of: :role_has_business_processes
 
     # Validations
     # ===========================================================================

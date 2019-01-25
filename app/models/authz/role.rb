@@ -27,7 +27,8 @@ module Authz
              inverse_of: :role
     has_many :scoping_rules,
              class_name: 'Authz::ScopingRule',
-             foreign_key: 'authz_role_id'
+             foreign_key: 'authz_role_id',
+             inverse_of: :role
 
     private
 
