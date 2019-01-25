@@ -11,10 +11,6 @@ module Authz
       @business_process = BusinessProcess.find(params[:id])
       @associated_controller_actions = @business_process.controller_actions.distinct.page(params[:controller_actions_page]).per(10)
       @associated_roles = @business_process.roles.distinct.page(params[:roles_page]).per(10)
-      # @all_rolables = []
-      # Authz.rolables.each do |rolable|
-      #   @all_rolables << @business_process.public_send(rolable.pluralizado).page(params["#{}_page"])
-      # end
     end
 
     def new
@@ -24,9 +20,6 @@ module Authz
     def create
       @business_process = BusinessProcess.new(business_process_params)
       if @business_process.save
-        # FIXME: make sure that saving and deleting associated
-        # controller_action_ids and role_ids actually go through Rails
-        # and trigger cache invalidation
         redirect_to business_process_path(@business_process)
       else
         render 'new'
@@ -39,9 +32,6 @@ module Authz
 
     def update
       @business_process = BusinessProcess.find(params[:id])
-      # FIXME: make sure that saving and deleting associated
-      # controller_action_ids and role_ids actually go through Rails
-      # and trigger cache invalidation
       if @business_process.update(business_process_params)
         redirect_to business_process_path(@business_process)
       else
