@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - Maintenance dashboard on the Admin
+- Cross request caching feature. It can now be enabled through `config.cross_request_caching = true`
+in the initializer. 
 
 
 ## [0.0.1.alpha4] - 2018-01-18
