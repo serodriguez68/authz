@@ -1,5 +1,5 @@
 module Authz
-  class ControllerAction < ApplicationRecord
+  class ControllerAction < self::ApplicationRecord
 
     # Validations
     # ==========================================================================

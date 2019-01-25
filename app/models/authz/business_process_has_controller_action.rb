@@ -1,5 +1,5 @@
 module Authz
-  class BusinessProcessHasControllerAction < ApplicationRecord
+  class BusinessProcessHasControllerAction < self::ApplicationRecord
     # Associations
     # ==========================================================================
     belongs_to :controller_action, class_name: 'Authz::ControllerAction',

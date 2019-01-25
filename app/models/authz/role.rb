@@ -1,5 +1,5 @@
 module Authz
-  class Role < ApplicationRecord
+  class Role < self::ApplicationRecord
     # Validations
     # ==========================================================================
     validates :code, presence: true, uniqueness: true,
@@ -43,8 +43,7 @@ module Authz
 
     # Cached version of has_permission?
     def cached_has_permission?(controller_name, action_name)
-      Rails.cache.fetch([cache_key_with_version, controller_name, action_name]) do
-        p "refreshing cache for #{name} for #{controller_name}##{action_name}"
+      Rails.cache.fetch([cache_key, controller_name, action_name]) do
         has_permission?(controller_name, action_name)
       end
     end
@@ -56,7 +55,6 @@ module Authz
     end
 
 
-    private
     def debug_touch
       p "#{name} has been touched"
     end

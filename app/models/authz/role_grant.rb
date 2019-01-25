@@ -1,5 +1,5 @@
 module Authz
-  class RoleGrant < ApplicationRecord
+  class RoleGrant < self::ApplicationRecord
     # Associations
     # ==========================================================================
     belongs_to :role, class_name: 'Authz::Role',

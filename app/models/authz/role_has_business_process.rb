@@ -1,5 +1,5 @@
 module Authz
-  class RoleHasBusinessProcess < ApplicationRecord
+  class RoleHasBusinessProcess < self::ApplicationRecord
 
     # Associations
     # ==========================================================================

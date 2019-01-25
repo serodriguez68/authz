@@ -40,5 +40,4 @@ module Authz
   def self.configure
     yield self
   end
-
 end

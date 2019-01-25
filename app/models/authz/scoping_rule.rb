@@ -1,5 +1,5 @@
 module Authz
-  class ScopingRule < ApplicationRecord
+  class ScopingRule < self::ApplicationRecord
     # Validations
     # ==========================================================================
     validates :scopable, presence: true
