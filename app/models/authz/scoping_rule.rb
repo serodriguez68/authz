@@ -12,7 +12,8 @@ module Authz
     # Associations
     # ==========================================================================
     belongs_to :role, class_name: 'Authz::Role',
-                      foreign_key: 'authz_role_id'
+                      foreign_key: 'authz_role_id',
+                      inverse_of: :scoping_rules
     has_many :role_grants, through: :role
 
     scope :for_scopables, ->(scopables) { where(scopable: scopables.map(&:to_s)) }
