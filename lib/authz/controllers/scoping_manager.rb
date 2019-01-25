@@ -15,7 +15,7 @@ module Authz
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! scoped_class
 
         applicable_scopables.each do |as|
-          kw = role.scoping_rules.find_by!(scopable: as.to_s).keyword
+          kw = role.cached_granted_keyword_for(as)
           return false unless as.within_scope_of_keyword?(instance_to_check,
                                                           kw,
                                                           authz_user)
@@ -35,7 +35,6 @@ module Authz
       # @param authz_user: the user from which the roles are going to
       #                    be used
       def self.apply_scopes_for_user(collection_or_class, authz_user)
-        p 'apply_scopes_for_user'
         usr = authz_user
 
         base = collection_or_class.all
@@ -61,8 +60,6 @@ module Authz
       #                             be applied
       # @param authz_user: the requesting user (injected dependency)
       def self.apply_role_scopes(role, collection_or_class, authz_user)
-        p 'apply_role_scopes'
-
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! collection_or_class
 
         scoped = collection_or_class.all
@@ -70,7 +67,7 @@ module Authz
         applicable_scopables.each do |as|
           # as = ScopableByCity
 
-          kw = role.scoping_rules.find_by!(scopable: as.to_s).keyword
+          kw = role.cached_granted_keyword_for(as)
           # kw = 'New York'
 
           scoped = scoped.send(as.apply_scopable_method_name, kw, authz_user)

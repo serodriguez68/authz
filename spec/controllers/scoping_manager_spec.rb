@@ -66,6 +66,21 @@ module Authz
           described_class.has_access_to_instance?(@role, @report, @usr)
         end
 
+        it 'should call role#cached_granted_keyword_for to get the applicable keyword' do
+          create(:authz_scoping_rule, scopable: 'ScopableByCity',
+                 role: @role,
+                 keyword: @city1.name)
+          create(:authz_scoping_rule, scopable: 'ScopableByClearance',
+                 role: @role,
+                 keyword: @clrnc1.name)
+          expect(@role).to(
+            receive(:cached_granted_keyword_for).twice
+              .and_call_original
+          )
+
+          described_class.has_access_to_instance?(@role, @report, @usr)
+        end
+
       end
 
       describe '.apply_role_scopes' do
@@ -101,6 +116,17 @@ module Authz
           sb_clearance_rule
           expect(Authz::Scopables::Base).to(
             receive(:get_applicable_scopables!).with(Report)
+              .and_call_original
+          )
+
+          described_class.apply_role_scopes(@role, Report, @usr)
+        end
+
+        it 'should call role#cached_granted_keyword_for to get the applicable keyword' do
+          sb_city_rule
+          sb_clearance_rule
+          expect(@role).to(
+            receive(:cached_granted_keyword_for).twice
               .and_call_original
           )
 

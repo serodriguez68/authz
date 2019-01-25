@@ -11,7 +11,6 @@ module Authz
     # Callbacks
     # ==========================================================================
     before_validation :extract_code_from_name, on: [:create]
-    after_touch :debug_touch
 
     # Associations
     # ==========================================================================
@@ -48,15 +47,25 @@ module Authz
       end
     end
 
+    # Returns the applicable keywords according to the role's
+    # scoping rule for the given scopable
+    # Raises exception if the role does not have a scoping rule
+    # for the given scopable
+    def granted_keyword_for(scopable)
+      scoping_rules.find_by!(scopable: scopable.to_s).keyword
+    end
+
+    # Cached version of #granted_keyword_for
+    def cached_granted_keyword_for(scopable)
+      Rails.cache.fetch([cache_key, scopable.to_s]) do
+        granted_keyword_for(scopable)
+      end
+    end
+
     private
 
     def extract_code_from_name
       self.code = name.parameterize(separator: '_') if name.present?
-    end
-
-
-    def debug_touch
-      p "#{name} has been touched"
     end
 
   end

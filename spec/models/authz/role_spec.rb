@@ -153,5 +153,59 @@ module Authz
       end
     end
 
+
+    describe '#granted_keyword_for' do
+      let!(:r) { create :authz_role }
+      let!(:scopable1) { ScopableByCity }
+      let!(:keyword) { scopable1.available_keywords.first }
+      let!(:sr1) { create :authz_scoping_rule, scopable: scopable1, role: r, keyword: keyword }
+      let!(:scopable2) { ScopableByClearance }
+
+      it 'should return the keyword granted for the given scopable' do
+        expect(r.granted_keyword_for(scopable1)).to eq keyword
+      end
+
+      it 'should raise an exception if the role does not have a scoping rule for the given scopable' do
+        expect{ r.granted_keyword_for(scopable2) }.to(
+          raise_error(ActiveRecord::RecordNotFound)
+        )
+      end
+
+      describe 'caching' do
+        # Caches the result to test expiration
+        before(:each) { r.cached_granted_keyword_for(scopable1) }
+
+        it 'should return from cache if nothing has changed' do
+          expect(r).not_to receive(:granted_keyword_for)
+          r.cached_granted_keyword_for(scopable1)
+        end
+
+        it 'should refresh the cache when a scoping rule is edited' do
+          sr1.update!(updated_at: Time.now)
+          r.reload
+          expect(r).to receive(:granted_keyword_for).with(scopable1)
+          r.cached_granted_keyword_for(scopable1)
+        end
+
+        it 'should refresh the cache when another scoping rule is created' do
+          create :authz_scoping_rule, scopable: scopable2.to_s, role: r
+          r.reload
+          expect(r).to receive(:granted_keyword_for).with(scopable1)
+          r.cached_granted_keyword_for(scopable1)
+        end
+
+        it 'should refresh the cache when another scoping rule is destroyed' do
+          sr2 = create :authz_scoping_rule, scopable: scopable2.to_s, role: r
+          r.reload
+          r.granted_keyword_for(scopable1) # regenerate cache after create
+          sr2.destroy
+          r.reload
+          expect(r).to receive(:granted_keyword_for).with(scopable1)
+          r.cached_granted_keyword_for(scopable1)
+        end
+
+      end
+
+    end
   end
 end
