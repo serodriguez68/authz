@@ -19,14 +19,19 @@ module Authz
              class_name: 'Authz::RoleHasBusinessProcess',
              foreign_key: 'authz_role_id',
              dependent: :destroy
-    has_many :business_processes, through: :role_has_business_processes
-    has_many :controller_actions, through: :business_processes
+    has_many :business_processes,
+             through: :role_has_business_processes,
+             dependent: :destroy
+    has_many :controller_actions,
+             through: :business_processes
     has_many :role_grants,
              class_name: 'Authz::RoleGrant',
-             foreign_key: 'authz_role_id'
+             foreign_key: 'authz_role_id',
+             dependent: :destroy
     has_many :scoping_rules,
              class_name: 'Authz::ScopingRule',
-             foreign_key: 'authz_role_id'
+             foreign_key: 'authz_role_id',
+             dependent: :destroy
 
     # Returns true if the role has access to the given controller action
     def has_permission?(controller_name, action_name)

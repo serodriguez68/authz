@@ -20,12 +20,16 @@ module Authz
              class_name: 'Authz::BusinessProcessHasControllerAction',
              foreign_key: 'authz_business_process_id',
              dependent: :destroy
-    has_many :controller_actions, through: :business_process_has_controller_actions
+    has_many :controller_actions,
+             through: :business_process_has_controller_actions,
+             dependent: :destroy
     has_many :role_has_business_processes,
              class_name: 'Authz::RoleHasBusinessProcess',
              foreign_key: 'authz_business_process_id',
              dependent: :destroy
-    has_many :roles, through: :role_has_business_processes
+    has_many :roles, through:
+             :role_has_business_processes,
+             dependent: :destroy
     has_many :role_grants, through: :roles
 
     private
