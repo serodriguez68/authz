@@ -583,7 +583,7 @@ can be significant in applications with highly dynamic views and requires specia
 
 Authz implements 3 different caching strategies to meet production-grade performance needs.
 
-#### In-request caching
+### In-request caching
 Authz uses [Active Record's SQL caching](https://guides.rubyonrails.org/caching_with_rails.html#sql-caching)
 to guarantee that any query that is repeated during the request-response cycle is not re-run against your database.
 This is a built-in feature and as developer you don't have to do anything to benefit from it.
@@ -591,7 +591,9 @@ This is a built-in feature and as developer you don't have to do anything to ben
 _Some developers like to silence the logging from Active Record's CACHE as it can
 pollute your logs. [Learn how to to that here.](https://github.com/serodriguez68/authz/wiki/Disable-Logging-of-CACHEd-SQL-queries-in-Rails)_
 
-#### Cross-request caching
+[Back to table of content](#table-of-content)
+
+### Cross-request caching
 Cross-request caching allows Authz to build a cache that can be re-used across multiple requests,
 reducing sharply the number of authorization related calls to your database.
 
@@ -605,7 +607,7 @@ To enable this feature:
 This can be toggled by running `rails dev:cache` on your terminal.
 3. Go to `config/initilizers/authz.rb` and set `config.cross_request_caching = true`.
 
-#### Fragment and Russian Doll caching
+### Fragment and Russian Doll caching
 _Note:_
 
 _There are only two hard things in Computer Science: cache invalidation and naming things. 
@@ -686,6 +688,7 @@ However, _"mine"_ can resolve to different departments for `alice` and `bob` des
 a consequence, we need to include information about the departments in addition to `#roles_cache_key`in the fragment
 keys.
 
+[Back to table of content](#table-of-content)
 
 ## Authorization Good and Bad Practices
 A non exhaustive list of generally accepted authorization wisdom and things we've learned from using Authz ourselves:
