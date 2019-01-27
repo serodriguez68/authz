@@ -607,6 +607,8 @@ To enable this feature:
 This can be toggled by running `rails dev:cache` on your terminal.
 3. Go to `config/initilizers/authz.rb` and set `config.cross_request_caching = true`.
 
+[Back to table of content](#table-of-content)
+
 ### Fragment and Russian Doll caching
 _Note:_
 
@@ -739,6 +741,7 @@ If you don't, you will get an `ActionController::RoutingError No route matches..
 if you mounted Authz `as: authz` in your router, use: 
 ```authz_link_to 'Authorization Admin', authz.root_url, skip_scoping: true```.
  
+[Back to table of content](#table-of-content)
 
 ## License
 Licensed under the MIT license, see the separate LICENSE.txt file.
