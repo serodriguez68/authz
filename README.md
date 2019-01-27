@@ -101,7 +101,7 @@ $ bundle install
 
 Then install Authz executing:
 ```bash
-$ rails authz:install
+$ rails g authz:install
 # => config/initializer/authz.rb gets created
 # => The authz migrations are installed
 $ rails db:migrate
