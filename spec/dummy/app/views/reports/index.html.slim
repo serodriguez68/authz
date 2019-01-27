@@ -1,29 +1,30 @@
 h1 Listing reports
 = authz_link_to 'Create New Report', new_report_path, { class: 'button' }, skip_scoping: true
 
-table
-  thead
-    tr
-      th ID
-      th User
-      th Clearance
-      th City
-      th Title
-      th Body
-      th
-      th
-      th
-
-  tbody
-    - @reports.each do |report|
+- cache [@reports, current_user.roles_cache_key]
+  table
+    thead
       tr
-        td = report.id
-        td = report.user.email
-        td = report.clearance.try :name
-        td = report.city.try :name
-        td = report.title
-        td = report.body.truncate(100)
-        td = authz_link_to 'Show', report, using: report
-        td = authz_link_to 'Edit', edit_report_path(report), using: report
-        td = authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report
+        th ID
+        th User
+        th Clearance
+        th City
+        th Title
+        th Body
+        th
+        th
+        th
+    tbody
+      - @reports.each do |report|
+        - cache [report, current_user.roles_cache_key]
+          tr
+            td = report.id
+            td = report.user.email
+            td = report.clearance.try :name
+            td = report.city.try :name
+            td = report.title
+            td = report.body.truncate(100)
+            td = authz_link_to 'Show', report, using: report
+            td = authz_link_to 'Edit', edit_report_path(report), using: report
+            td = authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report
 

@@ -39,4 +39,15 @@ RSpec.shared_examples 'rolable' do
     end
   end
 
+  describe '#roles_cache_key' do
+    let(:user) { create(:user) }
+    let(:r1) { create(:authz_role) }
+    let(:r2) { create(:authz_role) }
+    it 'should create composite key using each of the roles cache keys' do
+      user.roles << [r1, r2]
+      expect(user.roles_cache_key).to include(r1.cache_key).and include(r2.cache_key)
+    end
+
+  end
+
 end

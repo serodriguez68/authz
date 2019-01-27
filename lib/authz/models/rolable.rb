@@ -54,6 +54,13 @@ module Authz
         end
       end
 
+      # Returns a composite cache key using the keys of the granted roles.
+      # The key will be modified when the configuration of any of the granted
+      # roles changes.
+      def roles_cache_key
+        roles.map(&:cache_key).join('/')
+      end
+
 
       # Configure Includer for Authorization Admin
       # ==========================================================================
