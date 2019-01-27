@@ -16,4 +16,8 @@ html
     .az-content
       - if content_for?(:nav_title) || content_for?(:nav_links)
         = render 'layouts/authz/navigation'
+      -flash.each do |name, msg|
+        .az-flash.is-bottom-right.notification[class="#{name}"]
+          button.delete.az-flash-close
+          = msg
       = yield
