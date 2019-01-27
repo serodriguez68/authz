@@ -38,6 +38,10 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
     + [Views](#views)
       - [`authorized_path?`](#authorized_path)
       - [`authz_link_to`](#authz_link_to)
+- [Performance and Caching](#performance-and-caching)
+  * [In-request caching](#in-request-caching)
+  * [Cross-request caching](#cross-request-caching)
+  * [Fragment and Russian Doll caching](#fragment-and-russian-doll-caching)
 - [Authorization Good and Bad Practices](#authorization-good-and-bad-practices)
   * [Good Practices](#good-practices)
   * [Bad Practices](#bad-practices)
@@ -123,6 +127,8 @@ Authz.configure do |config|
   config.force_authentication_method = :authenticate_user!
   # The method used to access the current user
   config.current_user_method = :current_user
+  # ...
+  # config.cross_request_caching = true 
 end
 ```
 
@@ -315,8 +321,8 @@ to Authz which keywords are available for the configuration of `ScopingRules` an
  
 Given that `City` is a **scoping class**, we need to create a `ScopableByCity` module (note the naming convention) 
 that must define two methods:
-- `#available_keywords` must return an array of strings with the available keywords for scoping by city.
-- `#resolve_keyword` must translate the given keyword into an array of the ids of the cities that are available for that
+- `.available_keywords` must return an array of strings with the available keywords for scoping by city.
+- `.resolve_keyword` must translate the given keyword into an array of the ids of the cities that are available for that
 keyword.  The method must take 2 arguments: `keyword` and `requester` (the instance of the user that is being 
 authorized).
     - If you add `+[nil]` to the array of ids resolved, you allow the bearer of the keyword to have access to
@@ -537,7 +543,7 @@ query methods.
 
 ##### `authorized_path?`
 The `authorized_path?` view helper can be used to check if the `current_user` is authorized for a given _url/path_.
-Under the hood, Authz will ask our `router` for the controller and action in charge of resolving the given _url/path_ 
+Under the hood, Authz will ask your `router` for the controller and action in charge of resolving the given _url/path_ 
 and use that for determining authorization. 
 
 Similar to the `authorize` method above, we need to provide either a `using: instance` or `skip_scoping: true` if no
@@ -554,7 +560,7 @@ sensible instance exists.
 [Back to table of content](#table-of-content)
 
 ##### `authz_link_to`
-The pattern of rendering a link only if the `current_user` is authorized to use it is so common that it deserves it's
+The pattern of rendering a link only if the `current_user` is authorized to use it, is so common that it deserves it's
 own helper.
 
 `authz_link_to` takes the same 3 arguments than Rail's `link_to` helper (i.e. `name, options = {}, html_options = {}`). 
@@ -571,15 +577,115 @@ or `skip_scoping: true` if no sensible instance exists.
 [Back to table of content](#table-of-content)
 
 ## Performance and Caching
+Dynamic views based on the `current_user`'s authorization privileges will add some calls to your
+database as part of the authorization resolution process. The effect of these additional calls 
+can be significant in applications with highly dynamic views and requires special attention.
+
+Authz implements 3 different caching strategies to meet production-grade performance needs.
+
 #### In-request caching
-- Comment on how to silence Active Record Cache logs
+Authz uses [Active Record's SQL caching](https://guides.rubyonrails.org/caching_with_rails.html#sql-caching)
+to guarantee that any query that is repeated during the request-response cycle is not re-run against your database.
+This is a built-in feature and as developer you don't have to do anything to benefit from it.
+
+_Some developers like to silence the logging from Active Record's CACHE as it can
+pollute your logs. [Learn how to to that here.](https://github.com/serodriguez68/authz/wiki/Disable-Logging-of-CACHEd-SQL-queries-in-Rails)_
 
 #### Cross-request caching
-- Link to rails guides configure cache store
+Cross-request caching allows Authz to build a cache that can be re-used across multiple requests,
+reducing sharply the number of authorization related calls to your database.
+
+Authz's cross-request caching uses Rails' native `ActiveSupport::Cache`, which allows you
+to choose the caching store technology of your preference.
+
+To enable this feature:
+1. Configure caching as you would normally do for any Rails app. Read the official
+[Rails Guide](https://guides.rubyonrails.org/caching_with_rails.html) to find out how to do this.
+2. Make sure you have enabled caching in development in order to try this feature locally. 
+This can be toggled by running `rails dev:cache` on your terminal.
+3. Go to `config/initilizers/authz.rb` and set `config.cross_request_caching = true`.
 
 #### Fragment and Russian Doll caching
-- User.roles_cache_key
+_Note:_
+
+_There are only two hard things in Computer Science: cache invalidation and naming things. 
+-- Phil Karlton_
+
+_Many small and medium apps can work perfectly fine with cross-request caching.
+Correct cache invalidation for Fragment and Russian Doll caching can be difficult to 
+achieve so don't fall prey to premature optimization._
+
+[Fragment and Russian Doll caching](https://guides.rubyonrails.org/caching_with_rails.html#fragment-caching) are
+common caching techniques where a fragment of pre-computed HTML is cached under a key. This key is used for retrieving
+the cached HTML instead of re-computing the fragment.
+
+The cornerstone of this type of caching is [key-based cache expiration](https://signalvnoise.com/posts/3113-how-key-based-cache-expiration-works)
+, which means that they key must change whenever something that impacts the fragment's content
+changes.  The key change will force the re-computation of the fragment, that will be stored in the cache under
+the new key.
+
+Authorization information will most likely be a __part__ of your keys whenever the fragment has content that
+depends on authorization (e.g. it contains `authz_link_to` or `authorized_path?`). You can use the
+`#roles_cache_key` method on your user instances to get a key that automatically changes whenever their role
+definitions have been modified.
  
+Note that `#roles_cache_key` only contains information from **the roles** and **does
+NOT** contain information about the user. This means that if users `alice` and `bob` are both
+_NY Sports Editor_ and _SF Sports Writer_:
+- `alice.roles_cache_key` will contain information of both roles and the key will look something like this: 
+`"authz/roles/4-20190125101536064307/authz/roles/6-20190125084604920649"`
+- `bob.roles_cache_key` will return the same key. Therefore, if the fragment key 
+does not depend on anything else, `bob` will re-use the cached information generated by `alice`. 
+- Whenever any of the role definitions change, the returned key will change,
+invalidating all fragments that depended on the role (e.g. a new business process is assigned to _NY Sports Editor_).
+- If you need to make the fragment key depend on anything else, you need to include that yourself.
+
+A typical fragment caching situation would look like this:
+
+```slim
+ - @reports.each do |report|
+        - cache [report, current_user.roles_cache_key]
+          tr
+            td = report.id
+            td = report.user.email
+            td = report.department.try :name
+            td = report.city.try :name
+            td = report.title
+            td = report.body.truncate(100)
+            td = authz_link_to 'Show', report, using: report
+            td = authz_link_to 'Edit', edit_report_path(report), using: report
+            td = authz_link_to 'Destroy', report, { data: { confirm: 'Are you sure?' }, method: :delete }, using: report
+```
+
+**Gotchas**
+
+The fact that 2 users have the same roles (and therefore the same `#roles_cache_key`) does not necessarily mean that
+they should be able to share cached fragments. For example, lets imagine that in our multi-city newspaper app we decide
+not to create separate `Roles` for each department (_NY Sports Editor, NY Politics Editor_). Instead we just
+create _NY Editor_ `role`, storing in the `departmets_users` table the mapping between users and departments,
+and create a _"mine"_ keyword inside `ScopableByDepartment`. 
+
+```ruby
+module ScopableByDepartment
+  extend Authz::Scopables::Base
+  
+  def self.available_keywords
+    %w[mine All]
+  end
+  
+  def self.resolve_keyword(keyword, requester)
+    if keyword == 'mine'
+      requester.departments.pluck(:id) 
+    end
+  end
+end
+```
+
+In this case, the _NY Editor_ role will have configured the _"mine"_ keyword for it's `ScopableByDepartment` rule.
+However, _"mine"_ can resolve to different departments for `alice` and `bob` despite both being  _NY Editors_. As 
+a consequence, we need to include information about the departments in addition to `#roles_cache_key`in the fragment
+keys.
+
 
 ## Authorization Good and Bad Practices
 A non exhaustive list of generally accepted authorization wisdom and things we've learned from using Authz ourselves:
