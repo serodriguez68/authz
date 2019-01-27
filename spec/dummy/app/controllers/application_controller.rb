@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def unauthorized_handler
     msg = 'Ooops! It seems that you are not authorized to do that!'
     respond_to do |format|
-      format.html { redirect_back fallback_location: main_app.root_url, alert: msg }
+      format.html { redirect_back fallback_location: main_app.root_url, flash: { error: msg } }
       format.js{ render(js: "alert('#{msg}');") }
     end
   end

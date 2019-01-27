@@ -20,8 +20,10 @@ module Authz
     def update
       @rolable = rolable.find(params[:id])
       if @rolable.update(rolable_params)
+        flash['is-success'] = "#{@rolable.authz_label} updated successfully"
         redirect_to send("#{@rolable.model_name.singular}_path", @rolable)
       else
+        flash['is-danger'] = "There was an issue updating #{@rolable.authz_label}"
         render 'edit'
       end
     end
