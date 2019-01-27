@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - Maintenance dashboard on the Admin
 - Cross request caching feature. It can now be enabled through `config.cross_request_caching = true`
-in the initializer. 
+in the initializer.
+- `current_user.roles_cache_key` now gives you an auto-expiring key that can be used as part of
+your fragment caching keys.
 
 
 ## [0.0.1.alpha4] - 2018-01-18
