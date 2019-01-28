@@ -25,8 +25,10 @@ module Authz
     def create
       @role = Role.new(role_params)
       if @role.save
+        flash[:success] = "#{@role.name} created successfully"
         redirect_to role_path(@role)
       else
+        flash[:error] = "There was an issue creating this role"
         render 'new'
       end
     end
@@ -38,8 +40,10 @@ module Authz
     def update
       @role = Role.find(params[:id])
       if @role.update(role_params)
+        flash[:success] = "#{@role.name} updated successfully"
         redirect_to role_path(@role)
       else
+        flash[:error] = "There was an issue updating this role"
         render 'edit'
       end
     end
@@ -47,8 +51,10 @@ module Authz
     def destroy
       @role = Role.find(params[:id])
       if @role.destroy
+        flash[:success] = "#{@role.name} destroyed successfully"
         redirect_to roles_path
       else
+        flash[:error] = "There was an issue destroying #{@role.name}"
         render 'show'
       end
     end

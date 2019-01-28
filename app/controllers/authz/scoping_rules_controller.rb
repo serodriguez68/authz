@@ -15,8 +15,10 @@ module Authz
       @scoping_rule = ScopingRule.new(scoping_rule_params.merge(authz_role_id: @role.id))
       @available_keywords = @scopable.constantize.available_keywords
       if @scoping_rule.save
+        flash[:success] = "Configured #{@scoping_rule.scopable}:#{@scoping_rule.keyword} for #{@role.name}"
         redirect_to role_path(@role)
       else
+        flash[:error] = 'There was an issue adding this scoping rule'
         render 'new'
       end
     end
@@ -31,8 +33,10 @@ module Authz
       @role = Role.find(params[:role_id])
       @scoping_rule = ScopingRule.find(params[:id])
       if @scoping_rule.update(scoping_rule_update_params)
+        flash[:success] = "Configured #{@scoping_rule.scopable}:#{@scoping_rule.keyword} for #{@role.name}"
         redirect_to role_path(@role)
       else
+        flash[:error] = 'There was an issue updating this scoping rule'
         @available_keywords = @scoping_rule.scopable.constantize.available_keywords
         render 'edit'
       end

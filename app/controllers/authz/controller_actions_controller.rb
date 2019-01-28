@@ -19,8 +19,10 @@ module Authz
     def create
       @controller_action = ControllerAction.new(controller_action_create_params)
       if @controller_action.save
+        flash[:success] = "#{@controller_action.to_s} created successfully"
         redirect_to controller_action_path(@controller_action)
       else
+        flash[:error] = "There was an issue creating this controller action"
         render 'new'
       end
     end
@@ -32,8 +34,10 @@ module Authz
     def update
       @controller_action = ControllerAction.find(params[:id])
       if @controller_action.update(controller_action_update_params)
+        flash[:success] = "#{@controller_action.to_s} updated successfully"
         redirect_to controller_action_path(@controller_action)
       else
+        flash[:error] = "There was an issue updating #{@controller_action.to_s}"
         render 'edit'
       end
     end
@@ -41,8 +45,10 @@ module Authz
     def destroy
       @controller_action = ControllerAction.find(params[:id])
       if @controller_action.destroy
+        flash[:success] = "#{@controller_action.to_s} destroyed successfully"
         redirect_to controller_actions_path
       else
+        flash[:error] = "There was an issue destroying #{@controller_action.to_s}"
         render 'show'
       end
     end

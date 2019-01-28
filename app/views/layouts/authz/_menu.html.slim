@@ -1,10 +1,5 @@
-aside.menu
+.menu
   ul.menu-list
-    li
-      = link_to main_app.root_path do
-        span Back to Main App&nbsp
-        i.fa-sign-out.fa&nbsp
-
     li = authz_link_to 'Dashboard', root_url, {class: "#{'is-active' if current_page? root_path}"}, skip_scoping: true
 
   p.menu-label Authorization
@@ -18,4 +13,9 @@ aside.menu
     - Authz.rolables.map(&:authorizable_association_name).each do |association_name|
       li = authz_link_to association_name.to_s.titleize, send("#{association_name}_path"), {class: "#{'is-active' if current_page? send("#{association_name}_path")}"}, skip_scoping: true
 
-  / p.menu-label Scoping
+.menu
+  ul.menu-list
+    li
+      = link_to main_app.root_path do
+        span[style="margin-right: 1rem"] Back to Main App
+        i.fa-sign-out.fa&nbsp
