@@ -28,7 +28,7 @@ module Authz
         flash[:success] = "#{@role.name} created successfully"
         redirect_to role_path(@role)
       else
-        flash[:error] = "There was an issue creating this role"
+        flash.now[:error] = "There was an issue creating this role"
         render 'new'
       end
     end
@@ -43,7 +43,7 @@ module Authz
         flash[:success] = "#{@role.name} updated successfully"
         redirect_to role_path(@role)
       else
-        flash[:error] = "There was an issue updating this role"
+        flash.now[:error] = "There was an issue updating this role"
         render 'edit'
       end
     end
@@ -54,7 +54,7 @@ module Authz
         flash[:success] = "#{@role.name} destroyed successfully"
         redirect_to roles_path
       else
-        flash[:error] = "There was an issue destroying #{@role.name}"
+        flash.now[:error] = "There was an issue destroying #{@role.name}"
         render 'show'
       end
     end

@@ -18,7 +18,7 @@ module Authz
         flash[:success] = "Configured #{@scoping_rule.scopable}:#{@scoping_rule.keyword} for #{@role.name}"
         redirect_to role_path(@role)
       else
-        flash[:error] = 'There was an issue adding this scoping rule'
+        flash.now[:error] = 'There was an issue adding this scoping rule'
         render 'new'
       end
     end
@@ -36,7 +36,7 @@ module Authz
         flash[:success] = "Configured #{@scoping_rule.scopable}:#{@scoping_rule.keyword} for #{@role.name}"
         redirect_to role_path(@role)
       else
-        flash[:error] = 'There was an issue updating this scoping rule'
+        flash.now[:error] = 'There was an issue updating this scoping rule'
         @available_keywords = @scoping_rule.scopable.constantize.available_keywords
         render 'edit'
       end

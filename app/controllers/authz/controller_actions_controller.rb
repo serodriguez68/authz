@@ -22,7 +22,7 @@ module Authz
         flash[:success] = "#{@controller_action.to_s} created successfully"
         redirect_to controller_action_path(@controller_action)
       else
-        flash[:error] = "There was an issue creating this controller action"
+        flash.now[:error] = "There was an issue creating this controller action"
         render 'new'
       end
     end
@@ -37,7 +37,7 @@ module Authz
         flash[:success] = "#{@controller_action.to_s} updated successfully"
         redirect_to controller_action_path(@controller_action)
       else
-        flash[:error] = "There was an issue updating #{@controller_action.to_s}"
+        flash.now[:error] = "There was an issue updating #{@controller_action.to_s}"
         render 'edit'
       end
     end
@@ -48,7 +48,7 @@ module Authz
         flash[:success] = "#{@controller_action.to_s} destroyed successfully"
         redirect_to controller_actions_path
       else
-        flash[:error] = "There was an issue destroying #{@controller_action.to_s}"
+        flash.now[:error] = "There was an issue destroying #{@controller_action.to_s}"
         render 'show'
       end
     end

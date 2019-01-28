@@ -23,7 +23,7 @@ module Authz
         flash[:success] = "#{@rolable.authz_label} updated successfully"
         redirect_to send("#{@rolable.model_name.singular}_path", @rolable)
       else
-        flash[:error] = "There was an issue updating #{@rolable.authz_label}"
+        flash.now[:error] = "There was an issue updating #{@rolable.authz_label}"
         render 'edit'
       end
     end

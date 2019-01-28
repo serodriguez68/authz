@@ -23,8 +23,8 @@ module Authz
         redirect_to business_process_path(@business_process)
         flash[:success] = "#{@business_process.name} created successfully"
       else
+        flash.now[:error] = "There was an issue creating this business process"
         render 'new'
-        flash[:error] = "There was an issue creating this business process"
       end
     end
 
@@ -38,7 +38,7 @@ module Authz
         flash[:success] = "#{@business_process.name} updated successfully"
         redirect_to business_process_path(@business_process)
       else
-        flash[:error] = "There was an issue updating this business process"
+        flash.now[:error] = "There was an issue updating this business process"
         render 'edit'
       end
     end
@@ -49,7 +49,7 @@ module Authz
         flash[:success] = "#{@business_process.name} destroyed successfully"
         redirect_to business_processes_path
       else
-        flash[:error] = "There was an issue destroying #{@business_process.name}"
+        flash.now[:error] = "There was an issue destroying #{@business_process.name}"
         render 'show'
       end
     end
