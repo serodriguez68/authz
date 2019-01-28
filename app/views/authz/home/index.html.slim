@@ -4,31 +4,21 @@
 
 section.section
   .container
-    h2.title.is-4 Controller Actions
     .columns
-      .column.is-one-quarter
-        .card
-          .card-content.has-text-centered
-            p.title = number_with_delimiter @non_created_controller_actions.count
-            p Controller actions to be created
       .column
         .card
-          table.table.is-fullwidth
-            thead
-              tr
-                th Controller
-                th Action
-                th
-            tbody
-              - if @non_created_controller_actions.blank?
-                tr
-                  td.has-text-centered[colspan="3"] Up to date!
-              - else
-                - @non_created_controller_actions.each do |h|
-                  tr
-                    td = h[:controller]
-                    td = h[:action]
-                    td
+          .card-content.has-text-centered
+            p.title.is-1 = number_with_delimiter @non_created_controller_actions.count
+            p.subtitle Controller Actions to be created
+            - if @non_created_controller_actions.blank?
+              p Everything's up to date
+            - else
+              .card-content
+                .buttons.is-centered
+                  = link_to 'Review', pending_controller_actions_path, class: 'button is-light'
+                  = authz_link_to 'Create all', bulk_controller_actions_path(create_all: true), { class: 'button is-primary', method: :post, data: { confirm: 'Are you sure?' } }, skip_scoping:  true
+      .column
+
 section.section
   .container
     h2.title.is-4 Unused scopable keywords

@@ -51,6 +51,25 @@ module Authz
       res
     end
 
+    # Returns array of controller actions found in router but not in controller actions
+    def self.pending_controller_actions
+
+      ca_pairs = []
+      reachable_controller_actions.each do | c_name, action_arr |
+        action_arr.each do |a_name|
+          ca_pairs << {controller: c_name, action: a_name}
+        end
+      end
+
+      not_found = []
+      ca_pairs.each do |route|
+        ca = find_by(controller: route[:controller], action: route[:action])
+        not_found << route unless ca
+      end
+
+      not_found
+    end
+
     # Instance Methods
     # ==========================================================================
     def to_s
