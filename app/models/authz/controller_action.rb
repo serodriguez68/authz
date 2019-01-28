@@ -53,7 +53,7 @@ module Authz
 
     # Returns array of controller actions found in router but not in controller actions
     def self.pending
-
+      # TODO: Refactor and test
       ca_pairs = []
       reachable_controller_actions.each do | c_name, action_arr |
         action_arr.each do |a_name|
@@ -71,6 +71,7 @@ module Authz
     end
 
     def self.stale
+      # TODO: Refactor and test
       stale = []
       find_each do |ca|
         is_included = reachable_controller_actions[ca.controller].try(:include?, ca.action)
