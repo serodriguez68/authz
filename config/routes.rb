@@ -12,11 +12,6 @@ Authz::Engine.routes.draw do
   namespace :bulk do
     post 'controller_actions/create'
     delete 'controller_actions/destroy'
-    # resources :controller_actions, only: [:create] do
-    #   collection do
-    #     delete 'destroy', as: :destroy
-    #   end
-    # end
   end
 
   namespace :validations do
