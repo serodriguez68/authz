@@ -52,22 +52,31 @@ module Authz
     end
 
     # Returns array of controller actions found in router but not in controller actions
-    def self.pending_controller_actions
+    def self.pending
 
       ca_pairs = []
       reachable_controller_actions.each do | c_name, action_arr |
         action_arr.each do |a_name|
-          ca_pairs << {controller: c_name, action: a_name}
+          ca_pairs << { controller: c_name, action: a_name }
         end
       end
 
-      not_found = []
+      pending = []
       ca_pairs.each do |route|
         ca = find_by(controller: route[:controller], action: route[:action])
-        not_found << route unless ca
+        pending << route unless ca
       end
 
-      not_found
+      pending
+    end
+
+    def self.stale
+      stale = []
+      find_each do |ca|
+        is_included = reachable_controller_actions[ca.controller].try(:include?, ca.action)
+        stale << ca unless is_included
+      end
+      stale
     end
 
     # Instance Methods
