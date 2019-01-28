@@ -1,0 +1,25 @@
+= content_for :nav_title do
+  | Stale Controller Actions
+- if @stale_controller_actions.present?
+  = content_for :nav_links do
+    .buttons
+      = authz_link_to 'Destroy all', bulk_controller_actions_destroy_path(destroy_all: true), { class: 'button is-danger', method: :delete }, skip_scoping:  true
+
+section.section
+  .container
+    - if @stale_controller_actions.blank?
+      .columns.is-centered
+        .column.is-one-third
+          p.is-size-4.has-text-centered Everything up to date!
+    - else
+      .card
+        table.table.is-fullwidth
+          thead
+            tr
+              th Controller Name
+              th Action Name
+          tbody
+            - @stale_controller_actions.each do |controller_action|
+              tr
+                td = controller_action.controller
+                td = controller_action.action

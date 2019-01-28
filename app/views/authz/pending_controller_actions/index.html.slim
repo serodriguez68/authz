@@ -1,0 +1,26 @@
+= content_for :nav_title do
+  | Pending Controller Actions
+- if @pending_controller_actions.present?
+  = content_for :nav_links do
+    .buttons
+      = authz_link_to 'Create all', bulk_controller_actions_create_path(create_all: true), { class: 'button is-primary', method: :post }, skip_scoping:  true
+
+
+section.section
+  .container
+    - if @pending_controller_actions.blank?
+      .columns.is-centered
+        .column.is-one-third
+          p.is-size-4.has-text-centered Everything up to date!
+    - else
+      .card
+        table.table.is-fullwidth
+          thead
+            tr
+              th Controller Name
+              th Action Name
+          tbody
+            - @pending_controller_actions.each do |controller_action|
+              tr
+                td = controller_action[:controller]
+                td = controller_action[:action]

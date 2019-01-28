@@ -1,37 +1,64 @@
-
 = content_for :nav_title do
   | Maintenance Dashboard
 
 section.section
   .container
-    h2.title.is-4 Controller Actions
+    h2.title Controller Actions
     .columns
-      .column.is-one-quarter
-        .card
-          .card-content.has-text-centered
-            p.title = number_with_delimiter @non_created_controller_actions.count
-            p Controller actions to be created
       .column
-        .card
-          table.table.is-fullwidth
-            thead
-              tr
-                th Controller
-                th Action
-                th
-            tbody
-              - if @non_created_controller_actions.blank?
-                tr
-                  td.has-text-centered[colspan="3"] Up to date!
+        .content
+          .card
+            .card-content.has-text-centered
+              p.title.is-1 = number_with_delimiter @pending_controller_actions.count
+              p.subtitle Controller Actions to be created
+              - if @pending_controller_actions.blank?
+                p Everything's up to date
               - else
-                - @non_created_controller_actions.each do |h|
-                  tr
-                    td = h[:controller]
-                    td = h[:action]
-                    td
+                .card-content
+                  .buttons.is-centered
+                    = authz_link_to 'Review', pending_controller_actions_path, { class: 'button is-light' }, skip_scoping:  true
+                    = authz_link_to 'Create all', bulk_controller_actions_create_path(create_all: true), { class: 'button is-primary', method: :post, data: { confirm: 'Are you sure?' } }, skip_scoping:  true
+            .card-content
+              p If there are controller actions to be created this could mean that someone:
+              ul
+                li created new routes that need to be present in the system. You should create them!
+                li created routes that don't need to be in the system. Developers should clean them up.
+
+      .column
+        .content
+          .card
+            .card-content.has-text-centered
+              p.title.is-1 = number_with_delimiter @stale_controller_actions.count
+              p.subtitle Stale Controller Actions
+              - if @stale_controller_actions.blank?
+                p Everything's up to date
+              - else
+                .card-content
+                  .buttons.is-centered
+                    = authz_link_to 'Review', stale_controller_actions_path, { class: 'button is-light' }, skip_scoping:  true
+                    = authz_link_to 'Destroy all', bulk_controller_actions_destroy_path(destroy_all: true), { class: 'button is-danger', method: :delete }, skip_scoping:  true
+            .card-content
+              p Stale controller actions could mean someone:
+              ul
+                li removed them from your application's router by accident
+                li removed them from your applicaiton's router and need to be removed from the database as well
+
+
+
+
 section.section
   .container
-    h2.title.is-4 Unused scopable keywords
+    h2.title Scoping
+    .content
+      h3.title.is-4 Suspicious keywords
+      .columns
+        .column
+          p.has-text-justified These are keywords that are present in your database but either have been removed from your source code at each scopable's configuration file or have been created progamatically skipping validations.
+        .column
+          p.has-text-justified No keywords should be present in these tables. If there are some, ask these questions to clean up:
+          ul
+            li Did someone remove scopable keywords?
+            li Did someone udpate records skipping validations?
     .columns
       - ::Authz::Scopables::Base.get_scopables_names.each do |scoping_module|
         .column
@@ -53,17 +80,22 @@ section.section
 
 section.section
   .container
-    h2.title.is-4 Scopables not in codebase
+    h3.title.is-4 Scopable not in codebase
     .columns
-      .column.is-one-quarter
-        .card
-          .card-content.has-text-centered
-            p.title = @invalid_scoping_rules.count
-            p Scopables removed from code but still present in the database
+      .column
+        .content
+          p.has-text-justified Developers may remove scopes in your codebase leaving stale rules in your database. To fix this you can:
+          ul
+            li Check with your developer to see if this is expected behaviour. The code that includes scopables in the system may have been accidentally deleted
+            li Remove all Scoping Rule instances in your database that are not present in code.
+
       .column
         .card
           table.table.is-fullwidth
             tbody
+              - if @invalid_scoping_rules.blank?
+                tr
+                  td.has-text-centered All scopables in your database are correctly configured in your codebase
               - @invalid_scoping_rules.each do |rule_name|
                 tr
                   td = rule_name
