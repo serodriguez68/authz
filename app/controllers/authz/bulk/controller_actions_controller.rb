@@ -15,10 +15,10 @@ module Authz
           end
         end
         flash[:success] = "#{@pending_actions.count} actions successfully created!"
-        redirect_back fallback_location: root_path
+        redirect_to root_path
       else
         flash[:notice] = 'Partial bulk creation not implemented yet'
-        redirect_back fallback_location: root_path
+        redirect_to root_path
       end
     end
 
@@ -34,10 +34,10 @@ module Authz
           end
         end
         flash[:success] = "#{@stale_actions.count} actions successfully destroyed!"
-        redirect_back fallback_location: root_path
+        redirect_to root_path
       else
         flash[:notice] = 'Partial bulk deletion not implemented yet'
-        redirect_back fallback_location: root_path
+        redirect_to root_path
       end
     end
 

@@ -16,8 +16,7 @@ section.section
               - else
                 .card-content
                   .buttons.is-centered
-                    = authz_link_to 'Review', pending_controller_actions_path, { class: 'button is-light' }, skip_scoping:  true
-                    = authz_link_to 'Create all', bulk_controller_actions_create_path(create_all: true), { class: 'button is-primary', method: :post, data: { confirm: 'Are you sure?' } }, skip_scoping:  true
+                    = authz_link_to 'Review', pending_controller_actions_path, { class: 'button is-primary' }, skip_scoping:  true
             .card-content
               p If there are controller actions to be created this could mean that someone:
               ul
@@ -35,8 +34,7 @@ section.section
               - else
                 .card-content
                   .buttons.is-centered
-                    = authz_link_to 'Review', stale_controller_actions_path, { class: 'button is-light' }, skip_scoping:  true
-                    = authz_link_to 'Destroy all', bulk_controller_actions_destroy_path(destroy_all: true), { class: 'button is-danger', method: :delete }, skip_scoping:  true
+                    = authz_link_to 'Review', stale_controller_actions_path, { class: 'button is-primary' }, skip_scoping:  true
             .card-content
               p Stale controller actions could mean someone:
               ul
