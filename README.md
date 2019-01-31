@@ -74,7 +74,7 @@ and **the instance/resource** it is being performed on?
         and **all departments**.
         - The *regional director* **role** must be able to *index/show/new/create/...* the **reports** from **their city**
         and **all departments**.
-        - The *regional auditor* **role** must only be able to *index/show* the **reports** of the **their city**
+        - The *regional auditor* **role** must only be able to *index/show* the **reports** from **their city**
         and **all departments**.
         -  The *writer* **role** must be able to *index/show/new/create/...* the **reports** from **their city**
         and **their department.**
