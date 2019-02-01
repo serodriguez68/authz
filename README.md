@@ -27,9 +27,9 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
     + [Permissions](#permissions)
     + [Scoping Rules](#scoping-rules)
   * [Usage for Authorization Admins](#usage-for-authorization-admins)
-    + [Cold-start](#cold-start)
-    + [Managing the System](#managing-the-system)
-    + [Keeping the System Healthy](#keeping-the-system-healthy)
+    + [Cold-start Configuration](#cold-start-configuration)
+    + [Business as Usual](#business-as-usual)
+    + [Maintenance](#maintenance)
   * [Usage for Developers](#usage-for-developers)
     + [Scopables](#scopables)
     + [Controllers](#controllers)
@@ -38,6 +38,7 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
     + [Views](#views)
       - [`authorized_path?`](#authorized_path)
       - [`authz_link_to`](#authz_link_to)
+    + [Programmatic Interaction with Authz](#programmatic-interaction-with-authz)
 - [Performance and Caching](#performance-and-caching)
   * [In-request caching](#in-request-caching)
   * [Cross-request caching](#cross-request-caching)
@@ -111,7 +112,7 @@ Seed Authz's tables with the data required to control access to the Authorizatio
 This will create a [Business Process](#permissions) in the `Authz::BusinessProcesses` table.
 Any role that is granted that business process will get full access to the Authorization Admin.
 - Later, you will also probably want to run this in production to configure it. 
-See [Cold Start](#cold-start) for more details.
+See [Cold Start Configuration](#cold-start-configuration) for more details.
  ```bash
 $ rails authz:seed_admin
 ```
@@ -301,19 +302,69 @@ not for you.**
 [Back to table of content](#table-of-content)
    
 ### Usage for Authorization Admins 
-TODO: we are working on this... stay tuned
-- 3 activities that admins do
-#### Cold-start
+
+Authz comes with a built-in authorization GUI from which admins can configure everything related to authorization. 
+The GUI can be accessed on a URL/path configured by the developers.
+
+There are 3 types of activities that admins do through the GUI: _cold-start configuration, 
+business as usual and maintenance._
 
 
-#### Managing the System
-#### Keeping the System Healthy
+#### Cold-start Configuration
+Cold-start makes reference to configuring all the permissions, scoping rules and roles on a brand new Authz installation.
+
+For teams that are integrating Authz into an existing live project we recommend doing the cold-start configuration 
+using a rake task, since they probably can’t afford to have all users locked out while the 
+admin manually configures everything through the GUI. More information on how to do this on: 
+[Programmatic Interaction with Authz](#programmatic-interaction-with-authz).
+
+Teams can also opt to use the GUI to manually configure everything. Authz uses its own permission system to authorize 
+the access to the GUI, so the “first ever” admin needs to be granted permission to access the GUI by a developer 
+through the console. Authz provides a the `rails authz:seed_admin` rake task to automatically seed everything 
+needed to access the GUI (more information on the [Installation Section](#installation-and-initial-setup)).
+
+[Back to table of content](#table-of-content)
+
+#### Business as Usual
+During _“business as usual”_ an admin will make changes to the authorization configuration to keep up with business’ 
+needs, like granting, creating and revoking roles.
+
+The GUI provides the admins full control of the authorization system without requiring any code modifications and 
+re-deployments. Through the GUI admins can:
+- Create, view, update and delete controller actions, business processes, scoping rules and roles.
+- Grant and revoke roles to users.
+
+The admin also makes it very easy to answer questions like _“who can cancel orders?”_ or _“what can John do?”_.
+
+<div align="center">
+     <center>
+         <img src="/readme_images/admin_high_visibility.png" width="800"/>
+     </center>
+</div>
+
+[Back to table of content](#table-of-content)
+
+#### Maintenance
+The authorization configuration will need maintenance as developers make changes to the codebase. 
+In particular, maintenance is needed when developers add/remove **controller actions** from the application 
+or add/remove/change the **scopables** or **keywords** for the **scoping rules**.
+
+The GUI’s main dashboard detects differences from the current in-database configuration and the codebase, 
+and suggests the adjustments that need to be done. However, nothing replaces good communication between the developers 
+and the authorization admins.
+
+<div align="center">
+     <center>
+         <img src="/readme_images/admin_dashboard.png" width="800"/>
+     </center>
+ </div>
+
 
 [Back to table of content](#table-of-content)
 
 ### Usage for Developers
 The authorization logic bits inside your app typically live in 3 places: [Scopables](#scopables), 
-[Controllers](#controllers) and [Views](#views). 
+[Controllers](#controllers) and [Views](#views). You may also interact with the Authz models directly.
 
 #### Scopables
 This is the first thing to do if you have just installed the gem.
@@ -581,6 +632,27 @@ or `skip_scoping: true` if no sensible instance exists.
 # If you get an 'unknown keyword: class' error, it's caused by this.
 ```
 [Back to table of content](#table-of-content)
+
+#### Programmatic interaction with Authz
+Everything that can be done through the admin GUI can also be done programmatically. 
+You can interact with Authz’s models in the exact same way as you would interact with any `ActiveRecord` class. 
+
+The models you probably want to interact with are: `Authz::ConrollerAction`, `Authz::BusinessProcess`, 
+`Authz::Role`, `Authz::RoleGrant` and `Authz::ScopingRule`. 
+
+You can also call `user.roles` to get the roles associated to a user. 
+
+If for some reason you want to reference a specific `BusinessProces` or `Role` from your code,
+you can do so through the `code` attribute. `code` is automatically set as the snake case
+ of the `name` upon creation (unless you specify otherwise) and can't be changed from the GUI
+ (so your code does not break if the name is changed).
+ 
+```ruby
+Authz::Role.find_by(code: 'foo')
+Authz::BusinessProcess.find_by(code: 'bar')
+```
+[Back to table of content](#table-of-content)
+
 
 ## Performance and Caching
 Dynamic views based on the `current_user`'s authorization privileges will add some calls to your
