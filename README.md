@@ -295,7 +295,7 @@ easier to explain the concepts this way._
 
 These **Scoping Classes** typically exists inside the application's domain logic or are easy enough to 
 implement and fit nicely into the domain. 
-**If you can't express you authorization rules in terms of Scoping Classes then Authz is probably 
+**If you can't express your authorization rules in terms of Scoping Classes then Authz is probably 
 not for you.**
 
 [Back to table of content](#table-of-content)
@@ -444,7 +444,7 @@ class ReportsController < ApplicationController
 end
 ```
 
-Authz will check if the current user has any role that allows him to do the action `Reports#show` on the instance
+Authz will check if the current user has any role that allows him to perform the action `Reports#show` on the instance
 `@report` taking into account the role's *Scoping Rules*. Note that the controller and action name are automatically
 inferred.
 
