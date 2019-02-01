@@ -44,9 +44,7 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
   * [In-request caching](#in-request-caching)
   * [Cross-request caching](#cross-request-caching)
   * [Fragment and Russian Doll caching](#fragment-and-russian-doll-caching)
-- [Authorization Good and Bad Practices](#authorization-good-and-bad-practices)
-  * [Good Practices](#good-practices)
-  * [Bad Practices](#bad-practices)
+- [Common Problems and Solutions](#common-problems-and-solutions)
 - [License](#license)
 
 ## Is Authz A Good Match For My Needs?
@@ -776,48 +774,6 @@ keys.
 
 [Back to table of content](#table-of-content)
 
-## Authorization Good and Bad Practices
-A non exhaustive list of generally accepted authorization wisdom and things we've learned from using Authz ourselves:
-
-### Good Practices 
-- **Principle of Least Privilege**: Users should have the minimal set of permissions required to perform 
-their duties on the application.
-- **Closed by Default / Fail-Safe Systems**: deny access to resources unless otherwise stated. 
-“Blacklisting” type of permissions should only be used as an optimisation on top of a fail-safe system. This is why
-`around_action :verify_authorized` is a good idea.
-- **Visibility Is Important**: Strive to design a permission and scoping structure that is easily understandable
-by all human beings managing the authorization system. Answering questions like _'who can edit reports'_ and _'what
-can user 1234 do'_ should be straightforward. Security holes are often related to misconfiguration due to complexity.
-- **Know the Trade-offs**: As with most of things in engineering, there is no "best" solution for all authorization
-problems; it's up to you to choose the right tool for YOUR job. In our opinion the most important trade-off is driven
-by the _"rule resolution time"_ of your authorization strategy/library. The extreme points of this continuum are 
-pure **Runtime resolution** and pure **Static resolution**, with most systems falling somewhere in the middle.
-    -  **Runtime resolution** means that when a _user_ performs a request to perform an _action_ over a _resource_ 
-    given a certain _context_, the system executes some code at runtime to decide whether the user can be granted access.
-    - **Static Resolution** means that the user access is fully pre-defined and once a user request arrives it can be 
-    resolved by simply “reading” from the defined permissions (e.g. querying a database).
-    - For reference **Authz** takes a hybrid approach in which permissions are **statically defined**, and the degree
-     of **runtime resolution** for scoping rules can be chosen by developers according to their needs. We believe this
-     is a happy medium that is able to support many use cases while keeping the benefits of visibility and configurability.
-
-<div align="center">
-     <center>
-         <img src="/readme_images/rule_resolution_time_tradeoffs.png" width="700"/>
-     </center>
- </div>  
-
-### Bad Practices
-- **Client-Side Authorization** does not exist (period). If anything, it can be included 
-as a usability improvement.
-- **Security Through Obscurity**: Any authorisation system that relies on the user not knowing certain information to 
-guarantee security is not viable. For example, using obfuscated URL links to make it harder for attackers to guess 
-a customer’s invoice number.
-- **Leave Authorization for Later**: _'let's develop the whole thing and we will think about authorization later'_.
-This sucks but it's the truth. Almost everything you code requires some type of authorization and therefore authorization 
-code quickly gets everywhere. If you just 'wing it' with a couple of boolean flags in the `User` model you are 
-almost guaranteed to have a painful re-write. 
-
-[Back to table of content](#table-of-content)
 
 ## Common Problems and Solutions
 - When linking from your app into the Authz Admin, make sure you use the `root_url` helper and NOT the `root_path`.
