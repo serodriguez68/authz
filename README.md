@@ -21,6 +21,7 @@ Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.
 
 ## Table of Content
 - [Is Authz A Good Match For My Needs?](#is-authz-a-good-match-for-my-needs)
+- [Requirements](#requirements)
 - [Installation and Initial Setup](#installation-and-initial-setup)
 - [Usage](#usage)
   * [How Authorization Rules Work in Authz](#how-authorization-rules-work-in-authz)
@@ -87,6 +88,11 @@ and **the instance/resource** it is being performed on?
      that belong to New York and the Sports Department.
 
 [Back to table of content](#table-of-content)
+
+## Requirements
+- Rails >= 5.0 using `ActiveRecord` on a relational database.
+- Your app already has an authentication mechanism like [Devise](https://github.com/plataformatec/devise).
+- Optional: Your preference of caching technology through `ActiveSupport::Cache`.
 
 ## Installation and Initial Setup
 
