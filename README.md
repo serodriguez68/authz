@@ -274,8 +274,14 @@ the authorization rules.
 
 We call these classes **Scoping Classes** as they define the scope of the permissions granted to a role. For the
 case of the "New York Sports Editor" role, the permissions to _"publish reports"_ and to _"moderate comments"_ are scoped 
-down to `Reports` and `Comments` that belong to "New York" `City` and the "Sports" `Department`. We refer to these
-as the **Scoping Rules**. The next figure illustrates how everything fits together. 
+down to `Reports` and `Comments` that belong to "New York" `City` and the "Sports" `Department`. 
+In Authz terminology, we say that a “New York Sports Editor” is authorized to do any of his granted **permissions** 
+only on resources that are within his scope, which is defined by his configured **Scoping Rules**:
+- `ScopableByCity = 'New York`
+- `ScopableByDepartment = Sports` 
+
+The next figure illustrates how everything fits together. 
+
 
 <div align="center">
      <center>
