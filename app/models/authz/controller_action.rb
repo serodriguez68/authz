@@ -1,3 +1,11 @@
+# The purpose of this class is to represent a single reachable controller
+# action from the host application's router, including all library
+# internal routes.
+#
+# The existence of a path from the current user to a controller action
+# will determine if the user has permission to perform the action.
+#
+# Author: Sergio Rodriguez - @serodriguez68
 module Authz
   class ControllerAction < self::ApplicationRecord
 
