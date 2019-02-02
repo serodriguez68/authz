@@ -5,29 +5,30 @@ module Authz
       extend ActiveSupport::Concern
 
       # Errors
-      # ===========================================================================
-      # Error that will be raised if a controller action has not called the
-      # `authorize` or `skip_authorization` methods.
+      # ========================================================
+      # Error that will be raised if a controller action has not
+      # called the `authorize` or `skip_authorization` methods.
       class AuthorizationNotPerformedError < StandardError
         attr_reader :controller, :action
         def initialize(options = {})
           @controller = options.fetch :controller
           @action = options.fetch :action
-          message = "#{controller}##{action} is missing authorization."
-          super(message)
+          msg = "#{controller}##{action} is missing authorization."
+          super(msg)
         end
       end
 
-      # Error that will be raised if the authorized method is not provided a
-      # scoping instance and the skip_scoping option is not used
+      # Error that will be raised if the authorized method is not
+      # provided a scoping instance and the skip_scoping option
+      # is not used
       class MissingScopingInstance < StandardError
         attr_reader :controller, :action
         def initialize(options = {})
           @controller = options.fetch :controller
           @action = options.fetch :action
-          message = "#{controller}##{action}. Provide an instance to " \
-                    'perform authorization or use the skip_scoping option'
-          super(message)
+          msg = "#{controller}##{action}. Provide an instance to " \
+                'perform authorization or use the skip_scoping option'
+          super(msg)
         end
       end
 
@@ -40,15 +41,15 @@ module Authz
           @action = options.fetch :action
           @instance = options.fetch(:instance, nil)
 
-          message = "#{rolable.class} #{rolable.id} " \
+          msg = "#{rolable.class} #{rolable.id} " \
                     'does not have a role that allows him to ' \
                     "#{controller}##{action}"
 
           if instance.present?
-            message += " on #{instance}."
+            msg += " on #{instance}."
           end
 
-          super(message)
+          super(msg)
         end
       end
 
@@ -64,7 +65,7 @@ module Authz
       # @param [skip_scoping: true] to explicitly skip scoping
       # @return [using]: the instance that was given as param
       # @raise NotAuthorized when the unauthorized.
-      #        The exception may be rescued to provided custom behaviour.
+      #        May be rescued to provide custom behaviour.
       def authorize(using: nil, skip_scoping: false)
         @_authorization_performed = true
 
