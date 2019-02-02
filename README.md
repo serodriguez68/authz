@@ -308,7 +308,7 @@ not for you.**
 ### Usage for Authorization Admins 
 
 Authz comes with a built-in authorization GUI from which admins can configure everything related to authorization. 
-The GUI can be accessed on a URL/path configured by the developers.
+The GUI can be accessed through a URL/path configured by the developers.
 
 There are 3 types of activities that admins do through the GUI: _cold-start configuration, 
 business as usual and maintenance._
@@ -322,7 +322,7 @@ using a rake task, since they probably can’t afford to have all users locked o
 admin manually configures everything through the GUI. More information on how to do this on: 
 [Programmatic Interaction with Authz](#programmatic-interaction-with-authz).
 
-Teams can also opt to use the GUI to manually configure everything. Authz uses its own permission system to authorize 
+Teams can also opt to use the GUI to manually configure everything. Authz uses itself to authorize 
 the access to the GUI, so the “first ever” admin needs to be granted permission to access the GUI by a developer 
 through the console. Authz provides a the `rails authz:seed_admin` rake task to automatically seed everything 
 needed to access the GUI (more information on the [Installation Section](#installation-and-initial-setup)).
@@ -330,7 +330,7 @@ needed to access the GUI (more information on the [Installation Section](#instal
 [Back to table of content](#table-of-content)
 
 #### Business as Usual
-During _“business as usual”_ an admin will make changes to the authorization configuration to keep up with business’ 
+During _“business as usual”_ an admin will make changes to the authorization configuration to keep up with the business’ 
 needs, like granting, creating and revoking roles.
 
 The GUI provides the admins full control of the authorization system without requiring any code modifications and 
