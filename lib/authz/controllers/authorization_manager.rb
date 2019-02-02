@@ -53,17 +53,18 @@ module Authz
       end
 
       # @public api
-      # ===========================================================================
+      # ========================================================================
       protected
 
       # Enforces authorization when called.
-      # Raises an exception when the unauthorized.
-      # The exception may be rescued to provided custom behaviour.
+      # Raises exception when unauthorized.
       #
       # @param [using: Object] the instance that will determine
       #        access in the ScopingManager
       # @param [skip_scoping: true] to explicitly skip scoping
-      # @return [void]
+      # @return [using]: the instance that was given as param
+      # @raise NotAuthorized when the unauthorized.
+      #        The exception may be rescued to provided custom behaviour.
       def authorize(using: nil, skip_scoping: false)
         @_authorization_performed = true
 
@@ -74,9 +75,9 @@ module Authz
         return using if authorized
 
         raise NotAuthorized, rolable: authz_user,
-              controller: params[:controller],
-              action: params[:action],
-              instance: using
+                             controller: params[:controller],
+                             action: params[:action],
+                             instance: using
       end
 
       # Determines if a user is authorized to perform a certain controller action
