@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_080155) do
     t.string "action"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["controller", "action"], name: "index_authz_controller_actions_on_controller_and_action", unique: true
   end
 
   create_table "authz_role_grants", force: :cascade do |t|

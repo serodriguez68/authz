@@ -6,5 +6,6 @@ class CreateAuthzControllerActions < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+    add_index :authz_controller_actions, [:controller, :action], unique: true
   end
 end

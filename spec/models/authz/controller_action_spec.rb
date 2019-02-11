@@ -1,6 +1,14 @@
 module Authz
   describe ControllerAction, type: :model do
 
+    describe 'DB indexes' do
+      it 'should have a composite controller+action index' do
+        expect(
+          ActiveRecord::Migration.index_exists?(described_class.table_name, [:controller, :action], unique: true)
+        ).to be true
+      end
+    end
+
     describe 'Validations' do
       it { is_expected.to validate_presence_of :controller }
       it { is_expected.to validate_presence_of :action }
