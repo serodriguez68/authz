@@ -8,5 +8,9 @@ class CreateAuthzRoleGrants < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+    add_index(:authz_role_grants,
+              [:rolable_type, :rolable_id, :authz_role_id],
+              unique: true,
+              name: 'authz_rgs_rolable_role')
   end
 end

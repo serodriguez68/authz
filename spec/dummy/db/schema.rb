@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_080155) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["authz_role_id"], name: "authz_role_grants_role_index"
+    t.index ["rolable_type", "rolable_id", "authz_role_id"], name: "authz_rgs_rolable_role", unique: true
     t.index ["rolable_type", "rolable_id"], name: "authz_role_grants_rolable_index"
   end
 
