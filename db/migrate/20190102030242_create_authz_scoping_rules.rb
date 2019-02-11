@@ -8,5 +8,9 @@ class CreateAuthzScopingRules < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+    add_index(:authz_scoping_rules,
+              [:authz_role_id, :scopable],
+              unique: true,
+              name: 'authz_srs_role_scopable')
   end
 end

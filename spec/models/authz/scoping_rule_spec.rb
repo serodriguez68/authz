@@ -14,6 +14,16 @@ module Authz
       allow(Scopables::Base).to receive(:get_scopables_names).and_return([@test_scopable.name])
     end
 
+    describe 'DB indexes' do
+      it 'should have a composite unique index on role_scopable' do
+        expect(
+          ActiveRecord::Migration.index_exists?(described_class.table_name,
+                                                [:authz_role_id, :scopable],
+                                                unique: true)
+        ).to be true
+      end
+    end
+
     describe 'validations' do
       it { is_expected.to validate_presence_of :scopable }
       it { should validate_presence_of(:role).with_message(:required) }

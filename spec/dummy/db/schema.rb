@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_080155) do
     t.string "keyword"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["authz_role_id", "scopable"], name: "authz_srs_role_scopable", unique: true
     t.index ["authz_role_id"], name: "index_authz_scoping_rules_on_authz_role_id"
     t.index ["keyword"], name: "index_authz_scoping_rules_on_keyword"
     t.index ["scopable"], name: "index_authz_scoping_rules_on_scopable"
