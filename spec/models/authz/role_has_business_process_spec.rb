@@ -1,5 +1,16 @@
 module Authz
   RSpec.describe RoleHasBusinessProcess, type: :model do
+
+    describe 'DB indexes' do
+      it 'should have a composite unique index on role_bp' do
+        expect(
+          ActiveRecord::Migration.index_exists?(described_class.table_name,
+                                                [:authz_role_id, :authz_business_process_id],
+                                                unique: true)
+        ).to be true
+      end
+    end
+
     describe 'Associations' do
       it { should belong_to(:business_process) }
       it { should belong_to(:role).touch(true) }

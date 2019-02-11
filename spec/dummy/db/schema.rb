@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_080155) do
     t.integer "authz_business_process_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["authz_business_process_id", "authz_controller_action_id"], name: "authz_bphca_ca_and_bp", unique: true
+    t.index ["authz_business_process_id", "authz_controller_action_id"], name: "authz_bphca_bp_ca", unique: true
     t.index ["authz_business_process_id"], name: "authz_bphca_business_process_index"
     t.index ["authz_controller_action_id"], name: "authz_bphca_controller_action_index"
   end
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_080155) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["authz_business_process_id"], name: "authz_rhbp_business_process_index"
+    t.index ["authz_role_id", "authz_business_process_id"], name: "authz_rhpb_role_bp", unique: true
     t.index ["authz_role_id"], name: "authz_rhbp_role_index"
   end
 

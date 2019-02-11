@@ -8,5 +8,9 @@ class CreateAuthzRoleHasBusinessProcesses < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+    add_index(:authz_role_has_business_processes,
+              [:authz_role_id, :authz_business_process_id],
+              unique: true,
+              name: 'authz_rhpb_role_bp')
   end
 end
