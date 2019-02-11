@@ -49,6 +49,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'travis'
   s.add_development_dependency 'travis-lint'
   s.add_development_dependency 'rack-mini-profiler'
-
-
+  s.add_development_dependency 'yard'
 end

@@ -282,6 +282,7 @@ GEM
     websocket-extensions (0.1.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yard (0.9.18)
 
 PLATFORMS
   ruby
@@ -308,6 +309,7 @@ DEPENDENCIES
   sqlite3
   travis
   travis-lint
+  yard
 
 BUNDLED WITH
    1.16.6
