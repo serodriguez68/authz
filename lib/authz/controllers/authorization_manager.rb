@@ -1,11 +1,15 @@
 module Authz
   module Controllers
+    # Include this module in any controller that should be capable of performing authorization
+    # or in the ApplicationController to make the whole app capable.
+    # @api public
     module AuthorizationManager
 
       extend ActiveSupport::Concern
 
       # Errors
       # ========================================================
+
       # Error that will be raised if a controller action has not
       # called the `authorize` or `skip_authorization` methods.
       class AuthorizationNotPerformedError < StandardError
@@ -53,19 +57,22 @@ module Authz
         end
       end
 
-      # @public api
+      # public api
       # ========================================================================
+
       protected
 
       # Enforces authorization when called.
       # Raises exception when unauthorized.
       #
-      # @param [using: Object] the instance that will determine
-      #        access in the ScopingManager
-      # @param [skip_scoping: true] to explicitly skip scoping
-      # @return [using]: the instance that was given as param
-      # @raise NotAuthorized when the unauthorized.
+      # @param using [Object] the instance that will determine access
+      # @param skip_scoping [Boolean] use true to explicitly skip scoping
+      # @return [Object] the instance that was given as param
+      # @raise [NotAuthorized] when unauthorized.
       #        May be rescued to provide custom behaviour.
+      # @api public
+      # @see #authorized?
+      # @!visibility public
       def authorize(using: nil, skip_scoping: false)
         @_authorization_performed = true
 
@@ -83,10 +90,13 @@ module Authz
 
       # Determines if a user is authorized to perform a certain controller action
       # on a given instance
-      # @param controller: name of the controller
-      # @param action: name of the controller action
-      # @param using: the instance used to determine scope access
-      # @param skip_scoping: option for ignoring scoping during verification
+      # @param controller [String] name of the controller
+      # @param action [String] name of the controller action
+      # @param using [Object] the instance used to determine scope access
+      # @param skip_scoping [Boolean] option for ignoring scoping during verification
+      # @return [Boolean] true if authorized, false otherwise
+      # @api public
+      # @!visibility public
       def authorized?(controller:, action:, using: nil, skip_scoping: false)
         # 1. Check if the user is correctly skipping scoping
         skip_scoping = skip_scoping == true
@@ -112,25 +122,25 @@ module Authz
         return false
       end
 
-      # Allow this action not to perform authorization.
+      # Use within a controller action to explicitly skip authorization.
       # @return [void]
+      # @api public
+      # @!visibility public
+      # @see #verify_authorized
       def skip_authorization
         @_authorization_performed = true
       end
 
-      # Hook method to allow customization of user used in the authorization
-      # process
-      def authz_user
-        send(Authz.current_user_method)
-      end
-
-
-      # Raises an error if authorization has not been performed.
-      # `around_action` filter and transaction rollbacks changes in db
-      # if authorization was not performed.
-      # http://guides.rubyonrails.org/action_controller_overview.html#after-filters-and-around-filters
-      # @raise [AuthorizationNotPerformedError] if authorization has not been performed
+      # Use as `around_action` filter to ensure all controller actions either perform authorization
+      # or explicitly skip it.
+      # Rollbacks changes in db if authorization was not performed.
+      # @raise [AuthorizationNotPerformedError] if authorization has not been performed or skipped
       # @return [void]
+      # @see #authorize
+      # @see #skip_authorization
+      # @see http://guides.rubyonrails.org/action_controller_overview.html#after-filters-and-around-filters
+      # @api public
+      # @!visibility public
       def verify_authorized
         # Yield gets replaced by the controller action performed: E.g. #show
         # http://stackoverflow.com/questions/27932270/how-does-an-around-action-callback-work-an-explanation-is-needed
@@ -143,16 +153,21 @@ module Authz
         end
       end
 
-      # Find authz_user and forward to apply scoping rules
-      #
-      # @param on: collection or class on top of which
-      #            the user's scoping rules will be applied
-      # @return [Collection] resulting collection from applying all
-      #                      user's roles scoping rules
+      # Applies the current user's scoping rules on the given relation or class
+      # @param on [ActiveRecord_Relation, Class]  on top of which  the user's scoping rules will be applied
+      # @return [ActiveRecord_Relation] resulting collection from applying all user's roles scoping rules
+      # @api public
+      # @!visibility public
       def apply_authz_scopes(on:)
         ScopingManager.apply_scopes_for_user(on, authz_user)
       end
-      # @public api ===============================================================
+      # public api ===============================================================
+
+      # Hook method to allow customization of user used in the authorization
+      # process
+      def authz_user
+        send(Authz.current_user_method)
+      end
 
       private
       # @return [Boolean] whether authorization has been performed, i.e. whether
@@ -164,11 +179,13 @@ module Authz
       # Returns true if the user has permission for the path
       # and :using instance given as arguments
       #
-      # @param path: path or url that will be checked
-      # @param method: of the path or url
-      # @param using: instance that will be used to determine authorization
-      # @param skip_scoping: option to skip scoping validation
+      # @param path [String] path or url that will be checked
+      # @param method [Symbol, String] of the path or url
+      # @param using [Object] instance that will be used to determine authorization
+      # @param skip_scoping [Boolean] option to skip scoping validation
       # @return [Boolean]
+      # @api public
+      # @!visibility public
       def authorized_path?(path, method: :get, using: nil, skip_scoping: false)
         recognized_ca = Rails.application.routes.recognize_path path,
                                                                 method: method

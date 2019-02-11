@@ -1,15 +1,16 @@
 module Authz
   module Controllers
+    # Module in charge of resolving authorization for the scoping sub-system.
+    # @api private
     module ScopingManager
 
       # Determines if the given role has access to the given instance
       # considering all the applicable scopables and the role's
       # scoping rules.
-      #
-      # @param role: role for which access is going to be determined
-      # @param instance_to_check: any model instance trying to be manipulated
-      # @param authz_user: user that is trying to access the instance
-      #                    (injected dependency)
+      # @param role [Authz::Role] for which access is going to be determined
+      # @param instance_to_check [Object] any model instance trying to be manipulated
+      # @param authz_user [Models::Rolable] rolable that is trying to access the instance (injected dependency)
+      # @return [Boolean]
       def self.has_access_to_instance?(role, instance_to_check, authz_user)
         scoped_class = instance_to_check.class
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! scoped_class
@@ -29,11 +30,12 @@ module Authz
       # If the user does not contain roles, it returns an empty
       # collection.
       #
-      # @param collection_or_class: the starting collection on top
-      #                             of which the scoping is going to
-      #                             be applied
-      # @param authz_user: the user from which the roles are going to
-      #                    be used
+      # @param collection_or_class [ActiveRecord_Relation, Class]
+      #                            the starting collection on top
+      #                            of which the scoping is going to
+      #                            be applied
+      # @param authz_user [Models::Rolable] the user from which the roles are going to be used
+      # @return [ActiveRecord_Relation] the subset of records to which the user has access to
       def self.apply_scopes_for_user(collection_or_class, authz_user)
         usr = authz_user
 
@@ -54,11 +56,13 @@ module Authz
       # Applies all the applicable scopables to the given collection or class
       # using the scoping rules from the given role.
       #
-      # @param role: the role used to find the scoping rules to apply
-      # @param collection_or_class: the starting collection on top
-      #                             of which the scoping is going to
-      #                             be applied
-      # @param authz_user: the requesting user (injected dependency)
+      # @param role [Authz::Role] the role used to find the scoping rules to apply
+      # @param collection_or_class [ActiveRecord_Relation, Class]
+      #                            the starting collection on top
+      #                            of which the scoping is going to
+      #                            be applied
+      # @param authz_user [Models::Rolable] the requesting user (injected dependency)
+      # @return [ActiveRecord_Relation] the subset of records to which the role has access to
       def self.apply_role_scopes(role, collection_or_class, authz_user)
         applicable_scopables = Authz::Scopables::Base.get_applicable_scopables! collection_or_class
 
