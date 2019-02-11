@@ -1,6 +1,16 @@
 module Authz
   RSpec.describe BusinessProcessHasControllerAction, type: :model do
 
+    describe 'DB indexes' do
+      it 'should have a composite unique index bp_ca' do
+        expect(
+          ActiveRecord::Migration.index_exists?(described_class.table_name,
+                                                [:authz_business_process_id, :authz_controller_action_id],
+                                                unique: true)
+        ).to be true
+      end
+    end
+
     describe 'Associations' do
       it { should belong_to(:controller_action) }
       it { should belong_to(:business_process).touch(true) }

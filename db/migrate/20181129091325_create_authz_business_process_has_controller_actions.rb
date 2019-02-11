@@ -11,5 +11,9 @@ class CreateAuthzBusinessProcessHasControllerActions < ActiveRecord::Migration[5
 
       t.timestamps
     end
+    add_index(:authz_business_process_has_controller_actions,
+              [:authz_business_process_id, :authz_controller_action_id],
+              unique: true,
+              name: 'authz_bphca_bp_ca')
   end
 end
