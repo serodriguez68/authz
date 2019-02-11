@@ -1,5 +1,10 @@
 module Authz
+  # Contains helpers that are available for use in any of the internal engine views.
+  # @api private
   module ApplicationHelper
+
+    # @param name [String] keyword
+    # @return [String] css class for flash
     def flash_class(name)
       case name
       when 'success'
@@ -12,5 +17,6 @@ module Authz
         'is-warning'
       end
     end
+
   end
 end
