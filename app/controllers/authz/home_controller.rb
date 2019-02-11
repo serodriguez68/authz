@@ -1,6 +1,7 @@
 require_dependency "authz/application_controller"
 
 module Authz
+  # @api private
   class HomeController < ApplicationController
     def index
       @pending_controller_actions = ControllerAction.pending

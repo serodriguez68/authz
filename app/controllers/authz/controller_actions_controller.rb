@@ -1,6 +1,7 @@
 require_dependency "authz/application_controller"
 
 module Authz
+  # @api private
   class ControllerActionsController < ApplicationController
     def index
       @controller_actions = ControllerAction.all.order(created_at: :desc).page(params[:controller_actions_page])

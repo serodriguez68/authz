@@ -1,4 +1,9 @@
 module Authz
+  # Inherits from the host app's ApplicationController so that all of it's methods
+  # are available for the engine.
+  #
+  # All engine's controllers inherit from this class.
+  # @api private
   class ApplicationController < ::ApplicationController
     include Authz::Controllers::AuthorizationManager
 

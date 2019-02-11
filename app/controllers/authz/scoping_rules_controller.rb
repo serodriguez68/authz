@@ -1,6 +1,7 @@
 require_dependency "authz/application_controller"
 
 module Authz
+  # @api private
   class ScopingRulesController < ApplicationController
     def new
       @role = Role.find(params[:role_id])

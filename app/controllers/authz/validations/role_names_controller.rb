@@ -1,6 +1,7 @@
 require_dependency "authz/application_controller"
 
 module Authz
+  # @api private
   class Validations::RoleNamesController < ApplicationController
     def new
       name = params[:role][:name]

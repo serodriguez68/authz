@@ -1,6 +1,7 @@
 require_dependency "authz/application_controller"
 
 module Authz
+  # @api private
   class BusinessProcessesController < ApplicationController
 
     def index
