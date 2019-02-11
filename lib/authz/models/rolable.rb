@@ -1,5 +1,6 @@
 module Authz
   module Models
+    # Must be included in the host application's class in charge of users.
     module Rolable
       extend ActiveSupport::Concern
 
@@ -40,8 +41,9 @@ module Authz
 
       # Mixed instance methods
       # ==========================================================================
-      # Label used to label each rolable instance in the context
-      # of Authz
+
+      # @return [String] Label used to label each rolable instance in the context
+      #         of Authz
       def authz_label
         if respond_to? :name
           name
@@ -54,9 +56,9 @@ module Authz
         end
       end
 
-      # Returns a composite cache key using the keys of the granted roles.
-      # The key will be modified when the configuration of any of the granted
-      # roles changes.
+      # @return [String] a composite cache key using the keys of the granted roles.
+      #         The key will be modified when the configuration of any of the granted
+      #         roles changes.
       def roles_cache_key
         roles.map(&:cache_key).join('/')
       end

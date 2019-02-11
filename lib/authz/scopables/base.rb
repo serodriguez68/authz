@@ -1,9 +1,13 @@
 module Authz
   module Scopables
+    # Any scopables created by the host application should extend this module.
+    # The module provides all the functionality that a scopable needs.
+    # @api private
     module Base
 
       # Scopable::Base tracks all available Scopables
       # ===================================================================
+
       @@scopables = [] # Contains a handle to each scopable
       def self.register_scopable(scopable)
         @@scopables << scopable unless @@scopables.include?(scopable)
@@ -60,10 +64,12 @@ module Authz
 
       # Errors
       # ===========================================================================
+
       # Error that will be raised if the model being scoped has ambiguous
       # association  names for the included scopable
       # (e.g. has both :city and :cities  associations and
       # ScopableByCity is Being included)
+      # @api public
       class AmbiguousAssociationName < StandardError
         attr_reader :scoped_class, :scopable, :association_names
 
@@ -82,6 +88,7 @@ module Authz
 
       # Error that will be raised if the model being scoped doesn't appear to
       # have an association to the scoping class.
+      # @api public
       class NoAssociationFound < StandardError
         attr_reader :scoped_class, :scopable, :scoping_class
 
@@ -97,6 +104,7 @@ module Authz
 
       # Error that will be raised if the association of a model being scoped
       # does not return the expected type of objects
+      # @api public
       class MisconfiguredAssociation < StandardError
         attr_reader :scoped_class, :scopable, :association_method
 
@@ -116,6 +124,7 @@ module Authz
 
       # Raised when the scoping system is used on an instance of a class
       # that has no applicable scopables
+      # @api public
       class NoApplicableScopables < StandardError
         attr_reader :scoped_class
 
@@ -129,6 +138,7 @@ module Authz
       end
 
       # Raised when the .resolve_keyword method returns invalid output
+      # @api public
       class UnresolvableKeyword < StandardError
         attr_reader :scopable, :keyword, :requester
 
@@ -391,12 +401,21 @@ module Authz
 
       # Scopables must implement
       # ===================================================================
+
+      # @return [Array<String>] available keywords for creating scoping rules
+      # @raise [NotImplementedError] when the scopable does not implement the method
+      # @api public
       def available_keywords
         raise NotImplementedError, "#{self}.
         All Scopables must implement a method that returns the available
         scoping keywords"
       end
 
+      # @param keyword [String] the keyword that needs to be resolved
+      # @param requester [Models::Rolable] the user that is the bearer of the keyword
+      # @return [Array<Integers>] The ids that the given keywords resolve to
+      # @raise [NotImplementedError] when the scopable does not implement the method
+      # @api public
       def resolve_keyword(keyword, requester)
         msg = "#{self} must implement a method " \
               ' that takes in a keyword and the requester' \
