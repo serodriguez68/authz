@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Unique database indexes where relevant
+- Add YARD compatible documentation
 
 ## [0.0.2] - 2018-02-02
 ### Added
