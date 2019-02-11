@@ -1,4 +1,6 @@
 module Authz
+  # An instance represents a single mapping between a user and a role.
+  # For example <'John', 'Publisher'>
   class RoleGrant < self::ApplicationRecord
     # Associations
     # ==========================================================================

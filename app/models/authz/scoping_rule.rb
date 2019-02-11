@@ -1,4 +1,6 @@
 module Authz
+  # An instance represents that a role has keyword for a particular scopable.
+  # For example 'Sports Publisher' had keyword 'sports' for 'ScopableByDepartment'
   class ScopingRule < self::ApplicationRecord
     # Validations
     # ==========================================================================
@@ -20,6 +22,7 @@ module Authz
 
     scope :for_scopables, ->(scopables) { where(scopable: scopables.map(&:to_s)) }
 
+    # @return [String] string representation of instance
     def to_s
       "#{scopable}: #{keyword}##{id}"
     end

@@ -1,4 +1,6 @@
 module Authz
+  # Represents a real-life process of the business.
+  # For example, a newspaper might have "publish reports" and "write reports" processes.
   class BusinessProcess < self::ApplicationRecord
     # Validations
     # ==========================================================================

@@ -1,12 +1,7 @@
-# The purpose of this class is to represent a single reachable controller
-# action from the host application's router, including all library
-# internal routes.
-#
-# The existence of a path from the current user to a controller action
-# will determine if the user has permission to perform the action.
-#
-# Author: Sergio Rodriguez - @serodriguez68
 module Authz
+  # Represents a single reachable controller
+  # action from the host application's router, including all library
+  # internal routes.
   class ControllerAction < self::ApplicationRecord
 
     # Validations
@@ -38,18 +33,21 @@ module Authz
     # Class Methods
     # ==========================================================================
 
-    # Extracts the reachable controller actions declared in the host app's router
+    # @return [Hash] reachable controller actions declared in the host app's router
     def self.main_app_reachable_controller_actions
       extract_reachable_controller_actions(Rails.application)
     end
 
-    # Extracts the reachable controller actions declared in the Engine's router
+    # @return [Hash] reachable controller actions declared in the Engine's router
     def self.engine_reachable_controller_actions
       extract_reachable_controller_actions(Authz::Engine)
     end
 
     # Combines the reachable controller actions from the engine and the main app
     # giving precedence to the main app in case of overwrite
+    # @return [Hash] reachable controller actions
+    # @see .main_app_reachable_controller_actions
+    # @see .engine_reachable_controller_actions
     def self.reachable_controller_actions
       app_cas = main_app_reachable_controller_actions
       engine_cas =  engine_reachable_controller_actions
@@ -59,7 +57,10 @@ module Authz
       res
     end
 
-    # Returns array of controller actions found in router but not in controller actions
+    # @return [Array<Hash<controller_name, action_name>>]
+    #         controller actions reachable from the router but not present in the database
+    # @api private
+    # @see .reachable_controller_actions
     def self.pending
       # TODO: Refactor and test
       ca_pairs = []
@@ -78,6 +79,10 @@ module Authz
       pending
     end
 
+    # @return [Array<Authz::ControllerAction>] controller actions that are created in the database that
+    #         are no longer reachable from the router
+    # @api private
+    # @see .reachable_controller_actions
     def self.stale
       # TODO: Refactor and test
       stale = []
@@ -90,6 +95,8 @@ module Authz
 
     # Instance Methods
     # ==========================================================================
+
+    # @return [String] concatenation of controller#action-id
     def to_s
       "#{controller}##{action}-#{id}"
     end

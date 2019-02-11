@@ -1,4 +1,6 @@
 module Authz
+  # An instance represents a single mapping between a role and a business process.
+  # For example <Publisher, release reports>
   class RoleHasBusinessProcess < self::ApplicationRecord
 
     # Associations

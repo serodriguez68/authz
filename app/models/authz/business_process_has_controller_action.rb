@@ -1,4 +1,6 @@
 module Authz
+  # Each instance represents a mapping from business processes to a controller action.
+  # For example, the "publish reports" business process may map to: reports#publish and reports#show
   class BusinessProcessHasControllerAction < self::ApplicationRecord
     # Associations
     # ==========================================================================

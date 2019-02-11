@@ -1,4 +1,5 @@
 module Authz
+  # Represents a role within the application
   class Role < self::ApplicationRecord
     # Validations
     # ==========================================================================
@@ -35,27 +36,37 @@ module Authz
              inverse_of: :role,
              dependent: :destroy
 
-    # Returns true if the role has access to the given controller action
+    # @param controller_name [String]
+    # @param action_name [String]
+    # @return [Boolean] true if the role has access to the given controller action
     def has_permission?(controller_name, action_name)
       controller_actions.exists?(controller: controller_name, action: action_name)
     end
 
     # Cached version of has_permission?
+    # @param (see #has_permission?)
+    # @see #has_permission?
     def cached_has_permission?(controller_name, action_name)
       Authz.cache.fetch([cache_key, controller_name, action_name]) do
         has_permission?(controller_name, action_name)
       end
     end
 
-    # Returns the applicable keywords according to the role's
-    # scoping rule for the given scopable
-    # Raises exception if the role does not have a scoping rule
-    # for the given scopable
+    # @param scopable [Scopable] the scoping module for which the keyword
+    #         is going to be found
+    # @return [String] the applicable keywords according to the role's
+    #         scoping rule for the given scopable
+    # @raise if the role does not have a scoping rule
+    #        for the given scopable
     def granted_keyword_for(scopable)
       scoping_rules.find_by!(scopable: scopable.to_s).keyword
     end
 
     # Cached version of #granted_keyword_for
+    # @param (see #granted_keyword_for)
+    # @return (see #granted_keyword_for)
+    # @raise (see #granted_keyword_for)
+    # @see #granted_keyword_for
     def cached_granted_keyword_for(scopable)
       Authz.cache.fetch([cache_key, scopable.to_s]) do
         granted_keyword_for(scopable)

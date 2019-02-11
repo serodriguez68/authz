@@ -1,4 +1,6 @@
 module Authz
+  # Superclass for all internal models
+  # @api private
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true
 
