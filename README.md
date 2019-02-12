@@ -1,4 +1,5 @@
-# Authz
+<img src="/readme_images/authz_logo_v1_blue_green_2x.png" width="300"/>
+  
 [![Gem Version](https://badge.fury.io/rb/authz.svg)](https://badge.fury.io/rb/authz)
 [![Build Status](https://travis-ci.com/serodriguez68/authz.svg?token=qXv4Wq7cPeFBwcByqvAc&branch=master)](https://travis-ci.com/serodriguez68/authz)
 
