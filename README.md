@@ -6,21 +6,34 @@
 **Authz** is an **opinionated** *almost*-**turnkey** solution for managing **authorization** in your Rails application.
 
 Authz provides you with:
-- An **authorization admin** interface that allows non-developers to configure and manage how authorization works for your app. 
-The admin makes it very easy to answer questions like *"who can create top-secret reports"?* or *"what can John Doe do?"* 
-- An **opinionated** approach on how to structure your permissions that promotes clarity and maintainability.
-- An easy-to-use API that allows developers to integrate *Authz* into their apps with **very little code** while providing
-them with the tools they need. 
+- An **authorization admin** interface that allows non-developers to configure how authorization works for your app
+without changing any code. The admin makes it very easy to redefine what a role can do and to answer questions 
+like *"who can create reports"?* or *"what can John Doe do?"* 
+- An **opinionated** approach to structure your authorization rules that promotes clarity and maintainability.
+- An easy-to-use API that allows developers to integrate *Authz* into their apps with **very little code**, while 
+providing them with all the tools they need. 
   - *"Can I make my views dynamic depending on the user's authorization?"* Yup!
   - *"Can I retrieve only the records the user has access to?"* Sure thing!
   - *"The role structure inside my organization changes frequently and I spend a lot of time updating the 'who-can-do-what' 
-  code to keep up with the changes.'"* No worries. Use the admin to make the 
-  tweaks you need, no code changes.
+  code to keep up with the changes.'"* No worries. Use the admin to make the tweaks you need, no code changes.
 
-Get a feel for **Authz** with this [live demo](https://authzcasestudy.herokuapp.com/).
-<!--- TODO: Change link to video  --->
+## Quick Start
+Get Started with our [Video Tutorial Series](https://www.youtube.com/playlist?list=PL77lNtEWn1Dg4Ku1Z9BC9S9xLX0ZHdbyV)
+and follow along with the  [live demo](https://authzcasestudy.herokuapp.com/).
+
+<div align="center">
+     <center>
+         <a href="https://www.youtube.com/playlist?list=PL77lNtEWn1Dg4Ku1Z9BC9S9xLX0ZHdbyV">
+            <img src="/readme_images/play_tutorial_series.png" width="250"/>
+         </a>
+     </center>
+</div>
+
+_We will be adding new videos to the series as we produce them. Anything not covered in the videos can be found
+in this README._
 
 ## Table of Content
+- [Quick Start](#quick-start)
 - [Is Authz A Good Match For My Needs?](#is-authz-a-good-match-for-my-needs)
 - [Requirements](#requirements)
 - [Installation and Initial Setup](#installation-and-initial-setup)
@@ -478,7 +491,6 @@ will apply whenever a 'ny sports editor' is trying to act upon a `Report` or `Co
 dealing with `Reports` you want to apply the 'New York' keyword and when dealing with `Comments` you want to apply
 the 'San Francisco" keyword, you need to define 2 different roles (**they probably are 2 different roles**).
 
-<!--- TODO: Modify this if we add the functionality of default keywords and overrides for specific actions  --->
 [Back to table of content](#table-of-content)
 
 #### Controllers
