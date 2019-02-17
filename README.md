@@ -23,7 +23,7 @@ and follow along with the  [live demo](https://authzcasestudy.herokuapp.com/).
 
 <div align="center">
      <center>
-         <a href="https://www.youtube.com/playlist?list=PL77lNtEWn1Dg4Ku1Z9BC9S9xLX0ZHdbyV">
+         <a href="https://www.youtube.com/playlist?list=PL77lNtEWn1Dg4Ku1Z9BC9S9xLX0ZHdbyV" target="_blank">
             <img src="/readme_images/play_tutorial_series.png" width="400"/>
          </a>
      </center>
