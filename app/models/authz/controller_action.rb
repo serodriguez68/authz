@@ -76,6 +76,12 @@ module Authz
         pending << route unless ca
       end
 
+      pending.each do |pair|
+        c_name, a_name = pair[:controller], pair[:action]
+        description = Authz.controller_metadata_service.get_controller_action_description(c_name, a_name)
+        pair[:description] = description
+      end
+
       pending
     end
 
@@ -99,6 +105,12 @@ module Authz
     # @return [String] concatenation of controller#action-id
     def to_s
       "#{controller}##{action}-#{id}"
+    end
+
+    # @return [String] description of a controller action, parsed through the
+    #                  controller_metadata_service
+    def description
+      Authz.controller_metadata_service.get_controller_action_description(self.controller, self.action)
     end
 
     private

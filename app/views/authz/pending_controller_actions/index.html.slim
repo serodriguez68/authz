@@ -19,8 +19,10 @@ section.section
             tr
               th Controller Name
               th Action Name
+              th Action Description
           tbody
             - @pending_controller_actions.each do |controller_action|
               tr
                 td = controller_action[:controller]
                 td = controller_action[:action]
+                td = controller_action[:description]

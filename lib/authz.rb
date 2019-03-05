@@ -1,5 +1,6 @@
 require 'authz/engine'
 require 'authz/cache'
+require 'authz/yard_controller_metadata_service'
 require 'authz/models/rolable'
 require 'authz/controllers/scoping_manager'
 require 'authz/controllers/authorization_manager'
@@ -9,6 +10,7 @@ require 'slim-rails'
 require 'kaminari'
 require 'jquery-rails'
 require 'font-awesome-rails'
+require 'yard'
 
 
 # Stores the configuration parameters of the library
@@ -53,6 +55,9 @@ module Authz
   mattr_reader :cache
   # The attribute that points to the cache module
   @@cache = Authz::Cache
+
+  mattr_reader :controller_metadata_service
+  @@controller_metadata_service = Authz::YardControllerMetadataService.new
 
   # Allows the configuration of the gem using
   # block syntax
