@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari'
   s.add_dependency 'jquery-rails'
   s.add_dependency 'slim-rails'
+  s.add_dependency 'yard'
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "devise"
@@ -49,5 +50,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'travis'
   s.add_development_dependency 'travis-lint'
   s.add_development_dependency 'rack-mini-profiler'
-  s.add_development_dependency 'yard'
 end

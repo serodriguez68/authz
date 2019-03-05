@@ -7,6 +7,7 @@ PATH
       kaminari
       rails (~> 5.0)
       slim-rails
+      yard
 
 GEM
   remote: https://rubygems.org/
@@ -309,7 +310,6 @@ DEPENDENCIES
   sqlite3
   travis
   travis-lint
-  yard
 
 BUNDLED WITH
    1.16.6
