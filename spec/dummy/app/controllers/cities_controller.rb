@@ -8,6 +8,8 @@ class CitiesController < ApplicationController
   end
 
   # GET /cities/new
+  #
+  # @authz.description Renders the form to create a new city
   def new
     authorize skip_scoping: true
     @city = City.new
