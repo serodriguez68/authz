@@ -57,32 +57,22 @@ module Authz
       res
     end
 
-    # @return [Array<Hash<controller_name, action_name>>]
-    #         controller actions reachable from the router but not present in the database
+    # @return [Authz::ControllerAction]
+    #         controller action instances reachable from the router but not present in the database
     # @api private
     # @see .reachable_controller_actions
     def self.pending
-      # TODO: Refactor and test
-      ca_pairs = []
-      reachable_controller_actions.each do | c_name, action_arr |
+      router_ca_pairs = []
+      reachable_controller_actions.each do |c_name, action_arr|
         action_arr.each do |a_name|
-          ca_pairs << { controller: c_name, action: a_name }
+          router_ca_pairs << [c_name, a_name]
         end
       end
 
-      pending = []
-      ca_pairs.each do |route|
-        ca = find_by(controller: route[:controller], action: route[:action])
-        pending << route unless ca
-      end
+      dp_ca_pairs = all.pluck(:controller, :action)
 
-      pending.each do |pair|
-        c_name, a_name = pair[:controller], pair[:action]
-        description = Authz.controller_metadata_service.get_controller_action_description(c_name, a_name)
-        pair[:description] = description
-      end
-
-      pending
+      pending = router_ca_pairs - dp_ca_pairs
+      pending.map{ |ca_pair| new(controller: ca_pair.first, action: ca_pair.last) }
     end
 
     # @return [Array<Authz::ControllerAction>] controller actions that are created in the database that
@@ -97,6 +87,14 @@ module Authz
         stale << ca unless is_included
       end
       stale
+    end
+
+    def self.create_all_pending!
+      transaction do
+        pending.each do |pca|
+          pca.save!
+        end
+      end
     end
 
     # Instance Methods

@@ -28,7 +28,7 @@ module Authz
         Rails.application.reload_routes!
       end
 
-      it 'should be valid when instantiated with a non-existent controller and action' do
+      it 'should be invalid when instantiated with a non-existent controller and action' do
         controller_action = build(:authz_controller_action, controller: 'foo', action: 'bar')
         expect(controller_action).to be_invalid
       end
@@ -92,6 +92,80 @@ module Authz
         end
       end
 
+      describe '.pending'  do
+        context 'when some reachable controller actions have not been created in the DB' do
+          it 'should return an array of controller action instances that are pending' do
+            expect(described_class).to receive(:reachable_controller_actions).twice.and_return(
+              { "tests" => %w(index new create) }
+            )
+            create(:authz_controller_action, controller: 'tests', action: 'index')
+
+            expected_result = [described_class.new(controller: 'tests', action: 'new'),
+                               described_class.new(controller: 'tests', action: 'create')]
+            result = described_class.pending
+            expect(result.map(&:attributes)).to match_array(expected_result.map(&:attributes))
+          end
+        end
+
+        context 'when the DB is up to date' do
+          it 'should return an empty array' do
+            expect(described_class).to receive(:reachable_controller_actions).twice.and_return(
+              { "tests" => %w(index) }
+            )
+            create(:authz_controller_action, controller: 'tests', action: 'index')
+            expect(described_class.pending).to match_array([])
+          end
+        end
+      end
+
+      describe '.create_all_pending!' do
+        it 'should create all pending controller actions and return them' do
+          expect(described_class).to(
+            receive(:reachable_controller_actions).at_least(:once)
+              .and_return({'tests' => %w(new create)})
+          )
+          pending_cas = described_class.pending
+          before_count = described_class.all.size
+          returned = described_class.create_all_pending!
+          after_count = described_class.all.size
+          cas_created = after_count - before_count
+          expect(returned.map{ |ca| [ca.controller, ca.action]}).to(
+            match_array(pending_cas.map{ |ca| [ca.controller, ca.action]})
+          )
+          expect(cas_created).to eq pending_cas.size
+        end
+
+        it 'should not create any controller action if one fails' do
+          expect(described_class).to(
+            receive(:reachable_controller_actions).at_least(:once)
+              .and_return({'tests' => %w(new create)})
+          )
+
+          expect(described_class).to(
+            receive(:pending).at_least(:once)
+              .and_return(
+                [described_class.new(controller: 'tests', action: 'new'),
+                 described_class.new(controller: 'tests', action: 'fail')]  # The CA that fails
+              )
+          )
+
+          before_count = described_class.all.size
+          expect{
+            described_class.create_all_pending!
+          }.to raise_error(ActiveRecord::RecordInvalid)
+          after_count = described_class.all.size
+          cas_created = after_count - before_count
+          expect(cas_created).to eq 0
+        end
+
+        it 'should do nothing if there are no pending controller actions' do
+          pending_cas = []
+          expect(described_class).to(
+            receive(:pending).at_least(:once).and_return(pending_cas)
+          )
+          expect{described_class.create_all_pending!}.not_to change{described_class.all.size}
+        end
+      end
     end
 
     describe 'Associations' do

@@ -9,7 +9,7 @@ section.section
         .content
           .card
             .card-content.has-text-centered
-              p.title.is-1 = number_with_delimiter @pending_controller_actions.count
+              p.title.is-1 = number_with_delimiter @pending_controller_actions.size
               p.subtitle Controller Actions to be created
               - if @pending_controller_actions.blank?
                 p Everything's up to date
