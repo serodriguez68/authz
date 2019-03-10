@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   resources :reports
   resources :ratings, only: [:index, :new, :create, :destroy]
   resources :announcements, only: [:index, :new, :create, :destroy]
+  resources :photos
 end

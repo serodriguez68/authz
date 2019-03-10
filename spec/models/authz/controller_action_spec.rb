@@ -132,6 +132,22 @@ module Authz
 
     end
 
+
+    describe 'Instance methods' do
+      describe '#description' do
+        let(:ca) { create(:authz_controller_action) }
+        let(:metadata_service) { Authz.controller_metadata_service }
+        let(:description) { 'foo' }
+        it 'should call the configured metadata service to retrieve the description' do
+          expect(metadata_service).to(
+            receive(:get_controller_action_description)
+              .with(ca.controller, ca.action).and_return(description)
+          )
+          expect(ca.description).to eq description
+        end
+      end
+    end
+
   end
 end
 
