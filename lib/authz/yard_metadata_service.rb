@@ -1,7 +1,6 @@
 module Authz
   class YardMetadataService
 
-
     def initialize
       @descriptions = {}
 
@@ -17,7 +16,6 @@ module Authz
         YARD.parse(controller_filename(controller_name))
 
         description = YARD::Registry.at(as)&.tag(:authz_description)&.text
-
         descriptions[as] = description
       end
     end
@@ -39,5 +37,6 @@ module Authz
         .join('::')
         .concat("Controller\##{action_name}")
     end
+
   end
 end
