@@ -1,6 +1,6 @@
 require 'authz/engine'
 require 'authz/cache'
-require 'authz/yard_controller_metadata_service'
+require 'authz/yard_metadata_service'
 require 'authz/models/rolable'
 require 'authz/controllers/scoping_manager'
 require 'authz/controllers/authorization_manager'
@@ -57,7 +57,7 @@ module Authz
   @@cache = Authz::Cache
 
   mattr_reader :controller_metadata_service
-  @@controller_metadata_service = Authz::YardControllerMetadataService.new
+  @@controller_metadata_service = Authz::YardMetadataService.new
 
   # Allows the configuration of the gem using
   # block syntax

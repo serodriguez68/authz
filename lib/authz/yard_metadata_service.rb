@@ -1,5 +1,5 @@
 module Authz
-  class YardControllerMetadataService
+  class YardMetadataService
 
 
     def initialize
