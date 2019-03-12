@@ -57,7 +57,7 @@ module Authz
       res
     end
 
-    # @return [Authz::ControllerAction]
+    # @return [Array<Authz::ControllerAction>]
     #         controller action instances reachable from the router but not present in the database
     # @api private
     # @see .reachable_controller_actions
@@ -89,6 +89,12 @@ module Authz
       stale
     end
 
+    # Creates all pending controller actions in the database.
+    # The creation either succeeds or fails completely
+    # @return [Array<Authz::ControllerAction>] all controller action instances
+    #         that have been created.
+    # @api private
+    # @see .pending
     def self.create_all_pending!
       transaction do
         pending.each do |pca|
@@ -108,7 +114,7 @@ module Authz
     # @return [String] description of a controller action, parsed through the
     #                  controller_metadata_service
     def description
-      Authz.controller_metadata_service.get_controller_action_description(self.controller, self.action)
+      Authz.metadata_service.get_controller_action_description(self.controller, self.action)
     end
 
     private
