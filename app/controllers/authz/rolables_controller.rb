@@ -4,6 +4,7 @@ module Authz
   # Handles the controller actions related to the rolables
   # @api private
   class RolablesController < ApplicationController
+
     def index
       @rolables = rolable.all.page(params[:page])
     end

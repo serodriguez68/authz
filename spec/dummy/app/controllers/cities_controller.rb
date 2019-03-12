@@ -1,7 +1,7 @@
 class CitiesController < ApplicationController
   before_action :set_city, only: [:edit, :update, :destroy]
 
-  # GET /cities
+  # @authz.description Lists all the cities that the user can see
   def index
     authorize skip_scoping: true
     @cities = apply_authz_scopes on: City.all

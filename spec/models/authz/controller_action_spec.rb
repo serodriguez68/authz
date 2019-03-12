@@ -210,7 +210,7 @@ module Authz
     describe 'Instance methods' do
       describe '#description' do
         let(:ca) { create(:authz_controller_action) }
-        let(:metadata_service) { Authz.controller_metadata_service }
+        let(:metadata_service) { Authz.metadata_service }
         let(:description) { 'foo' }
         it 'should call the configured metadata service to retrieve the description' do
           expect(metadata_service).to(

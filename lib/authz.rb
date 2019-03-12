@@ -56,8 +56,8 @@ module Authz
   # The attribute that points to the cache module
   @@cache = Authz::Cache
 
-  mattr_reader :controller_metadata_service
-  @@controller_metadata_service = Authz::YardMetadataService.new
+  mattr_reader :metadata_service
+  @@metadata_service = Authz::YardMetadataService.new
 
   # Allows the configuration of the gem using
   # block syntax
