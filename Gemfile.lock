@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    authz (0.0.4)
+    authz (0.0.5)
       font-awesome-rails
       jquery-rails
       kaminari

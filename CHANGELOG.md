@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 
+## [0.0.5] - 2019-11-03
+### Added
+- Dependabot: Bump yard from 0.9.18 to 0.9.20 [#20](https://github.com/serodriguez68/authz/pull/20).
+- Dependabot: Bump rubyzip from 1.2.2 to 1.3.0 [#21](https://github.com/serodriguez68/authz/pull/21).
+
 ## [0.0.4] - 2019-11-03
 ### Added
 - Bump the dummy app's devise version from 4.5.0 to 4.7.1. Version 4.5.0 had a security vulnerability that did not 
