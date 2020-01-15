@@ -8,7 +8,7 @@ module Authz
     # This is limited to the gem's inner workings so the
     # host app is not affected.
     # #cache_key will include timestamp.
-    self.cache_versioning = false
+    self.cache_versioning = false if Authz.cache.active_record_has_cache_versioning_available?
 
   end
 end

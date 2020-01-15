@@ -13,5 +13,10 @@ module Authz
       end
     end
 
+    # @return [Boolean] true the host application is running a version of active record that has cache_versioning
+    #   available.
+    def self.active_record_has_cache_versioning_available?
+      Rails.gem_version >= Gem::Version.new("5.2.x")
+    end
   end
 end
