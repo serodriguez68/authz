@@ -29,7 +29,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-rails'
   s.add_dependency 'slim-rails'
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "appraisal" # Allows testing against multiple versions of the dependencies
+  s.add_development_dependency "sqlite3", '~> 1.3.6'
   s.add_development_dependency "devise"
   s.add_development_dependency "byebug"
   s.add_development_dependency "foundation-rails"

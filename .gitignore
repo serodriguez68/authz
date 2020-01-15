@@ -13,3 +13,4 @@ authz-*.gem
 spec/dummy/.byebug_history
 doc/
 .yardoc/
+*emfile.lock

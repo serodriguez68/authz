@@ -3,6 +3,10 @@ rvm:
   - 2.5.3
 bundler_args: --jobs=2
 
+gemfile:
+  - gemfiles/rails_5.1.gemfile
+  - gemfiles/rails_5.2.gemfile
+
 script:
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rake spec

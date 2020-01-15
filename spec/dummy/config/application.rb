@@ -8,7 +8,10 @@ require "authz"
 module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    # FIXME: Loading multiple rails versions for testing using appraisals and loading the defaults of just one
+    #   version can cause the tests to be unstable. Figure out a way of changing the config dynamically in a more
+    #   robust way.
+    config.load_defaults 5.1
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
